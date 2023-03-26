@@ -1,0 +1,116 @@
+.UI-UX-signin {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: radial-gradient(101.61% 101.61% at 50% -1.61%, #E0F7FA 7.04%, rgba(178, 235, 242, 0.893007) 18.9%, rgba(128, 222, 234, 0.784618) 31.21%, rgba(77, 208, 225, 0.651329) 40.29%, rgba(38, 198, 218, 0.554658) 51.86%, rgba(0, 188, 212, 0.44334) 62.26%, rgba(0, 172, 193, 0.334952) 73.68%, rgba(0, 151, 167, 0.235351) 80.71%, rgba(0, 131, 143, 0.0991331) 90.09%, rgba(0, 96, 100, 0) 96.97%);
+}
+
+.UI-UX-signin__header {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.UI-UX-signin__title-signin {
+    margin-top: 0;
+    font-size: 48px;
+    padding: 16px 0 8px 0;
+}
+
+.UI-UX-signin__logo {
+    width: 340px;
+    height: 258px;
+}
+
+.UI-UX-signin__contain {
+    display: block;
+    margin: 45px auto 138px;
+    background-color: #fafafa;
+    width: 505px;
+    height: auto;
+    border: 1px solid rgba(38, 198, 218, 0.8);
+    border-radius: 10px;
+    align-items: center;
+}
+
+.UI-UX-signin__contain--form {
+    position: relative;
+}
+
+.UI-UX-signin__form {
+    position: relative;
+    display: block;
+    margin: 36px 0;
+}
+
+.UI-UX-signin__form:nth-child(2) {
+    position: relative;
+}
+
+.UI-UX-signin__form--input {
+    max-width: 369px;
+    padding: 16px 0 16px 28px;
+    border-radius: 8px;
+    border: 1px solid rgba(38, 198, 218, 0.6);
+}
+
+.UI-UX-signin__form--input:focus {
+    outline: 1px solid rgba(0, 96, 100, 1);
+    color: rgb(0, 96, 100);
+}
+
+.UI-UX-signin__form--input::placeholder {
+    color: rgb(0, 96, 100);
+}
+
+.UI-UX-signin__form--icon {
+    position: absolute;
+    height: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 15%;
+    cursor: pointer;
+}
+
+.UI-UX-signin--error {
+    position: absolute;
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    left: 50%;
+    bottom: 32%;
+    color: #C82711;
+    transform: translateX(-50%);
+    padding: 0 4px;
+    min-width: 369px;
+    font-weight: 500;
+}
+
+.UI-UX__btn {
+    position: relative;
+    min-width: 369px;
+    margin-bottom: 36px;
+    padding: 12px 0 12px;
+    cursor: pointer;
+    background: rgba(38, 198, 218, 0.8);
+    border-radius: 10px;
+    border: none;
+    color: #fafafa;
+}
+
+.UI-UX__btn:hover {
+    background: rgba(38, 198, 218, 1);
+}
+
+.UI-UX-signup--link {
+    display: block;
+    position: absolute;
+    color: #000;
+    font-weight: 500;
+    right: 4%;
+    bottom: 4%;
+    background-color: #fafafa;
+    text-decoration: none
+}
+
