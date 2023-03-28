@@ -5,7 +5,19 @@
     width: 100%;
     height: 100%;
     text-align: center;
-    background: radial-gradient(101.61% 101.61% at 50% -1.61%, #E0F7FA 7.04%, rgba(178, 235, 242, 0.893007) 18.9%, rgba(128, 222, 234, 0.784618) 31.21%, rgba(77, 208, 225, 0.651329) 40.29%, rgba(38, 198, 218, 0.554658) 51.86%, rgba(0, 188, 212, 0.44334) 62.26%, rgba(0, 172, 193, 0.334952) 73.68%, rgba(0, 151, 167, 0.235351) 80.71%, rgba(0, 131, 143, 0.0991331) 90.09%, rgba(0, 96, 100, 0) 96.97%);
+    background: radial-gradient(
+        101.61% 101.61% at 50% -1.61%,
+        #e0f7fa 7.04%,
+        rgba(178, 235, 242, 0.893007) 18.9%,
+        rgba(128, 222, 234, 0.784618) 31.21%,
+        rgba(77, 208, 225, 0.651329) 40.29%,
+        rgba(38, 198, 218, 0.554658) 51.86%,
+        rgba(0, 188, 212, 0.44334) 62.26%,
+        rgba(0, 172, 193, 0.334952) 73.68%,
+        rgba(0, 151, 167, 0.235351) 80.71%,
+        rgba(0, 131, 143, 0.0991331) 90.09%,
+        rgba(0, 96, 100, 0) 96.97%
+    );
 }
 
 .UI-UX-signin__header {
@@ -81,7 +93,7 @@
     border-radius: 10px;
     left: 50%;
     bottom: 32%;
-    color: #C82711;
+    color: #c82711;
     transform: translateX(-50%);
     padding: 0 4px;
     min-width: 369px;
@@ -112,6 +124,5 @@
     right: 4%;
     bottom: 4%;
     background-color: #fafafa;
-    text-decoration: none
+    text-decoration: none;
 }
-
