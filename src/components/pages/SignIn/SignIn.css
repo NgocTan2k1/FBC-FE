@@ -15,8 +15,9 @@
 
 .UI-UX-signin__title-signin {
     margin-top: 0;
+    margin-bottom: 20px;
     font-size: 48px;
-    padding: 16px 0 8px 0;
+    padding: 8px 0 0 0;
 }
 
 .UI-UX-signin__logo {
@@ -26,7 +27,7 @@
 
 .UI-UX-signin__contain {
     display: block;
-    margin: 45px auto 138px;
+    margin: 40px auto 38px;
     background-color: #fafafa;
     width: 505px;
     height: auto;
