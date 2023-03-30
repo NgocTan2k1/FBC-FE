@@ -1,13 +1,12 @@
-.UI-UX-signin {
-    margin: 0;
-    padding: 0;
+.UI-UX-signup {
     position: relative;
+    display: flex;
     width: 100%;
     height: 100%;
     text-align: center;
     background: radial-gradient(
         101.61% 101.61% at 50% -1.61%,
-        #e0f7fa 7.04%,
+        rgb(224, 247, 250) 7.04%,
         rgba(178, 235, 242, 0.893007) 18.9%,
         rgba(128, 222, 234, 0.784618) 31.21%,
         rgba(77, 208, 225, 0.651329) 40.29%,
@@ -20,26 +19,22 @@
     );
 }
 
-.UI-UX-signin__header {
+.UI-UX-signup__header {
     text-align: center;
-    margin: 0 auto;
+    margin: auto 100px auto auto;
+}
+.title {
+    font-size: 2.6rem;
 }
 
-.UI-UX-signin__title-signin {
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 48px;
-    padding: 8px 0 0 0;
+.UI-UX-signup__logo {
+    width: 100%;
+    height: auto;
 }
 
-.UI-UX-signin__logo {
-    width: 340px;
-    height: 258px;
-}
-
-.UI-UX-signin__contain {
+.UI-UX-signup__contain {
     display: block;
-    margin: 40px auto 38px;
+    margin: 60px auto 60px 44px;
     background-color: #fafafa;
     width: 505px;
     height: auto;
@@ -48,81 +43,94 @@
     align-items: center;
 }
 
-.UI-UX-signin__contain--form {
-    position: relative;
+.title-signup {
 }
 
-.UI-UX-signin__form {
+.UI-UX-signup__contain--form {
     position: relative;
     display: block;
-    margin: 36px 0;
+    justify-items: right;
+    margin-bottom: 36px;
 }
 
-.UI-UX-signin__form:nth-child(2) {
+.form--item {
+    margin-bottom: 16px;
     position: relative;
 }
 
-.UI-UX-signin__form--input {
-    max-width: 369px;
+.label {
+    display: flex;
+    margin: 6px 6px 6px 10%;
+    font-style: initial;
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.UI-UX-signup__form--input {
+    display: block;
+    margin: 6px 6px 6px 10%;
+    max-width: 80%;
     padding: 16px 0 16px 28px;
     border-radius: 8px;
     border: 1px solid rgba(38, 198, 218, 0.6);
 }
 
-.UI-UX-signin__form--input:focus {
+.UI-UX-signup__form--input:focus {
     outline: 1px solid rgba(0, 96, 100, 1);
     color: rgb(0, 96, 100);
 }
 
-.UI-UX-signin__form--input::placeholder {
+.UI-UX-signup__form--input::placeholder {
     color: rgb(0, 96, 100);
 }
 
-.UI-UX-signin__form--icon {
+.UI-UX-signup--error {
     position: absolute;
-    height: 1em;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 15%;
-    cursor: pointer;
-}
-
-.UI-UX-signin--error {
-    position: absolute;
+    display: none;
     background-color: #d9d9d9;
     border-radius: 10px;
-    left: 50%;
-    bottom: 32%;
+    left: 10%;
     color: #c82711;
-    transform: translateX(-50%);
-    padding: 0 4px;
-    min-width: 369px;
+    padding: 0 26px;
     font-weight: 500;
+    text-align: left;
 }
 
-.UI-UX__btn {
-    position: relative;
-    min-width: 369px;
-    margin-bottom: 36px;
+.show-signup {
+    display: inline-block;
+}
+
+.UI-UX__btn-signup {
+    display: block;
     padding: 12px 0 12px;
-    cursor: pointer;
+    margin: 10px 6px 6px 10%;
+    min-width: 80%;
+
     background: rgba(38, 198, 218, 0.8);
     border-radius: 10px;
     border: none;
     color: #fafafa;
+
+    cursor: pointer;
 }
 
-.UI-UX__btn:hover {
+.UI-UX__btn-signup:hover {
     background: rgba(38, 198, 218, 1);
 }
 
-.UI-UX-signup--link {
+.UI-UX-signup--link-signin {
     display: block;
     position: absolute;
     color: #000;
     font-weight: 500;
     right: 4%;
-    bottom: 4%;
+    bottom: -6%;
     background-color: #fafafa;
     text-decoration: none;
+}
+
+.link-to-signin {
+    color: #000;
+    font-weight: 700;
 }

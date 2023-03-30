@@ -37,55 +37,82 @@ function SignUp() {
     }
 
     return (
-        <div className="UI-UX-signin">
-            <div className="UI-UX-signin__header">
-                <h1 className="UI-UX-signin__title-signin">Sign Up</h1>
-                <img src={logo} className="UI-UX-signin__logo"></img>
+        <div className="UI-UX-signup">
+            <div className="UI-UX-signup__header">
+                <h1 class="title">Sign Up</h1>
+                <img src={logo} className="UI-UX-signup__logo"></img>
             </div>
-            <div className="UI-UX-signin__contain">
-                <Form onChange={handleSetValueUpdate} className="UI-UX-signin__contain--form">
-                    <Form.Item name="username" className="UI-UX-signin__form">
+            <div className="UI-UX-signup__contain">
+                <h1 class="title-signup">Sign up to start with financebankchat</h1>
+                <Form onChange={handleSetValueUpdate} className="UI-UX-signup__contain--form">
+                    <Form.Item class="form--item">
+                        <label for="email" className="label">
+                            Email
+                        </label>
                         <Input
+                            id="email"
+                            className="UI-UX-signup__form--input"
                             type="text"
                             autoComplete="off"
-                            placeholder="Enter Email or username"
-                            className="UI-UX-signin__form--input"
+                            placeholder="Enter Email"
                         />
+                        <div className="UI-UX-signup--error show-signup"> Your email is incorrect!</div>
                     </Form.Item>
 
-                    <Form.Item name="password" className="UI-UX-signin__form">
+                    <Form.Item class="form--item">
+                        <label for="username" className="label">
+                            Email
+                        </label>
                         <Input
-                            type={showPassword ? 'text' : 'password'}
+                            id="username"
+                            className="UI-UX-signup__form--input"
+                            type="text"
                             autoComplete="off"
-                            placeholder="Password"
-                            className="UI-UX-signin__form--input"
+                            placeholder="Enter Username"
                         />
+                        <div className="UI-UX-signup--error"> Your username is incorrect!</div>
                     </Form.Item>
 
-                    <div onClick={() => setShowPassword(!showPassword)}>
-                        {showPassword ? (
-                            <FontAwesomeIcon
-                                icon="fa-solid fa-eye"
-                                className="UI-UX-signin__form--icon hide-password"
-                            />
-                        ) : (
-                            <FontAwesomeIcon className="UI-UX-signin__form--icon" icon="fa-solid fa-eye-slash" />
-                        )}
-                    </div>
+                    <Form.Item class="form--item">
+                        <label for="password" className="label">
+                            Email
+                        </label>
+                        <Input
+                            id="password"
+                            className="UI-UX-signup__form--input"
+                            type="text"
+                            autoComplete="off"
+                            placeholder="Enter your password"
+                        />
+                        <div className="UI-UX-signup--error"> Your password is incorrect!</div>
+                    </Form.Item>
 
-                    {error == true ? (
-                        <div className="UI-UX-signin--error"> your username or password is incorrect </div>
-                    ) : (
-                        ''
-                    )}
+                    <Form.Item class="form--item">
+                        <label for="confirmpassword" className="label">
+                            Email
+                        </label>
+                        <Input
+                            id="confirmpassword"
+                            className="UI-UX-signup__form--input"
+                            type="text"
+                            autoComplete="off"
+                            placeholder="Enter your password again"
+                        />
+                        <div className="UI-UX-signup--error"> Your confirm password is incorrect!</div>
+                    </Form.Item>
 
-                    <button onClick={handleSubmit} className="UI-UX__btn">
-                        Login
+                    <button onClick={handleSubmit} className="UI-UX__btn-signup">
+                        Sign Up
                     </button>
 
-                    <Link to="/" className="UI-UX-signup--link">
-                        you have alreadly account?
-                    </Link>
+                    <span className="UI-UX-signup--link-signin">
+                        Already have an Account?
+                        <Link to="/" className="link-to-signin">
+                            {' '}
+                            Sign in{' '}
+                        </Link>
+                        now!
+                    </span>
                 </Form>
             </div>
         </div>

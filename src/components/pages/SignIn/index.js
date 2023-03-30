@@ -84,7 +84,7 @@ function SignIn() {
                     </button>
 
                     <Link to="/signup" className="UI-UX-signup--link">
-                        you don't have account?
+                        You don't have account?
                     </Link>
                 </Form>
             </div>
