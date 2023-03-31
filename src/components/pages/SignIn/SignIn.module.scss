@@ -1,10 +1,6 @@
-.UI-UX-signin {
-    margin: 0;
-    padding: 0;
-    position: relative;
+.wrapper {
     width: 100%;
     height: 100%;
-    text-align: center;
     background: radial-gradient(
         101.61% 101.61% at 50% -1.61%,
         #e0f7fa 7.04%,
@@ -20,103 +16,104 @@
     );
 }
 
-.UI-UX-signin__header {
+.header {
     text-align: center;
     margin: 0 auto;
 }
 
-.UI-UX-signin__title-signin {
+.title {
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 48px;
     padding: 8px 0 0 0;
 }
 
-.UI-UX-signin__logo {
+.logo {
     width: 340px;
     height: 258px;
 }
 
-.UI-UX-signin__contain {
+.container {
+    position: relative;
     display: block;
-    margin: 40px auto 38px;
+    text-align: center;
+    margin: 36px auto;
     background-color: #fafafa;
     width: 505px;
-    height: auto;
     border: 1px solid rgba(38, 198, 218, 0.8);
     border-radius: 10px;
-    align-items: center;
 }
 
-.UI-UX-signin__contain--form {
-    position: relative;
+.container_form {
+    display: block;
+    margin: 18px auto;
 }
 
-.UI-UX-signin__form {
+.container_form_item {
     position: relative;
     display: block;
-    margin: 36px 0;
+    margin: 0;
 }
 
-.UI-UX-signin__form:nth-child(2) {
-    position: relative;
-}
-
-.UI-UX-signin__form--input {
+.container_form_item--input {
     max-width: 369px;
     padding: 16px 0 16px 28px;
+    margin: 18px auto;
     border-radius: 8px;
     border: 1px solid rgba(38, 198, 218, 0.6);
+
+    &:focus {
+        outline: 1px solid rgba(0, 96, 100, 1);
+        color: rgb(0, 96, 100);
+    }
+
+    &::placeholder {
+        color: rgb(0, 96, 100);
+    }
 }
 
-.UI-UX-signin__form--input:focus {
-    outline: 1px solid rgba(0, 96, 100, 1);
-    color: rgb(0, 96, 100);
-}
-
-.UI-UX-signin__form--input::placeholder {
-    color: rgb(0, 96, 100);
-}
-
-.UI-UX-signin__form--icon {
+.icon {
     position: absolute;
     height: 1em;
     top: 50%;
     transform: translateY(-50%);
-    right: 15%;
+    right: 16%;
     cursor: pointer;
 }
 
-.UI-UX-signin--error {
+.icon-hidepassword,
+.icon-showpassword {
+}
+
+.error-signin {
     position: absolute;
     background-color: #d9d9d9;
     border-radius: 10px;
     left: 50%;
-    bottom: 32%;
+    bottom: 28%;
     color: #c82711;
     transform: translateX(-50%);
-    padding: 0 4px;
     min-width: 369px;
     font-weight: 500;
 }
 
-.UI-UX__btn {
-    position: relative;
+.signin-btn {
     min-width: 369px;
-    margin-bottom: 36px;
+    margin: 18px 0;
     padding: 12px 0 12px;
-    cursor: pointer;
+
     background: rgba(38, 198, 218, 0.8);
     border-radius: 10px;
     border: none;
     color: #fafafa;
+
+    &:hover {
+        cursor: pointer;
+        background: rgba(38, 198, 218, 1);
+    }
 }
 
-.UI-UX__btn:hover {
-    background: rgba(38, 198, 218, 1);
-}
-
-.UI-UX-signup--link {
+.signup-link {
     display: block;
     position: absolute;
     color: #000;
@@ -125,4 +122,5 @@
     bottom: 4%;
     background-color: #fafafa;
     text-decoration: none;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
 }

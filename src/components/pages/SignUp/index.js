@@ -2,15 +2,20 @@ import { Button, Form, Input, Radio } from 'antd';
 import axios from 'axios';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import logo from '~/img/logo-Sign-Up.png';
-
-import './SignUp.css';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+
+import logo from '~/img/logo-Sign-Up.png';
+import styles from './SignUp.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(styles);
 
 function SignUp() {
     const [form] = Form.useForm();
     const [valueUpdate, setValueUpdate] = useState({});
-    const [showPassword, setShowPassword] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState(false);
 
     function handleSubmit() {
@@ -37,77 +42,92 @@ function SignUp() {
     }
 
     return (
-        <div className="UI-UX-signup">
-            <div className="UI-UX-signup__header">
-                <h1 class="title">Sign Up</h1>
-                <img src={logo} className="UI-UX-signup__logo"></img>
+        <div className={cx('wrapper')}>
+            <div className={cx('header')}>
+                <h1 className="title">Sign Up</h1>
+                <img src={logo} className={cx('logo')}></img>
             </div>
-            <div className="UI-UX-signup__contain">
-                <h1 class="title-signup">Sign up to start with financebankchat</h1>
-                <Form onChange={handleSetValueUpdate} className="UI-UX-signup__contain--form">
-                    <Form.Item class="form--item">
-                        <label for="email" className="label">
+            <div className={cx('container')}>
+                <h1 className={cx('container_title')}>Sign up to start with financebankchat</h1>
+                <Form onChange={handleSetValueUpdate} className={cx('container_form')}>
+                    <Form.Item className={cx('container_form_item')}>
+                        <label htmlFor="email" className={cx('container_form_item--label')}>
                             Email
                         </label>
                         <Input
                             id="email"
-                            className="UI-UX-signup__form--input"
+                            className={cx('container_form_item--input')}
                             type="text"
                             autoComplete="off"
                             placeholder="Enter Email"
                         />
-                        <div className="UI-UX-signup--error show-signup"> Your email is incorrect!</div>
+
+                        <div className={cx('container_form_item--error')}> Your email is incorrect!</div>
                     </Form.Item>
 
-                    <Form.Item class="form--item">
-                        <label for="username" className="label">
-                            Email
+                    <Form.Item className={cx('container_form_item')}>
+                        <label htmlFor="username" className={cx('container_form_item--label')}>
+                            Username
                         </label>
                         <Input
                             id="username"
-                            className="UI-UX-signup__form--input"
+                            className={cx('container_form_item--input')}
                             type="text"
                             autoComplete="off"
                             placeholder="Enter Username"
                         />
-                        <div className="UI-UX-signup--error"> Your username is incorrect!</div>
+                        <div className={cx('container_form_item--error')}> Your username is incorrect!</div>
                     </Form.Item>
 
-                    <Form.Item class="form--item">
-                        <label for="password" className="label">
-                            Email
+                    <Form.Item className={cx('container_form_item')}>
+                        <label htmlFor="password" className={cx('container_form_item--label')}>
+                            Password
                         </label>
                         <Input
                             id="password"
-                            className="UI-UX-signup__form--input"
-                            type="text"
+                            className={cx('container_form_item--input')}
+                            type={showPassword ? 'text' : 'password'}
                             autoComplete="off"
                             placeholder="Enter your password"
                         />
-                        <div className="UI-UX-signup--error"> Your password is incorrect!</div>
+                        <div className={cx('icon')} onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? (
+                                <FontAwesomeIcon icon={faEye} className={cx('icon_showpassword')} />
+                            ) : (
+                                <FontAwesomeIcon icon={faEyeSlash} className={cx('icon_hidepassword')} />
+                            )}
+                        </div>
+                        <div className={cx('container_form_item--error')}> Your password is incorrect!</div>
                     </Form.Item>
 
-                    <Form.Item class="form--item">
-                        <label for="confirmpassword" className="label">
-                            Email
+                    <Form.Item className={cx('container_form_item')}>
+                        <label htmlFor="confirmpassword" className={cx('container_form_item--label')}>
+                            Confirm Password
                         </label>
                         <Input
                             id="confirmpassword"
-                            className="UI-UX-signup__form--input"
-                            type="text"
+                            className={cx('container_form_item--input')}
+                            type={showConfirmPassword ? 'text' : 'password'}
                             autoComplete="off"
                             placeholder="Enter your password again"
                         />
-                        <div className="UI-UX-signup--error"> Your confirm password is incorrect!</div>
+                        <div className={cx('icon')} onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                            {showConfirmPassword ? (
+                                <FontAwesomeIcon icon={faEye} className={cx('icon_showpassword')} />
+                            ) : (
+                                <FontAwesomeIcon icon={faEyeSlash} className={cx('icon_hidepassword')} />
+                            )}
+                        </div>
+                        <div className={cx('container_form_item--error')}> Your confirm password is incorrect!</div>
                     </Form.Item>
 
-                    <button onClick={handleSubmit} className="UI-UX__btn-signup">
+                    <button onClick={handleSubmit} className={cx('signup-btn')}>
                         Sign Up
                     </button>
 
-                    <span className="UI-UX-signup--link-signin">
+                    <span className={cx('signin-link')}>
                         Already have an Account?
-                        <Link to="/" className="link-to-signin">
+                        <Link to="/" className={cx('link-to-signin')}>
                             {' '}
                             Sign in{' '}
                         </Link>
