@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 import logo from '~/img/logo.png';
 import styles from './SignIn.module.scss';
@@ -16,21 +17,30 @@ function SignIn() {
     const [valueUpdate, setValueUpdate] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(false);
+    const history = createBrowserHistory();
 
-    console.log(error);
-    function handleSubmit(valueUpdate) {
+    function handleSubmit() {
         if (valueUpdate.password && valueUpdate.username) {
-            console.log('data1: ', valueUpdate);
             axios
-                .post('/user', {
+                .post('http://127.0.0.1:8000/token/', {
                     password: valueUpdate.password,
                     username: valueUpdate.username,
                 })
                 .then((respone) => {
-                    console.log(respone);
+                    console.log('respone:', respone);
+                    console.log('access:', respone.data.access);
+                    console.log('refresh:', respone.data.refresh);
+
+                    // const json = {respone}
+                    // localStorage.setItem("userInfo", {accessTo})
+                    setError(false);
+                    history.push('/chat');
                 })
                 .catch((error) => {
-                    console.log(error);
+                    if (error) {
+                        setError(true);
+                        console.log(error);
+                    }
                 });
         } else {
             setError(true);
@@ -38,9 +48,9 @@ function SignIn() {
     }
 
     function handleSetValueUpdate(value) {
-        console.log('data1: ', value);
         if (value) {
             setValueUpdate({ ...valueUpdate, ...value });
+            console.log(valueUpdate);
         }
     }
 
@@ -51,7 +61,7 @@ function SignIn() {
                 <img src={logo} className={cx('logo')}></img>
             </div>
             <div className={cx('container')}>
-                <Form onChange={handleSetValueUpdate} className={cx('container_form')}>
+                <Form form={form} onValuesChange={handleSetValueUpdate} className={cx('container_form')}>
                     <Form.Item name="username" className={cx('container_form_item')}>
                         <Input
                             type="text"

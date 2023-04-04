@@ -19,11 +19,13 @@ function SignUp() {
     const [error, setError] = useState(false);
 
     function handleSubmit() {
-        if (valueUpdate.password && valueUpdate.username) {
+        if (valueUpdate.password && valueUpdate.username && valueUpdate.email && valueUpdate.confirmpassword) {
             axios
-                .post('/user', {
-                    password: valueUpdate.password,
+                .post('http://127.0.0.1/api/v1/authentication/register/', {
+                    email: valueUpdate.email,
                     username: valueUpdate.username,
+                    password: valueUpdate.password,
+                    confirmpassword: valueUpdate.confirmpassword,
                 })
                 .then((respone) => {
                     console.log(respone);
@@ -35,7 +37,6 @@ function SignUp() {
     }
 
     function handleSetValueUpdate(value) {
-        console.log('data1', value);
         if (value) {
             setValueUpdate({ ...valueUpdate, ...value });
         }
@@ -49,8 +50,8 @@ function SignUp() {
             </div>
             <div className={cx('container')}>
                 <h1 className={cx('container_title')}>Sign up to start with financebankchat</h1>
-                <Form onChange={handleSetValueUpdate} className={cx('container_form')}>
-                    <Form.Item className={cx('container_form_item')}>
+                <Form onValuesChange={handleSetValueUpdate} className={cx('container_form')}>
+                    <Form.Item name="email" className={cx('container_form_item')}>
                         <label htmlFor="email" className={cx('container_form_item--label')}>
                             Email
                         </label>
@@ -62,10 +63,10 @@ function SignUp() {
                             placeholder="Enter Email"
                         />
 
-                        <div className={cx('container_form_item--error')}> Your email is incorrect!</div>
+                        {error ? <div className={cx('container_form_item--error')}> Your email is incorrect!</div> : ''}
                     </Form.Item>
 
-                    <Form.Item className={cx('container_form_item')}>
+                    <Form.Item name="username" className={cx('container_form_item')}>
                         <label htmlFor="username" className={cx('container_form_item--label')}>
                             Username
                         </label>
@@ -76,10 +77,14 @@ function SignUp() {
                             autoComplete="off"
                             placeholder="Enter Username"
                         />
-                        <div className={cx('container_form_item--error')}> Your username is incorrect!</div>
+                        {error ? (
+                            <div className={cx('container_form_item--error')}> Your username is incorrect!</div>
+                        ) : (
+                            ''
+                        )}
                     </Form.Item>
 
-                    <Form.Item className={cx('container_form_item')}>
+                    <Form.Item name="password" className={cx('container_form_item')}>
                         <label htmlFor="password" className={cx('container_form_item--label')}>
                             Password
                         </label>
@@ -97,10 +102,14 @@ function SignUp() {
                                 <FontAwesomeIcon icon={faEyeSlash} className={cx('icon_hidepassword')} />
                             )}
                         </div>
-                        <div className={cx('container_form_item--error')}> Your password is incorrect!</div>
+                        {error ? (
+                            <div className={cx('container_form_item--error')}> Your password is incorrect!</div>
+                        ) : (
+                            ''
+                        )}
                     </Form.Item>
 
-                    <Form.Item className={cx('container_form_item')}>
+                    <Form.Item name="confirmpassword" className={cx('container_form_item')}>
                         <label htmlFor="confirmpassword" className={cx('container_form_item--label')}>
                             Confirm Password
                         </label>
@@ -118,7 +127,11 @@ function SignUp() {
                                 <FontAwesomeIcon icon={faEyeSlash} className={cx('icon_hidepassword')} />
                             )}
                         </div>
-                        <div className={cx('container_form_item--error')}> Your confirm password is incorrect!</div>
+                        {error ? (
+                            <div className={cx('container_form_item--error')}> Your confirm password is incorrect!</div>
+                        ) : (
+                            ''
+                        )}
                     </Form.Item>
 
                     <button onClick={handleSubmit} className={cx('signup-btn')}>
