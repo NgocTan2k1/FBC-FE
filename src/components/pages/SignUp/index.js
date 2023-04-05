@@ -1,38 +1,142 @@
 import { Button, Form, Input, Radio } from 'antd';
-import axios from 'axios';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '~/img/logo-Sign-Up.png';
 import styles from './SignUp.module.scss';
 import classNames from 'classnames/bind';
+import { SignUpApi } from '~/services/auth';
 
 const cx = classNames.bind(styles);
 
 function SignUp() {
-    const [form] = Form.useForm();
+    const navigate = useNavigate();
     const [valueUpdate, setValueUpdate] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [error, setError] = useState(false);
+    const [errorEmail, setErrorEmail] = useState(false);
+    const [errorUsername, setErrorUsername] = useState(false);
+    const [errorPassword, setErrorPassword] = useState(false);
+    const [errorConfirmPassword, setErrorConfirmPassword] = useState(false);
 
-    function handleSubmit() {
-        if (valueUpdate.password && valueUpdate.username && valueUpdate.email && valueUpdate.confirmpassword) {
-            axios
-                .post('http://127.0.0.1/api/v1/authentication/register/', {
-                    email: valueUpdate.email,
-                    username: valueUpdate.username,
-                    password: valueUpdate.password,
-                    confirmpassword: valueUpdate.confirmpassword,
-                })
+    const codeCheckEmail = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    async function handleSubmit() {
+        //check email
+        if (!codeCheckEmail.test(valueUpdate.email) || !valueUpdate.email) {
+            setErrorEmail((prev) => true);
+        } else {
+            setErrorEmail((prev) => false);
+        }
+
+        //check username
+        if (!valueUpdate.username) {
+            setErrorUsername((prev) => true);
+        } else {
+            setErrorUsername((prev) => false);
+        }
+
+        //check password
+        if (!valueUpdate.password1) {
+            setErrorPassword((prev) => true);
+        } else {
+            setErrorPassword((prev) => false);
+        }
+
+        //check confirmpassword
+        if (valueUpdate.password1 !== valueUpdate.password2 || !valueUpdate.password2) {
+            setErrorConfirmPassword((prev) => true);
+        } else {
+            setErrorConfirmPassword((prev) => false);
+        }
+
+        if (!errorEmail && !errorUsername && !errorPassword && !errorConfirmPassword) {
+            const data = {
+                password1: valueUpdate.password1,
+                password2: valueUpdate.password2,
+                username: valueUpdate.username,
+                email: valueUpdate.email,
+            };
+
+            const dataSignIn = {
+                password: valueUpdate.password1,
+                username: valueUpdate.username,
+            };
+
+            await SignUpApi(data)
                 .then((respone) => {
-                    console.log(respone);
+                    console.log('đã đăng ký thành công');
+                    console.log('respone:', respone);
+                    setErrorEmail((prev) => false);
+                    setErrorUsername((prev) => false);
+                    setErrorPassword((prev) => false);
+                    setErrorConfirmPassword((prev) => false);
+                    navigate('/');
                 })
                 .catch((error) => {
-                    console.log(error);
+                    if (error) {
+                        //check email
+                        if (!codeCheckEmail.test(valueUpdate.email) || !valueUpdate.email) {
+                            setErrorEmail((prev) => true);
+                        } else {
+                            setErrorEmail((prev) => false);
+                        }
+
+                        //check username
+                        if (!valueUpdate.username) {
+                            setErrorUsername((prev) => true);
+                        } else {
+                            setErrorUsername((prev) => false);
+                        }
+
+                        //check password
+                        if (!valueUpdate.password1) {
+                            setErrorPassword((prev) => true);
+                        } else {
+                            setErrorPassword((prev) => false);
+                        }
+
+                        //check confirmpassword
+                        if (valueUpdate.password1 !== valueUpdate.password2 || !valueUpdate.password2) {
+                            setErrorConfirmPassword((prev) => true);
+                        } else {
+                            setErrorConfirmPassword((prev) => false);
+                        }
+
+                        if (!errorEmail && !errorUsername && !errorPassword && !errorConfirmPassword) {
+                            alert('Sorry! The server is overloaded at the moment');
+                        }
+                    }
                 });
+        } else {
+            //check email
+            if (!codeCheckEmail.test(valueUpdate.email) || !valueUpdate.email) {
+                setErrorEmail((prev) => true);
+            } else {
+                setErrorEmail((prev) => false);
+            }
+
+            //check username
+            if (!valueUpdate.username) {
+                setErrorUsername((prev) => true);
+            } else {
+                setErrorUsername((prev) => false);
+            }
+
+            //check password
+            if (!valueUpdate.password1) {
+                setErrorPassword((prev) => true);
+            } else {
+                setErrorPassword((prev) => false);
+            }
+
+            //check confirmpassword
+            if (valueUpdate.password1 !== valueUpdate.password2 || !valueUpdate.password2) {
+                setErrorConfirmPassword((prev) => true);
+            } else {
+                setErrorConfirmPassword((prev) => false);
+            }
         }
     }
 
@@ -40,6 +144,7 @@ function SignUp() {
         if (value) {
             setValueUpdate({ ...valueUpdate, ...value });
         }
+        console.log(valueUpdate);
     }
 
     return (
@@ -51,50 +156,58 @@ function SignUp() {
             <div className={cx('container')}>
                 <h1 className={cx('container_title')}>Sign up to start with financebankchat</h1>
                 <Form onValuesChange={handleSetValueUpdate} className={cx('container_form')}>
-                    <Form.Item name="email" className={cx('container_form_item')}>
-                        <label htmlFor="email" className={cx('container_form_item--label')}>
+                    <div className={cx('container_form-item')}>
+                        <label htmlFor="email" className={cx('container_form-item--label')}>
                             Email
                         </label>
-                        <Input
-                            id="email"
-                            className={cx('container_form_item--input')}
-                            type="text"
-                            autoComplete="off"
-                            placeholder="Enter Email"
-                        />
-
-                        {error ? <div className={cx('container_form_item--error')}> Your email is incorrect!</div> : ''}
-                    </Form.Item>
-
-                    <Form.Item name="username" className={cx('container_form_item')}>
-                        <label htmlFor="username" className={cx('container_form_item--label')}>
-                            Username
-                        </label>
-                        <Input
-                            id="username"
-                            className={cx('container_form_item--input')}
-                            type="text"
-                            autoComplete="off"
-                            placeholder="Enter Username"
-                        />
-                        {error ? (
-                            <div className={cx('container_form_item--error')}> Your username is incorrect!</div>
+                        <Form.Item name="email" className={cx('container_form-item_item')}>
+                            <Input
+                                id="email"
+                                className={cx('container_form-item_item--input')}
+                                type="text"
+                                autoComplete="off"
+                                placeholder="Enter Email"
+                            />
+                        </Form.Item>
+                        {errorEmail ? (
+                            <div className={cx('container_form-item--error')}> Your email is incorrect!</div>
                         ) : (
                             ''
                         )}
-                    </Form.Item>
+                    </div>
 
-                    <Form.Item name="password" className={cx('container_form_item')}>
-                        <label htmlFor="password" className={cx('container_form_item--label')}>
+                    <div className={cx('container_form-item')}>
+                        <label htmlFor="username" className={cx('container_form-item--label')}>
+                            Username
+                        </label>
+                        <Form.Item name="username" className={cx('container_form-item_item')}>
+                            <Input
+                                id="username"
+                                className={cx('container_form-item_item--input')}
+                                type="text"
+                                autoComplete="off"
+                                placeholder="Enter Username"
+                            />
+                        </Form.Item>
+                        {errorUsername ? (
+                            <div className={cx('container_form-item--error')}> Your username is incorrect!</div>
+                        ) : (
+                            ''
+                        )}
+                    </div>
+                    <div className={cx('container_form-item')}>
+                        <label htmlFor="password" className={cx('container_form-item--label')}>
                             Password
                         </label>
-                        <Input
-                            id="password"
-                            className={cx('container_form_item--input')}
-                            type={showPassword ? 'text' : 'password'}
-                            autoComplete="off"
-                            placeholder="Enter your password"
-                        />
+                        <Form.Item name="password1" className={cx('container_form-item_item')}>
+                            <Input
+                                id="password"
+                                className={cx('container_form-item_item--input')}
+                                type={showPassword ? 'text' : 'password'}
+                                autoComplete="off"
+                                placeholder="Enter your password"
+                            />
+                        </Form.Item>
                         <div className={cx('icon')} onClick={() => setShowPassword(!showPassword)}>
                             {showPassword ? (
                                 <FontAwesomeIcon icon={faEye} className={cx('icon_showpassword')} />
@@ -102,24 +215,25 @@ function SignUp() {
                                 <FontAwesomeIcon icon={faEyeSlash} className={cx('icon_hidepassword')} />
                             )}
                         </div>
-                        {error ? (
-                            <div className={cx('container_form_item--error')}> Your password is incorrect!</div>
+                        {errorPassword ? (
+                            <div className={cx('container_form-item--error')}> Your password is incorrect!</div>
                         ) : (
                             ''
                         )}
-                    </Form.Item>
-
-                    <Form.Item name="confirmpassword" className={cx('container_form_item')}>
-                        <label htmlFor="confirmpassword" className={cx('container_form_item--label')}>
+                    </div>
+                    <div className={cx('container_form-item')}>
+                        <label htmlFor="confirmpassword" className={cx('container_form-item--label')}>
                             Confirm Password
                         </label>
-                        <Input
-                            id="confirmpassword"
-                            className={cx('container_form_item--input')}
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            autoComplete="off"
-                            placeholder="Enter your password again"
-                        />
+                        <Form.Item name="password2" className={cx('container_form-item_item')}>
+                            <Input
+                                id="confirmpassword"
+                                className={cx('container_form-item_item--input')}
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                autoComplete="off"
+                                placeholder="Enter your password again"
+                            />
+                        </Form.Item>
                         <div className={cx('icon')} onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                             {showConfirmPassword ? (
                                 <FontAwesomeIcon icon={faEye} className={cx('icon_showpassword')} />
@@ -127,13 +241,12 @@ function SignUp() {
                                 <FontAwesomeIcon icon={faEyeSlash} className={cx('icon_hidepassword')} />
                             )}
                         </div>
-                        {error ? (
-                            <div className={cx('container_form_item--error')}> Your confirm password is incorrect!</div>
+                        {errorConfirmPassword ? (
+                            <div className={cx('container_form-item--error')}> Your confirm password is incorrect!</div>
                         ) : (
                             ''
                         )}
-                    </Form.Item>
-
+                    </div>
                     <button onClick={handleSubmit} className={cx('signup-btn')}>
                         Sign Up
                     </button>
@@ -141,8 +254,7 @@ function SignUp() {
                     <span className={cx('signin-link')}>
                         Already have an Account?
                         <Link to="/" className={cx('link-to-signin')}>
-                            {' '}
-                            Sign in{' '}
+                            Sign in
                         </Link>
                         now!
                     </span>

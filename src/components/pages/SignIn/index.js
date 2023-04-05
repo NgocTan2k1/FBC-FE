@@ -1,23 +1,23 @@
 import { Button, Form, Input, Radio } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Link, Route } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import { Link, useNavigate, Route } from 'react-router-dom';
 
 import logo from '~/img/logo.png';
 import styles from './SignIn.module.scss';
 import classNames from 'classnames/bind';
-import axiosClient from '~/setup/axios';
+import { SignInApi } from '~/services/auth';
 
 const cx = classNames.bind(styles);
 
 function SignIn() {
     const [form] = Form.useForm();
     const [valueUpdate, setValueUpdate] = useState({});
+
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(false);
-    const history = createBrowserHistory();
+    const navigate = useNavigate();
 
     async function handleSubmit() {
         if (valueUpdate.password && valueUpdate.username) {
@@ -25,18 +25,17 @@ function SignIn() {
                 password: valueUpdate.password,
                 username: valueUpdate.username,
             };
-            await axiosClient
-                .post('/token/', data)
+            await SignInApi(data)
                 .then((respone) => {
-                    console.log('respone:', respone);
-                    console.log('access:', respone.data.access);
-                    console.log('refresh:', respone.data.refresh);
-                    localStorage.setItem('userInfo', {
-                        access: respone.data.access,
-                        refresh: respone.data.refresh,
-                    });
+                    localStorage.setItem(
+                        'userInfo',
+                        JSON.stringify({
+                            access: respone.data.access,
+                            refresh: respone.data.refresh,
+                        }),
+                    );
                     setError(false);
-                    history.push('/chat');
+                    navigate('/chat');
                 })
                 .catch((error) => {
                     if (error) {

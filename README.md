@@ -1,3 +1,13 @@
+# code in folder src
+
+# To start project
+
+npm start
+
+# To build project to deploy
+
+npm run build
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

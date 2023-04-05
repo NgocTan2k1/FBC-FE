@@ -10,4 +10,7 @@ export const publicRouters = [
     { path: '/*', component: Fobidance404 },
 ];
 
-export const privateRouters = [{ path: '/chat', component: Chat }];
+export const privateRouters = [
+    { path: '/chat', component: Chat },
+    { path: '/*', component: Fobidance404 },
+];
