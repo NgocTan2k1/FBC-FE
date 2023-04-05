@@ -1,5 +1,4 @@
 import { Button, Form, Input, Radio } from 'antd';
-import axios from 'axios';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +8,7 @@ import { createBrowserHistory } from 'history';
 import logo from '~/img/logo.png';
 import styles from './SignIn.module.scss';
 import classNames from 'classnames/bind';
+import axiosClient from '~/setup/axios';
 
 const cx = classNames.bind(styles);
 
@@ -19,20 +19,22 @@ function SignIn() {
     const [error, setError] = useState(false);
     const history = createBrowserHistory();
 
-    function handleSubmit() {
+    async function handleSubmit() {
         if (valueUpdate.password && valueUpdate.username) {
-            axios
-                .post('http://127.0.0.1:8000/token/', {
-                    password: valueUpdate.password,
-                    username: valueUpdate.username,
-                })
+            const data = {
+                password: valueUpdate.password,
+                username: valueUpdate.username,
+            };
+            await axiosClient
+                .post('/token/', data)
                 .then((respone) => {
                     console.log('respone:', respone);
                     console.log('access:', respone.data.access);
                     console.log('refresh:', respone.data.refresh);
-
-                    // const json = {respone}
-                    // localStorage.setItem("userInfo", {accessTo})
+                    localStorage.setItem('userInfo', {
+                        access: respone.data.access,
+                        refresh: respone.data.refresh,
+                    });
                     setError(false);
                     history.push('/chat');
                 })
