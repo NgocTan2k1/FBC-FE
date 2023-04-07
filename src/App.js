@@ -10,7 +10,7 @@ function App() {
                     const Page = route.component;
                     return <Route key={index} path={route.path} element={<Page />} />;
                 })}
-                {privateRouters.map((route, index) => {
+                {/* {privateRouters.map((route, index) => {
                     if (localStorage.getItem('userInfo')) {
                         const Page = route.component;
                         return <Route key={index} path={route.path} element={<Page />} />;
@@ -20,7 +20,7 @@ function App() {
 
                     // const Page = route.component;
                     // return <Route key={index} path={route.path} element={<Page />} />;
-                })}
+                })} */}
             </Routes>
         </Router>
     );

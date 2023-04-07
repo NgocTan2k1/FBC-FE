@@ -7,7 +7,8 @@ import Chat from '~/components/pages/Chat';
 export const publicRouters = [
     { path: '/', component: SignIn },
     { path: '/signup', component: SignUp },
-    { path: '/*', component: Fobidance404 },
+    { path: '/ ', component: Fobidance404 },
+    { path: '/chat', component: Chat },
 ];
 
 export const privateRouters = [

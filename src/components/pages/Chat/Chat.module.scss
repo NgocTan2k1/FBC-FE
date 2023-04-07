@@ -1,2 +1,120 @@
 .wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 737px;
+    max-height: 100%;
+    background: radial-gradient(
+        101.61% 101.61% at 50% -1.61%,
+        #e0f7fa 7.04%,
+        rgba(178, 235, 242, 0.893007) 18.9%,
+        rgba(128, 222, 234, 0.784618) 31.21%,
+        rgba(77, 208, 225, 0.651329) 40.29%,
+        rgba(38, 198, 218, 0.554658) 51.86%,
+        rgba(0, 188, 212, 0.44334) 62.26%,
+        rgba(0, 172, 193, 0.334952) 73.68%,
+        rgba(0, 151, 167, 0.235351) 80.71%,
+        rgba(0, 131, 143, 0.0991331) 90.09%,
+        rgba(0, 96, 100, 0) 96.97%
+    );
+}
+
+.container_content {
+}
+
+.container_input {
+    position: absolute;
+    display: inline-flex;
+    justify-content: center;
+    bottom: 6%;
+    width: 100%;
+}
+
+.form {
+    position: relative;
+    display: inline-block;
+    width: calc((1200 / 1440) * 100%);
+    margin: 0;
+}
+
+.form-item {
+    // position: relative;
+    margin: 0;
+    height: 42px;
+    .form-item--data {
+        height: 42px;
+    }
+}
+
+.form-item--data {
+    // position: absolute;
+    margin: 0;
+    width: 100%;
+    background: #ffffff;
+    margin: 4px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    min-height: 42px !important;
+    max-height: 420px !important;
+    line-height: 31px !important;
+    overflow: auto;
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #ccc;
+    }
+}
+
+.btn-send-question {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0.25%;
+    padding-top: 11px;
+
+    background-color: transparent;
+    border: none;
+    font-size: 1rem;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.btn-logout {
+    position: relative;
+    display: inline-flex;
+    width: 100px;
+    height: 42px;
+    top: 4.5px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    margin-left: 1%;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+        cursor: pointer;
+    }
+}
+
+.title-logout {
+    margin: auto 26% auto auto;
+    font-weight: 600;
+}
+
+.icon-logout {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 6%;
+    font-size: 1rem;
+    font-weight: 600;
 }
