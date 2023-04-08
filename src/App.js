@@ -17,6 +17,7 @@ function App() {
                         </Route>
                     );
                 })}
+
                 {privateRouters.map((route, index) => {
                     const Page = route.component;
                     return (
