@@ -252,10 +252,10 @@ function SignUp() {
                     </button>
 
                     <span className={cx('signin-link')}>
-                        Already have an Account?
+                        Already have an Account?{' '}
                         <Link to="/" className={cx('link-to-signin')}>
                             Sign in
-                        </Link>
+                        </Link>{' '}
                         now!
                     </span>
                 </Form>
