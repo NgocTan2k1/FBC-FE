@@ -8,6 +8,7 @@ import logo from '~/img/logo.png';
 import styles from './SignIn.module.scss';
 import classNames from 'classnames/bind';
 import { SignInApi } from '~/services/auth';
+import { GetPublicKey } from '~/services/chat';
 
 const cx = classNames.bind(styles);
 

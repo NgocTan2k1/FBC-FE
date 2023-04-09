@@ -4,7 +4,7 @@ import styles from './FormChat.module.scss';
 
 const cx = classNames.bind(styles);
 function FormChat() {
-    return <div>Hello</div>;
+    return <div>Form Chat</div>;
 }
 
 export default FormChat;
