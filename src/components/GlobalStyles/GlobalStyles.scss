@@ -11,8 +11,11 @@ html {
     font-size: 62.5%;
 }
 
-body {
+body,
+button {
     font-family: 'Times New Roman', Times, serif;
-    font-size: 1.6rem;
     text-rendering: optimizeSpeed;
+    font-size: 1.8rem;
+    margin: 0;
+    border: none;
 }

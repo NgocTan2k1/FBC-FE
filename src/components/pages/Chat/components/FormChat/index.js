@@ -4,7 +4,7 @@ import styles from './FormChat.module.scss';
 
 const cx = classNames.bind(styles);
 function FormChat() {
-    return <div>Form Chat</div>;
+    return <div className={cx('wrapper')}>Form Chat</div>;
 }
 
 export default FormChat;

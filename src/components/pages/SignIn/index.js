@@ -1,8 +1,8 @@
-import { Button, Form, Input, Radio } from 'antd';
-import { useEffect, useState } from 'react';
+import { Form, Input } from 'antd';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate, Route } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '~/img/logo.png';
 import styles from './SignIn.module.scss';
@@ -36,6 +36,21 @@ function SignIn() {
                         }),
                     );
                     setError(false);
+
+                    const fetchData = async () => {
+                        const key = await GetPublicKey();
+                        console.log(key);
+                        localStorage.setItem(
+                            'key',
+                            JSON.stringify({
+                                public: key.data.public_key,
+                                expire: key.data.expire,
+                                private: key.data.private_key,
+                            }),
+                        );
+                    };
+
+                    fetchData();
                     navigate('/chat');
                 })
                 .catch((error) => {
@@ -60,6 +75,7 @@ function SignIn() {
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
                 <h1 className={cx('title')}>Sign in</h1>
+                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                 <img src={logo} className={cx('logo')}></img>
             </div>
             <div className={cx('container')}>

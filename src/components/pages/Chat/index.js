@@ -1,155 +1,164 @@
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input } from 'antd';
+import { Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOut, faPaperPlane, faArrowRotateRight } from '@fortawesome/free-solid-svg-icons';
+import {
+    faSignOut,
+    faPaperPlane,
+    faArrowRotateRight,
+    faTriangleExclamation,
+    faCheck,
+    faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
 
-import NewChat from '~/components/pages/component/NewChat';
+import NewChat from '~/components/pages/Chat/components/NewChat';
 import styles from './Chat.module.scss';
-import { GetPublicKey, SendQuestion } from '~/services/chat';
+import { SendQuestion } from '~/services/chat';
+import FormChat from './components/FormChat';
 
 const NodeRSA = require('node-rsa');
 const cx = classNames.bind(styles);
 
 function Chat() {
-    useEffect(() => {
-        const fetchData = async () => {
-            const key = await GetPublicKey();
-            console.log(key);
-            localStorage.setItem(
-                'key',
-                JSON.stringify({
-                    public: key.data.public_key,
-                    expire: key.data.expire,
-                    private: key.data.private_key,
-                }),
-            );
-        };
-
-        fetchData();
-    }, []);
-
-    // const priv =
-    //     '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDSJ+YdqgN+2aH3\nluYRarUyEOrBdCw+EhcKz7qa1MHCMSZR8Ybk1cLA7e/Bb2U93s0gGXK6HKBjG1wv\nsVsgXnjw8Cb4772iLjPpUsCdh3p/MIrOjbvYtOtZ0DROweb1mxzyoAfnB+DVHkmK\nCjMulRbd8Mn1hDJZktqm8BYw79ZY8JJ4xX4/euwlC0K40PTU00HphIiWSR+muEtb\nBgpoMoqUE4tiaRx1nBcJL4jCRGbY3r9CdNczhl2nnVo4J+ywUhgsTGh74OQhfoWf\nH9iF8aRC2qvDns5thPN5ZZilNvKpHMaywm8KvCjqspuV3ES3hdFOnO3a2C3sIE85\nxxlw/QV9AgMBAAECggEAXYnowLdVivZvQvZlPMdUEw64jpaYwp/mpadEFXoxK7AY\nsExikCQc5SaCmoRseZdbkbgB+piXQsWAyLGWL9gc2JDrp819iFwsOuPcW8FbYpVG\nkx0+yPvt7THgtlVT6Wm6/rsACXLWPcWXUdusYEV3wh1UpvTKPFhC/h7Kocl+jGLo\nlhsIvN5ZEEUQ24nG/M9TAmEDQ5vZ6bYMCqr5u0kFMww45+jI1cwBDsJ0dE8c9Pui\nR8fzzk4U8q4RI4ZbxG+JVNfVcG2xVPhEhlWcNeBgGWgT+b8LgcnrfKLI3FJQWXlB\nXU3teHJcrbFCD6fipJ2tSp/wEw9jtShGzl6A4aKGwQKBgQD6lj1YUUovH541uRwb\nQ2SQs1es0siFCmG8/Rphn9mXoEXtqPBBuT+el8DgTWMpamwiLhU6wVo3DZTZufJT\nPI7rzZypxDH7Bcupmk6h++fravJQ5JdxLhYasyGiEsevgjfytGPQcVeobqBFwQvb\nacXTVEdSlffXgXfzRP2cp0k0hQKBgQDWshLEx4feVHr1uB9nuAbxOjZJgzvSHWZ+\n6iMEBF6huEVbsRE4IFlkLloKfzRSQ+DUsLomPyYjDKiCldbSxV56We/p5NFZqkeD\nnsje9TUBlPqvWhQvGHRUVnABmkmo0QyTn9/VJfzhg1+5tptrG3E8X6KnpvaRzwoO\nNiPn5AS6mQKBgCrcy/1xWikZVWyHD0Gyk18U7ihHnbjz/6fd+0c7mnKPHab7QK1d\nTH6KIpm7YvzQkVJ/Y247aH0GO7HKVqLaNvAqqWN4hbwUT7PhCxY2CoOANZaUozre\n0TUb8uLQJ4vj0EIZjQE4ge/zjEKiNK8BNq9hORntQQmBwczAvkivbJwpAoGAbrDe\n5l+tWF6cCqYEYxhJVAPcS2iC5iDMYHDc3sxV8fEsqUqQgyyCihkvySuuUR+4AlCf\nmOqEAhwboUAZww+JV3GZNTEJEr6tIloyXGl2C7vAx7mcoG9uQrFSDDF8+rHVVyNd\nZuqwB6ERMJHKbZ13c1YnaWK2y5RALfWR65PvMDkCgYEA2fBjherPiUx3IkTqffLg\nevI84CBVg7no2avUcuKhx6okpShyYZLWwM34AMgcRIkCvtCQh1aOycQqm2DpMrKE\nei1b+IRJUrOGVx+aBBU9wlQ7wk9LLnhU7mlJsOsfy36L08gABeHx1uEClnz5xvDA\nZnV8tctnitWjPVE8uHBpdQs=\n-----END PRIVATE KEY-----';
-
-    // const data = 'Hello, world!';
-    // console.log('pub:', pub);
-    // console.log('priv:', priv);
-    // console.log('data:', data);
-
-    // const publicKey = new NodeRSA();
-    // publicKey.importKey(pub, 'pkcs8-public');
-
-    // const privateKey = new NodeRSA();
-    // privateKey.importKey(priv, 'pkcs8-private');
-    // console.log('publicKey:', publicKey);
-    // console.log('privateKey:', privateKey);
-
-    // const encryptedData = publicKey.encrypt(data, 'base64');
-    // const decryptedData = privateKey.decrypt(encryptedData, 'utf-8');
-
-    // console.log('encryptedData:', encryptedData);
-    // console.log('decryptedData:', decryptedData);
-
-    const navigate = useNavigate();
     const [value, setValue] = useState('');
+    const [checkQuestion, setCheckQuestion] = useState(false);
+
+    const inputRef = useRef();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem('userInfo');
-        navigate('/');
-    };
-
-    const handleSetValue = (e) => {
-        if (e === '\n') {
-            alert('OK');
-        }
-        if (e !== '\n') {
-            setValue(e);
-        }
+        'your-element-class';
+        const element = document.querySelector(`.${cx('wrapper-logout')}`);
+        element.classList.remove(`${cx('hide')}`);
+        element.classList.add(`${cx('show')}`);
     };
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
+        if (event.shiftKey && event.keyCode === 13) {
+        } else if (event.keyCode === 13) {
             handleSendQuestion();
-            event.target.value = '';
             event.preventDefault();
         }
     };
 
+    const handleChange = (event) => {
+        setValue(event.target.value);
+        console.log(value);
+    };
+
     async function handleSendQuestion() {
-        // const priv = JSON.parse(localStorage.getItem('key')).private;
-        // const privateKey = new NodeRSA();
-        if (value.data) {
+        if (value.trim()) {
             const publicKey = new NodeRSA();
             const pub = JSON.parse(localStorage.getItem('key')).public;
             publicKey.importKey(pub, 'pkcs8-public');
-            console.log(pub);
-            console.log('value.data:', value.data);
+            const encrypt = publicKey.encrypt(value, 'base64');
 
-            const encrypt = publicKey.encrypt(value.data, 'base64');
-            console.log('encrypt: ', encrypt);
             const dataSend = {
                 message: encrypt,
             };
 
-            await SendQuestion(dataSend)
+            localStorage.setItem('oldQuestion', JSON.stringify(dataSend));
+
+            SendQuestion(dataSend)
                 .then((respone) => {
-                    console.log(respone);
+                    console.log(respone.data.data);
+                    console.log(value);
+                    setValue('');
+                    setCheckQuestion(true);
+                    inputRef.current.focus();
                 })
                 .catch((error) => {
                     if (error) {
                         console.log(error);
                     }
                 });
-            // setValue('');
-            // console.log('data no encrypt...: ', value.data);
-            // console.log('data encrypt   ...: ', publicKey.encrypt(value.data, 'base64'));
-            // console.log('data decrypt   ...: ', privateKey.decrypt(publicKey.encrypt(value.data, 'base64'), 'utf-8'));
         } else {
             alert('No data');
+            inputRef.current.focus();
         }
     }
 
     const handleSendQuestionAgain = () => {
-        if (value.data) {
-            console.log('sending...: ', value.data);
-        } else {
-            alert('No data');
-        }
+        const oldDataSend = JSON.parse(localStorage.getItem('oldQuestion'));
+        SendQuestion(oldDataSend)
+            .then((respone) => {
+                console.log(respone.data.data);
+            })
+            .catch((error) => {
+                if (error) {
+                    console.log(error);
+                }
+            });
+    };
+
+    const handleConfirmLogout = () => {
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('key');
+        navigate('/');
+    };
+    const handleCancelLogout = () => {
+        const element = document.querySelector(`.${cx('wrapper-logout')}`);
+        element.classList.remove(`${cx('show')}`);
+        element.classList.add(`${cx('hide')}`);
     };
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('container_content')}>{<NewChat />}</div>
+        <>
+            <div className={cx('wrapper')}>
+                <div className={cx('container_content')}>{checkQuestion ? <FormChat /> : <NewChat />}</div>
 
-            <div className={cx('container_input')}>
-                <button onClick={handleSendQuestionAgain} className={cx('repeat-answer')}>
-                    <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />
-                    Regenerate response
-                </button>
-                <Form onValuesChange={handleSetValue} className={cx('form')}>
-                    <Form.Item name="data" className={cx('form-item')}>
-                        <Input.TextArea
-                            onChange={(event) => console.log(event.target.value)}
-                            value={value}
-                            onKeyDown={handleKeyDown}
-                            autoSize={{ minRows: 1, maxRows: 10, minHeight: 42, maxHeight: 420 }}
-                            className={cx('form-item--data')}
-                            type="text"
-                            placeholder="Enter the question!"
-                        />
-                    </Form.Item>
-                    <button onClick={handleSendQuestion} className={cx('btn-send-question')}>
-                        <FontAwesomeIcon icon={faPaperPlane} />
+                <div className={cx('container_input')}>
+                    <button onClick={handleSendQuestionAgain} className={cx('repeat-answer')}>
+                        <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />
+                        Regenerate response
                     </button>
-                </Form>
-                <button className={cx('btn-logout')} onClick={handleLogout}>
-                    <p className={cx('title-logout')}>Log Out</p>
-                    <FontAwesomeIcon className={cx('icon-logout')} icon={faSignOut} />
-                </button>
+                    <div className={cx('form')}>
+                        <div className={cx('form-item')}>
+                            <Input.TextArea
+                                autoSize={{ minRows: 1, maxRows: 10, minHeight: 42, maxHeight: 420 }}
+                                className={cx('form-item--data')}
+                                type="text"
+                                placeholder="Enter the question!"
+                                ref={inputRef}
+                                value={value}
+                                onChange={handleChange}
+                                onKeyDown={handleKeyDown}
+                            />
+                        </div>
+                        <button onClick={handleSendQuestion} className={cx('btn-send-question')}>
+                            <FontAwesomeIcon icon={faPaperPlane} />
+                        </button>
+                    </div>
+                    <button className={cx('btn-logout')} onClick={handleLogout}>
+                        <p className={cx('button-logout-title')}>Log Out</p>
+                        <FontAwesomeIcon className={cx('icon-logout')} icon={faSignOut} />
+                    </button>
+                </div>
             </div>
-        </div>
+            <div className={cx('wrapper-logout', 'hide')}>
+                <div className={cx('container-logout')}>
+                    <div className={cx('title-logout')}>
+                        <FontAwesomeIcon className={cx('icon-logout-warning')} icon={faTriangleExclamation} />
+                        <h2>The content of this conversation will be deleted when you exit!</h2>
+                    </div>
+                    <div className={cx('select-logout')}>
+                        <div className={cx('question-logout')}>Do you want to exit?</div>
+                        <div className={cx('option-logout')}>
+                            <button className={cx('select-btn')} onClick={handleConfirmLogout}>
+                                Confirm
+                                <FontAwesomeIcon className={cx('icon-confirm', 'icon-select')} icon={faCheck} />
+                            </button>
+
+                            <button className={cx('select-btn')} onClick={handleCancelLogout}>
+                                Cancel
+                                <FontAwesomeIcon className={cx('icon-cancel', 'icon-select')} icon={faXmark} />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
     );
 }
 
