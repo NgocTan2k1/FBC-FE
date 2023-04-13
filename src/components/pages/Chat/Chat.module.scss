@@ -1,8 +1,9 @@
 .wrapper {
     position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    min-height: 737px;
-    max-height: 100%;
+    height: 100%;
     background: radial-gradient(
         101.61% 101.61% at 50% -1.61%,
         #e0f7fa 7.04%,
@@ -22,21 +23,29 @@
     display: block;
     text-align: center;
     margin: auto;
+    overflow-y: auto;
+    overflow-x: inherit;
+
+    width: 100%;
+    padding-bottom: 50px;
+    height: 574px;
 }
 
 .container_input {
-    position: absolute;
-    display: inline-flex;
+    position: relative;
+    display: flex;
     justify-content: center;
-    bottom: 6%;
+    justify-items: center;
+    bottom: 15%;
     width: 100%;
+    height: 176px;
 }
 
 .repeat-answer {
     position: absolute;
     display: flex;
-    top: -110%;
-    background-color: rgba(217, 217, 217, 0.5);
+    top: -26%;
+    background-color: rgba(217, 217, 217, 0.75);
     padding: 12px 12px;
 
     font-size: 1.8rem;
@@ -57,11 +66,12 @@
     position: relative;
     display: inline-block;
     width: calc((1200 / 1440) * 100%);
-    margin: 0;
 }
 
 .form-item {
-    // position: relative;
+    position: relative;
+    display: flex;
+    justify-content: center;
     margin: 0;
     height: 42px;
     .form-item--data {
@@ -70,19 +80,26 @@
 }
 
 .form-item--data {
-    // position: absolute;
-    margin: 0;
-    width: 100%;
-    background: #ffffff;
-    margin: 4px;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
+    display: block;
+    width: 85%;
+    padding-right: 42px;
     min-height: 42px !important;
-    max-height: 420px !important;
     line-height: 31px !important;
-    overflow: auto;
+
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    overflow-y: auto;
+
     &::-webkit-scrollbar {
+        z-index: 4;
         width: 8px;
+        overflow: hidden;
+    }
+
+    &::-webkit-scrollbar:hover {
+        cursor: pointer;
     }
 
     &::-webkit-scrollbar-track {
@@ -91,15 +108,14 @@
 
     &::-webkit-scrollbar-thumb {
         background: #ccc;
+        overflow: hidden;
     }
 }
 
 .btn-send-question {
     position: absolute;
     z-index: 2;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0.25%;
+    right: 9%;
     padding-top: 11px;
 
     background-color: transparent;
@@ -116,8 +132,7 @@
     display: inline-flex;
     width: 100px;
     height: 42px;
-    top: 4.5px;
-    left: 91.5%;
+    left: 86%;
 
     font-size: 1.6rem;
     background: #ffffff;

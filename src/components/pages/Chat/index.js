@@ -84,6 +84,9 @@ function Chat() {
         SendQuestion(oldDataSend)
             .then((respone) => {
                 console.log(respone.data.data);
+                setValue('');
+                setCheckQuestion(true);
+                inputRef.current.focus();
             })
             .catch((error) => {
                 if (error) {
@@ -95,6 +98,7 @@ function Chat() {
     const handleConfirmLogout = () => {
         localStorage.removeItem('userInfo');
         localStorage.removeItem('key');
+        localStorage.removeItem('oldQuestion');
         navigate('/');
     };
     const handleCancelLogout = () => {
@@ -116,7 +120,7 @@ function Chat() {
                     <div className={cx('form')}>
                         <div className={cx('form-item')}>
                             <Input.TextArea
-                                autoSize={{ minRows: 1, maxRows: 10, minHeight: 42, maxHeight: 420 }}
+                                autoSize={{ minRows: 1, maxRows: 5, minHeight: 42 }}
                                 className={cx('form-item--data')}
                                 type="text"
                                 placeholder="Enter the question!"
@@ -125,10 +129,11 @@ function Chat() {
                                 onChange={handleChange}
                                 onKeyDown={handleKeyDown}
                             />
+
+                            <button onClick={handleSendQuestion} className={cx('btn-send-question')}>
+                                <FontAwesomeIcon icon={faPaperPlane} />
+                            </button>
                         </div>
-                        <button onClick={handleSendQuestion} className={cx('btn-send-question')}>
-                            <FontAwesomeIcon icon={faPaperPlane} />
-                        </button>
                     </div>
                     <button className={cx('btn-logout')} onClick={handleLogout}>
                         <p className={cx('button-logout-title')}>Log Out</p>
@@ -136,6 +141,7 @@ function Chat() {
                     </button>
                 </div>
             </div>
+
             <div className={cx('wrapper-logout', 'hide')}>
                 <div className={cx('container-logout')}>
                     <div className={cx('title-logout')}>
