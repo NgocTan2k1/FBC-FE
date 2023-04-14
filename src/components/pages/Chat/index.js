@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,6 +9,7 @@ import {
     faTriangleExclamation,
     faCheck,
     faXmark,
+    faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 
@@ -16,16 +17,26 @@ import NewChat from '~/components/pages/Chat/components/NewChat';
 import styles from './Chat.module.scss';
 import { SendQuestion } from '~/services/chat';
 import FormChat from './components/FormChat';
+import Answer from './components/Answer';
+import Question from './components/Question';
+import { GetPublicKey } from '~/services/chat';
 
 const NodeRSA = require('node-rsa');
 const cx = classNames.bind(styles);
+let dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('data')) || [];
 
 function Chat() {
     const [value, setValue] = useState('');
-    const [checkQuestion, setCheckQuestion] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const inputRef = useRef();
     const navigate = useNavigate();
+    useEffect(() => {
+        console.log('===');
+        dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('data')) || [];
+
+        console.log(dataQuestionsAndAnswers);
+    }, []);
 
     const handleLogout = () => {
         'your-element-class';
@@ -44,10 +55,31 @@ function Chat() {
 
     const handleChange = (event) => {
         setValue(event.target.value);
-        console.log(value);
     };
 
     async function handleSendQuestion() {
+        setLoading(true);
+
+        const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key')).expire));
+        const currentDate = new Date();
+        if (expireDate.getTime() <= currentDate.getTime()) {
+            const fetchData = async () => {
+                const key = await GetPublicKey();
+                console.log('=== đang lấy key ===');
+                localStorage.setItem(
+                    'key',
+                    JSON.stringify({
+                        public: key.data.public_key,
+                        expire: key.data.expire,
+                        private: key.data.private_key,
+                    }),
+                );
+            };
+
+            await fetchData();
+        } else {
+            console.log('=== còn khoảng: ', (expireDate.getTime() - currentDate.getTime()) / 1000, 's mới gửi lại ===');
+        }
         if (value.trim()) {
             const publicKey = new NodeRSA();
             const pub = JSON.parse(localStorage.getItem('key')).public;
@@ -60,12 +92,16 @@ function Chat() {
 
             localStorage.setItem('oldQuestion', JSON.stringify(dataSend));
 
-            SendQuestion(dataSend)
+            await SendQuestion(dataSend)
                 .then((respone) => {
-                    console.log(respone.data.data);
-                    console.log(value);
+                    dataQuestionsAndAnswers.push({
+                        question: value,
+                        answer: respone.data.data,
+                    });
+                    // localStorage.removeItem('data');
+                    localStorage.setItem('data', JSON.stringify(dataQuestionsAndAnswers));
+                    console.log('send question: ', dataQuestionsAndAnswers);
                     setValue('');
-                    setCheckQuestion(true);
                     inputRef.current.focus();
                 })
                 .catch((error) => {
@@ -77,15 +113,43 @@ function Chat() {
             alert('No data');
             inputRef.current.focus();
         }
+        setLoading(false);
     }
 
-    const handleSendQuestionAgain = () => {
+    const handleSendQuestionAgain = async () => {
+        setLoading(true);
         const oldDataSend = JSON.parse(localStorage.getItem('oldQuestion'));
+
+        const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key')).expire));
+        const currentDate = new Date();
+
+        if (expireDate.getTime() <= currentDate.getTime()) {
+            const fetchData = async () => {
+                const key = await GetPublicKey();
+                console.log('=== đang lấy key ===');
+                localStorage.setItem(
+                    'key',
+                    JSON.stringify({
+                        public: key.data.public_key,
+                        expire: key.data.expire,
+                        private: key.data.private_key,
+                    }),
+                );
+            };
+
+            await fetchData();
+        } else {
+            console.log('=== còn khoảng: ', (expireDate.getTime() - currentDate.getTime()) / 1000, 's mới gửi lại ===');
+        }
+
         SendQuestion(oldDataSend)
             .then((respone) => {
-                console.log(respone.data.data);
+                dataQuestionsAndAnswers[dataQuestionsAndAnswers.length - 1].answer = respone.data.data;
+                // localStorage.removeItem('data');
+                localStorage.setItem('data', JSON.stringify(dataQuestionsAndAnswers));
+                console.log(dataQuestionsAndAnswers);
+
                 setValue('');
-                setCheckQuestion(true);
                 inputRef.current.focus();
             })
             .catch((error) => {
@@ -93,12 +157,16 @@ function Chat() {
                     console.log(error);
                 }
             });
+
+        setLoading(false);
     };
 
     const handleConfirmLogout = () => {
+        // localStorage.setItem('data', JSON.stringify([]));
         localStorage.removeItem('userInfo');
         localStorage.removeItem('key');
         localStorage.removeItem('oldQuestion');
+        localStorage.removeItem('data');
         navigate('/');
     };
     const handleCancelLogout = () => {
@@ -107,20 +175,36 @@ function Chat() {
         element.classList.add(`${cx('hide')}`);
     };
 
+    console.log('re-render');
     return (
         <>
             <div className={cx('wrapper')}>
-                <div className={cx('container_content')}>{checkQuestion ? <FormChat /> : <NewChat />}</div>
+                <div className={cx('container_content')}>
+                    {JSON.parse(localStorage.getItem('data')) ? (
+                        dataQuestionsAndAnswers.map((data, index) => {
+                            return (
+                                <FormChat key={index}>
+                                    <Question data={data.question} />
+                                    <Answer data={data.answer} />
+                                </FormChat>
+                            );
+                        })
+                    ) : (
+                        <NewChat />
+                    )}
+                </div>
 
                 <div className={cx('container_input')}>
                     <button onClick={handleSendQuestionAgain} className={cx('repeat-answer')}>
-                        <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />
-                        Regenerate response
+                        {!loading && <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />}
+                        {loading && <FontAwesomeIcon className={cx('icon-loading-answer')} icon={faSpinner} />}
+                        {!loading && 'Regenerate response'}
+                        {loading && 'Stop'}
                     </button>
                     <div className={cx('form')}>
                         <div className={cx('form-item')}>
                             <Input.TextArea
-                                autoSize={{ minRows: 1, maxRows: 5, minHeight: 42 }}
+                                autoSize={{ minRows: 1, maxRows: 3, minHeight: 42 }}
                                 className={cx('form-item--data')}
                                 type="text"
                                 placeholder="Enter the question!"
