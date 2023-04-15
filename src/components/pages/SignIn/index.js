@@ -8,7 +8,7 @@ import logo from '~/img/logo.png';
 import styles from './SignIn.module.scss';
 import classNames from 'classnames/bind';
 import { SignInApi } from '~/services/auth';
-import { GetPublicKey } from '~/services/chat';
+import { GetProviders, GetPublicKey, GetStocks } from '~/services/chat';
 
 const cx = classNames.bind(styles);
 
@@ -37,9 +37,8 @@ function SignIn() {
                     );
                     setError(false);
 
-                    const fetchData = async () => {
+                    const getData = async () => {
                         const key = await GetPublicKey();
-                        console.log(key);
                         localStorage.setItem(
                             'key',
                             JSON.stringify({
@@ -48,9 +47,15 @@ function SignIn() {
                                 private: key.data.private_key,
                             }),
                         );
+
+                        const providers = await GetProviders();
+                        localStorage.setItem('providers', JSON.stringify(providers.data.results));
+
+                        const stocks = await GetStocks();
+                        localStorage.setItem('stocks', JSON.stringify(stocks.data.results));
                     };
 
-                    fetchData();
+                    getData();
                     navigate('/chat');
                 })
                 .catch((error) => {

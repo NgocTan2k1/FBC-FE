@@ -20,10 +20,13 @@ import FormChat from './components/FormChat';
 import Answer from './components/Answer';
 import Question from './components/Question';
 import { GetPublicKey } from '~/services/chat';
+import Template from './components/Template';
 
 const NodeRSA = require('node-rsa');
 const cx = classNames.bind(styles);
-let dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('data')) || [];
+let dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
+var providers = JSON.parse(localStorage.getItem('providers'));
+var stocks = JSON.parse(localStorage.getItem('stocks'));
 
 function Chat() {
     const [value, setValue] = useState('');
@@ -31,18 +34,15 @@ function Chat() {
 
     const inputRef = useRef();
     const navigate = useNavigate();
+
     useEffect(() => {
         console.log('===');
-        dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('data')) || [];
-
+        // dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
         console.log(dataQuestionsAndAnswers);
     }, []);
 
-    const handleLogout = () => {
-        'your-element-class';
-        const element = document.querySelector(`.${cx('wrapper-logout')}`);
-        element.classList.remove(`${cx('hide')}`);
-        element.classList.add(`${cx('show')}`);
+    const handleChange = (event) => {
+        setValue(event.target.value);
     };
 
     const handleKeyDown = (event) => {
@@ -51,10 +51,6 @@ function Chat() {
             handleSendQuestion();
             event.preventDefault();
         }
-    };
-
-    const handleChange = (event) => {
-        setValue(event.target.value);
     };
 
     async function handleSendQuestion() {
@@ -86,8 +82,15 @@ function Chat() {
             publicKey.importKey(pub, 'pkcs8-public');
             const encrypt = publicKey.encrypt(value, 'base64');
 
+            const providers = localStorage.getItem('dataSendProviders');
+            console.log('providers: ', providers);
+            const stocks = localStorage.getItem('dataSendStocks');
+            console.log('stocks: ', stocks);
             const dataSend = {
                 message: encrypt,
+                type: null,
+                providers: providers,
+                stock_id: stocks,
             };
 
             localStorage.setItem('oldQuestion', JSON.stringify(dataSend));
@@ -99,7 +102,7 @@ function Chat() {
                         answer: respone.data.data,
                     });
                     // localStorage.removeItem('data');
-                    localStorage.setItem('data', JSON.stringify(dataQuestionsAndAnswers));
+                    localStorage.setItem('datachat', JSON.stringify(dataQuestionsAndAnswers));
                     console.log('send question: ', dataQuestionsAndAnswers);
                     setValue('');
                     inputRef.current.focus();
@@ -145,8 +148,8 @@ function Chat() {
         SendQuestion(oldDataSend)
             .then((respone) => {
                 dataQuestionsAndAnswers[dataQuestionsAndAnswers.length - 1].answer = respone.data.data;
-                // localStorage.removeItem('data');
-                localStorage.setItem('data', JSON.stringify(dataQuestionsAndAnswers));
+                // localStorage.removeItem('datachat');
+                localStorage.setItem('datachat', JSON.stringify(dataQuestionsAndAnswers));
                 console.log(dataQuestionsAndAnswers);
 
                 setValue('');
@@ -161,12 +164,24 @@ function Chat() {
         setLoading(false);
     };
 
+    const handleLogout = () => {
+        'your-element-class';
+        const element = document.querySelector(`.${cx('wrapper-logout')}`);
+        element.classList.remove(`${cx('hide')}`);
+        element.classList.add(`${cx('show')}`);
+    };
+
     const handleConfirmLogout = () => {
-        // localStorage.setItem('data', JSON.stringify([]));
+        // localStorage.setItem('datachat', JSON.stringify([]));
         localStorage.removeItem('userInfo');
         localStorage.removeItem('key');
         localStorage.removeItem('oldQuestion');
-        localStorage.removeItem('data');
+        localStorage.removeItem('providers');
+        localStorage.removeItem('stocks');
+        localStorage.removeItem('dataSendProviders');
+        localStorage.removeItem('dataSendStocks');
+        dataQuestionsAndAnswers = [];
+        localStorage.removeItem('datachat');
         navigate('/');
     };
     const handleCancelLogout = () => {
@@ -175,12 +190,13 @@ function Chat() {
         element.classList.add(`${cx('hide')}`);
     };
 
+    // console.log(dataQuestionsAndAnswers);
     console.log('re-render');
     return (
         <>
             <div className={cx('wrapper')}>
                 <div className={cx('container_content')}>
-                    {JSON.parse(localStorage.getItem('data')) ? (
+                    {JSON.parse(localStorage.getItem('datachat')) ? (
                         dataQuestionsAndAnswers.map((data, index) => {
                             return (
                                 <FormChat key={index}>
@@ -192,6 +208,7 @@ function Chat() {
                     ) : (
                         <NewChat />
                     )}
+                    <Template providers={providers} stocks={stocks} />
                 </div>
 
                 <div className={cx('container_input')}>

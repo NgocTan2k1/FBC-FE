@@ -8,4 +8,12 @@ const GetPublicKey = () => {
     return axiosAuth.post('/api/v1/cryption');
 };
 
-export { SendQuestion, GetPublicKey };
+const GetProviders = () => {
+    return axiosAuth.get('/api/v1/configs/provider/');
+};
+
+const GetStocks = () => {
+    return axiosAuth.get('/api/v1/configs/stock/');
+};
+
+export { SendQuestion, GetPublicKey, GetProviders, GetStocks };
