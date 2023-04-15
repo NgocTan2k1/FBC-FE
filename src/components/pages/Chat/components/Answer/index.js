@@ -5,8 +5,9 @@ import styles from './Answer.module.scss';
 import logo from '~/img/logo.png';
 
 const cx = classNames.bind(styles);
-
+console.log('Answer - re-render - out');
 function Answer({ data }) {
+    console.log('Answer - re-render - in');
     return (
         <>
             {data && (

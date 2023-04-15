@@ -25,10 +25,13 @@ import Template from './components/Template';
 const NodeRSA = require('node-rsa');
 const cx = classNames.bind(styles);
 let dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
-var providers = JSON.parse(localStorage.getItem('providers'));
-var stocks = JSON.parse(localStorage.getItem('stocks'));
-
+console.log('Chat - re-render - out');
 function Chat() {
+    let providers = JSON.parse(localStorage.getItem('providers')) || [];
+    // console.log('providers: ', providers);
+    let stocks = JSON.parse(localStorage.getItem('stocks')) || [];
+    // console.log('stocks: ', stocks);
+
     const [value, setValue] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -38,7 +41,7 @@ function Chat() {
     useEffect(() => {
         console.log('===');
         // dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
-        console.log(dataQuestionsAndAnswers);
+        // console.log(dataQuestionsAndAnswers);
     }, []);
 
     const handleChange = (event) => {
@@ -84,6 +87,7 @@ function Chat() {
 
             const providers = localStorage.getItem('dataSendProviders');
             console.log('providers: ', providers);
+
             const stocks = localStorage.getItem('dataSendStocks');
             console.log('stocks: ', stocks);
             const dataSend = {
@@ -92,6 +96,7 @@ function Chat() {
                 providers: providers,
                 stock_id: stocks,
             };
+            console.log('dataSend: ', dataSend);
 
             localStorage.setItem('oldQuestion', JSON.stringify(dataSend));
 
@@ -191,7 +196,7 @@ function Chat() {
     };
 
     // console.log(dataQuestionsAndAnswers);
-    console.log('re-render');
+    console.log('Chat - re-render - in');
     return (
         <>
             <div className={cx('wrapper')}>

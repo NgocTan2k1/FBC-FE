@@ -11,6 +11,7 @@ import { SignUpApi } from '~/services/auth';
 
 const cx = classNames.bind(styles);
 
+console.log('SignUp - re-render - out');
 function SignUp() {
     const navigate = useNavigate();
     const [valueUpdate, setValueUpdate] = useState({});
@@ -147,6 +148,7 @@ function SignUp() {
         console.log(valueUpdate);
     }
 
+    console.log('SignUp - re-render - in');
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>

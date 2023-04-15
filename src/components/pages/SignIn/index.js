@@ -1,7 +1,7 @@
 import { Form, Input } from 'antd';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '~/img/logo.png';
@@ -12,22 +12,26 @@ import { GetProviders, GetPublicKey, GetStocks } from '~/services/chat';
 
 const cx = classNames.bind(styles);
 
+console.log('SignIn - re-render - out');
 function SignIn() {
     const [form] = Form.useForm();
     const [valueUpdate, setValueUpdate] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
 
     async function handleSubmit() {
+        setLoading(true);
+
         if (valueUpdate.password && valueUpdate.username) {
             const data = {
                 password: valueUpdate.password,
                 username: valueUpdate.username,
             };
             await SignInApi(data)
-                .then((respone) => {
+                .then(async (respone) => {
                     localStorage.setItem(
                         'userInfo',
                         JSON.stringify({
@@ -39,6 +43,7 @@ function SignIn() {
 
                     const getData = async () => {
                         const key = await GetPublicKey();
+                        console.log(key);
                         localStorage.setItem(
                             'key',
                             JSON.stringify({
@@ -50,12 +55,15 @@ function SignIn() {
 
                         const providers = await GetProviders();
                         localStorage.setItem('providers', JSON.stringify(providers.data.results));
+                        console.log(providers);
 
                         const stocks = await GetStocks();
                         localStorage.setItem('stocks', JSON.stringify(stocks.data.results));
+                        console.log(stocks);
                     };
 
-                    getData();
+                    await getData();
+                    setLoading(false);
                     navigate('/chat');
                 })
                 .catch((error) => {
@@ -67,15 +75,16 @@ function SignIn() {
         } else {
             setError(true);
         }
+        setLoading(false);
     }
 
     function handleSetValueUpdate(value) {
         if (value) {
             setValueUpdate({ ...valueUpdate, ...value });
-            console.log(valueUpdate);
         }
     }
 
+    console.log('SignIn - re-render - in');
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -113,7 +122,8 @@ function SignIn() {
                     {error ? <div className={cx('error-signin')}> your username or password is incorrect </div> : ''}
 
                     <button onClick={handleSubmit} className={cx('signin-btn')}>
-                        Login
+                        {loading && <FontAwesomeIcon className={cx('icon-loading-answer')} icon={faSpinner} />}
+                        {!loading && `Login`}
                     </button>
 
                     <Link to="/signup" className={cx('signup-link')}>

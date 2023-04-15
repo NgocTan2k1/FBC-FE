@@ -5,8 +5,9 @@ import styles from './Question.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
-
+console.log('Question - re-render - out');
 function Question({ data }) {
+    console.log('Question - re-render - in');
     return (
         <>
             {data && (

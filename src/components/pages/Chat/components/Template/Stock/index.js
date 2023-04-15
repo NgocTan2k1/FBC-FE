@@ -1,13 +1,16 @@
 import classNames from 'classnames/bind';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 
 import styles from './Stock.module.scss';
 
 const cx = classNames.bind(styles);
 
-localStorage.setItem('dataSendStocks', JSON.stringify([]));
-let dataSendStocks = JSON.parse(localStorage.getItem('dataSendStocks')) || [];
+let dataSendStocks = [];
+localStorage.setItem('dataSendStocks', JSON.stringify(dataSendStocks));
 
-function Stock({ data }) {
+console.log('Stock - re-render - out');
+function Stock({ stocks }) {
     const handleOnlick = (e, index) => {
         e.target.classList.toggle(cx('check'));
         if (dataSendStocks.includes(index + 1)) {
@@ -18,16 +21,18 @@ function Stock({ data }) {
         dataSendStocks.sort((a, b) => a - b);
         localStorage.setItem('dataSendStocks', JSON.stringify(dataSendStocks));
     };
-
+    console.log('Stock - re-render - in');
     return (
         <div className={cx('wrapper')}>
             <h3 className={cx('title')}>Stocks</h3>
             <div className={cx('list')}>
-                {data.map((item, index) => {
+                {stocks.map((item, index) => {
                     return (
-                        <div onClick={(e) => handleOnlick(e, index)} className={cx('item')} key={index}>
-                            {item.name}
-                        </div>
+                        <Tippy key={index} placement="left" content={item.alias}>
+                            <div onClick={(e) => handleOnlick(e, index)} className={cx('item')}>
+                                {item.name}
+                            </div>
+                        </Tippy>
                     );
                 })}
             </div>
