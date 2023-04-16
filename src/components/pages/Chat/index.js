@@ -34,6 +34,7 @@ function Chat() {
 
     const [value, setValue] = useState('');
     const [loading, setLoading] = useState(false);
+    const [show, setShow] = useState(false);
 
     const inputRef = useRef();
     const navigate = useNavigate();
@@ -58,6 +59,7 @@ function Chat() {
 
     async function handleSendQuestion() {
         setLoading(true);
+        setShow(true);
 
         const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key')).expire));
         const currentDate = new Date();
@@ -213,7 +215,27 @@ function Chat() {
                     ) : (
                         <NewChat />
                     )}
-                    <Template providers={providers} stocks={stocks} />
+                    <div className={cx('template')}>
+                        {show ? (
+                            <div
+                                onClick={() => {
+                                    console.log('click');
+                                    setShow((prev) => false);
+                                }}
+                                className={cx('show-hide')}
+                            >{`<`}</div>
+                        ) : (
+                            <>
+                                <div
+                                    onClick={() => {
+                                        setShow((prev) => true);
+                                    }}
+                                    className={cx('show-hide')}
+                                >{`>`}</div>
+                                <Template providers={providers} stocks={stocks} />
+                            </>
+                        )}
+                    </div>
                 </div>
 
                 <div className={cx('container_input')}>

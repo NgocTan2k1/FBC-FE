@@ -1,4 +1,5 @@
-import { Button, Form, Input, Radio } from 'antd';
+/* eslint-disable jsx-a11y/alt-text */
+import { Form, Input } from 'antd';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -58,11 +59,6 @@ function SignUp() {
                 password2: valueUpdate.password2,
                 username: valueUpdate.username,
                 email: valueUpdate.email,
-            };
-
-            const dataSignIn = {
-                password: valueUpdate.password1,
-                username: valueUpdate.username,
             };
 
             await SignUpApi(data)
