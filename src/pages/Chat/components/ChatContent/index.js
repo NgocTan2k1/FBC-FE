@@ -13,20 +13,20 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 
-import NewChat from '~/components/pages/Chat/components/NewChat';
-import styles from './Chat.module.scss';
+import NewChat from '~/pages/Chat/components/NewChat';
+import styles from './ChatContent.module.scss';
 import { SendQuestion } from '~/services/chat';
-import FormChat from './components/FormChat';
-import Answer from './components/Answer';
-import Question from './components/Question';
+import FormChat from '~/pages/Chat/components/FormChat';
+import Answer from '~/pages/Chat/components/Answer';
+import Question from '~/pages/Chat/components/Question';
 import { GetPublicKey } from '~/services/chat';
-import Template from './components/Template';
+import Template from '~/pages/Chat/components/Template';
 
 const NodeRSA = require('node-rsa');
 const cx = classNames.bind(styles);
 let dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
 console.log('Chat - re-render - out');
-function Chat() {
+function ChatContent() {
     let providers = JSON.parse(localStorage.getItem('providers')) || [];
     // console.log('providers: ', providers);
     let stocks = JSON.parse(localStorage.getItem('stocks')) || [];
@@ -296,4 +296,4 @@ function Chat() {
     );
 }
 
-export default Chat;
+export default ChatContent;

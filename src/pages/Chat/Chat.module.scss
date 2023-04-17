@@ -1,0 +1,73 @@
+.trigger {
+    padding: 0 24px;
+    font-size: 18px;
+    line-height: 64px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.trigger:hover {
+    color: #1890ff;
+}
+
+.logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+}
+.arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 0 8px 12px;
+    border-color: transparent transparent transparent #fff;
+}
+
+.trigger--collapsed {
+    left: -40px;
+}
+
+.site-layout-background {
+    background: #fff;
+    margin-top: auto;
+}
+
+.side-bar {
+    background: #000000;
+    height: auto;
+    border-right: 1px solid #f0f0f0;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    background: #000000;
+}
+
+.logo {
+    background: rgba(255, 255, 255, 0.3);
+    max-height: 100px;
+    margin: 16px;
+    max-width: 140px;
+    width: 100%;
+    height: 100%;
+}
+
+.logout-button {
+    position: absolute;
+    bottom: 100px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border-color: #f0f0f0;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 1px;
+    color: #f0f0f0;
+    padding: 0 24px;
+}
