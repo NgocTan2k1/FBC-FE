@@ -64,7 +64,7 @@ function Chat() {
             </Sider >
             < Layout className={cx('site-layout')} >
                 <Content className={cx('site-layout-background')}>
-                    <ChatContent />
+                    <ChatContent hook={chatHook}/>
                 </Content>
             </ Layout>
         </Layout >

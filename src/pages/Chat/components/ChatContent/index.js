@@ -1,32 +1,30 @@
-import { useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Input } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faSignOut,
-    faPaperPlane,
     faArrowRotateRight,
-    faTriangleExclamation,
     faCheck,
-    faXmark,
+    faPaperPlane,
+    faSignOut,
     faSpinner,
+    faTriangleExclamation,
+    faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Input } from 'antd';
 import classNames from 'classnames/bind';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import NewChat from '~/pages/Chat/components/NewChat';
-import styles from './ChatContent.module.scss';
-import { SendQuestion } from '~/services/chat';
-import FormChat from '~/pages/Chat/components/FormChat';
 import Answer from '~/pages/Chat/components/Answer';
+import FormChat from '~/pages/Chat/components/FormChat';
+import NewChat from '~/pages/Chat/components/NewChat';
 import Question from '~/pages/Chat/components/Question';
-import { GetPublicKey } from '~/services/chat';
-import Template from '~/pages/Chat/components/Template';
+import { GetPublicKey, SendQuestion } from '~/services/chat';
+import styles from './ChatContent.module.scss';
 
 const NodeRSA = require('node-rsa');
 const cx = classNames.bind(styles);
 let dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
 console.log('Chat - re-render - out');
-function ChatContent() {
+function ChatContent({ hook }) {
     // console.log('stocks: ', stocks);
     const [shouldRepeat, setShouldRepeat] = useState(false);
     const [value, setValue] = useState('');
@@ -35,10 +33,6 @@ function ChatContent() {
 
     const inputRef = useRef();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        console.log('===');
-    }, []);
 
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -75,7 +69,7 @@ function ChatContent() {
         } else {
             console.log('=== còn khoảng: ', (expireDate.getTime() - currentDate.getTime()) / 1000, 's mới gửi lại ===');
         }
-        
+
         if (value.trim()) {
             const publicKey = new NodeRSA();
             const pub = JSON.parse(localStorage.getItem('key')).public;

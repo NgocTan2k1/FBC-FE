@@ -9,7 +9,13 @@ const initYear = {
 export const useChat = ({ ...param }) => {
     const [providers, setProviders] = useState([]);
     const [stocks, setStocks] = useState([]);
+    // param for search
     const [year, setYear] = useState(initYear);
+    const [providerChoice, setProviderChoice] = useState([]);
+    const [stockChoice, setStockChoice] = useState([]);
+    const [message , setMessage] = useState("")
+
+
     const fetchProviders = async () => {
         try {
             const results = await GetProviders();
