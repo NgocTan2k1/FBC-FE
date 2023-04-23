@@ -11,27 +11,24 @@
 }
 
 .list {
+    width: 100%;
+}
+
+.panel {
+    background-color: aliceblue;
+}
+
+.ant-checkbox-group {
     display: flex;
+    justify-content: space-evenly;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    padding: 0 16px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 100%;
 }
 
-.item {
-    display: block;
-    padding: 4px;
-    margin: 2px 5px;
-    min-width: 90px;
-
-    background-color: rgba(255, 255, 255, 1);
-    border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-
-    &:hover {
-        cursor: pointer;
-        background-color: rgba(255, 255, 255, 0.5);
-    }
+.ant-checkbox-group-item {
+    width: 50%;
 }
 
-.item.check {
-    background-color: rgba(133, 100, 100, 0.5);
-}

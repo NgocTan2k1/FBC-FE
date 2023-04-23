@@ -1,42 +1,39 @@
 import classNames from 'classnames/bind';
-import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
+import { Checkbox, Collapse } from 'antd';
+import { useEffect, useState } from 'react';
 import styles from './Provider.module.scss';
-
+const { Panel } = Collapse;
 const cx = classNames.bind(styles);
 
-let dataSendProviders = [];
-localStorage.setItem('dataSendProviders', JSON.stringify(dataSendProviders));
+function Provider({ hook }) {
+    const { providers } = hook;
+    const [checkboxProvider, setCheckboxProvider] = useState([]);
+    useEffect(() => {
+        const data = providers.map((item) => {
+            return {
+                label: item.name,
+                value: item.id,
+            };
+        });
+        setCheckboxProvider(data);
+    }, [providers]);
 
-console.log('Provider - re-render out');
-function Provider({ providers }) {
-    const handleOnlick = (e, index) => {
-        e.target.classList.toggle(cx('check'));
-        if (dataSendProviders.includes(index + 1)) {
-            dataSendProviders = dataSendProviders.filter((item) => item !== index + 1);
-        } else {
-            dataSendProviders.push(index + 1);
-        }
-        dataSendProviders.sort((a, b) => a - b);
-        localStorage.setItem('dataSendProviders', JSON.stringify(dataSendProviders));
+    const onChangeHandler = (providers) => {
+        console.log(providers);
     };
-
-    console.log('Provider - re-render - in');
     return (
         <div className={cx('wrapper')}>
-            <h3 className={cx('title')}>{`Providers`}</h3>
-            <div className={cx('list')}>
-                {providers.map((item, index) => {
-                    return (
-                        <Tippy key={index} placement="left" content={`source: ${item.alias}`}>
-                            <div onClick={(e) => handleOnlick(e, index)} className={cx(`item`)}>
-                                {item.name}
-                            </div>
-                        </Tippy>
-                    );
-                })}
-            </div>
+            <Collapse>
+                <Panel header="Provider" key="1"
+                    className={cx('panel')}
+                >
+                    <Checkbox.Group
+                        options={checkboxProvider}
+                        onChange={onChangeHandler} />
+                </Panel>
+            </Collapse>
         </div>
     );
 }

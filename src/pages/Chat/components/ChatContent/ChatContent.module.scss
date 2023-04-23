@@ -4,6 +4,7 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
+    z-index: 1;
     background: radial-gradient(
         101.61% 101.61% at 50% -1.61%,
         #e0f7fa 7.04%,
@@ -25,10 +26,8 @@
     margin: auto;
     overflow-y: auto;
     overflow-x: inherit;
-
     width: 100%;
     margin-bottom: 50px;
-    height: 574px;
 
     &::-webkit-scrollbar {
         z-index: 4;
@@ -77,22 +76,30 @@
 
 // input data
 .container_input {
-    position: relative;
+    bottom: 0;
+    top: auto;
+    margin-bottom: 5%;
+    position: absolute;
     display: flex;
     justify-content: center;
     justify-items: center;
-    bottom: 15%;
     width: 100%;
-    height: 126px;
+}
+
+.repeat-content {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    top: auto;
+    margin-bottom: 10%;
 }
 
 .repeat-answer {
-    position: absolute;
-    display: flex;
-    top: -37%;
+    height: 42px;
     background-color: rgba(217, 217, 217, 0.75);
-    padding: 12px 12px;
-
     font-size: 1.8rem;
     line-height: 1.8rem;
     border-radius: 10px;

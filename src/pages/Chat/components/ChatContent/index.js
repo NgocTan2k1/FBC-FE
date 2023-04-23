@@ -27,11 +27,8 @@ const cx = classNames.bind(styles);
 let dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
 console.log('Chat - re-render - out');
 function ChatContent() {
-    let providers = JSON.parse(localStorage.getItem('providers')) || [];
-    // console.log('providers: ', providers);
-    let stocks = JSON.parse(localStorage.getItem('stocks')) || [];
     // console.log('stocks: ', stocks);
-
+    const [shouldRepeat, setShouldRepeat] = useState(false);
     const [value, setValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
@@ -41,8 +38,6 @@ function ChatContent() {
 
     useEffect(() => {
         console.log('===');
-        // dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
-        // console.log(dataQuestionsAndAnswers);
     }, []);
 
     const handleChange = (event) => {
@@ -60,7 +55,7 @@ function ChatContent() {
     async function handleSendQuestion() {
         setLoading(true);
         setShow(true);
-
+        // if expired => get new key
         const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key')).expire));
         const currentDate = new Date();
         if (expireDate.getTime() <= currentDate.getTime()) {
@@ -76,11 +71,11 @@ function ChatContent() {
                     }),
                 );
             };
-
             await fetchData();
         } else {
             console.log('=== còn khoảng: ', (expireDate.getTime() - currentDate.getTime()) / 1000, 's mới gửi lại ===');
         }
+        
         if (value.trim()) {
             const publicKey = new NodeRSA();
             const pub = JSON.parse(localStorage.getItem('key')).public;
@@ -99,9 +94,7 @@ function ChatContent() {
                 stock_id: stocks,
             };
             console.log('dataSend: ', dataSend);
-
             localStorage.setItem('oldQuestion', JSON.stringify(dataSend));
-
             await SendQuestion(dataSend)
                 .then((respone) => {
                     dataQuestionsAndAnswers.push({
@@ -129,7 +122,6 @@ function ChatContent() {
     const handleSendQuestionAgain = async () => {
         setLoading(true);
         const oldDataSend = JSON.parse(localStorage.getItem('oldQuestion'));
-
         const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key')).expire));
         const currentDate = new Date();
 
@@ -183,10 +175,6 @@ function ChatContent() {
         localStorage.removeItem('userInfo');
         localStorage.removeItem('key');
         localStorage.removeItem('oldQuestion');
-        localStorage.removeItem('providers');
-        localStorage.removeItem('stocks');
-        localStorage.removeItem('dataSendProviders');
-        localStorage.removeItem('dataSendStocks');
         dataQuestionsAndAnswers = [];
         localStorage.removeItem('datachat');
         navigate('/');
@@ -202,8 +190,11 @@ function ChatContent() {
     return (
         <>
             <div className={cx('wrapper')}>
+                {/* background  */}
+                <NewChat />
+
                 <div className={cx('container_content')}>
-                    {JSON.parse(localStorage.getItem('datachat')) ? (
+                    {JSON?.parse(localStorage.getItem('datachat')) && (
                         dataQuestionsAndAnswers.map((data, index) => {
                             return (
                                 <FormChat key={index}>
@@ -212,39 +203,19 @@ function ChatContent() {
                                 </FormChat>
                             );
                         })
-                    ) : (
-                        <NewChat />
                     )}
-                    <div className={cx('template')}>
-                        {show ? (
-                            <div
-                                onClick={() => {
-                                    console.log('click');
-                                    setShow((prev) => false);
-                                }}
-                                className={cx('show-hide')}
-                            >{`<`}</div>
-                        ) : (
-                            <>
-                                <div
-                                    onClick={() => {
-                                        setShow((prev) => true);
-                                    }}
-                                    className={cx('show-hide')}
-                                >{`>`}</div>
-                                <Template providers={providers} stocks={stocks} />
-                            </>
-                        )}
-                    </div>
                 </div>
-
+                {
+                    shouldRepeat && (<div className={cx('repeat-content')}>
+                        <button onClick={handleSendQuestionAgain} className={cx('repeat-answer')}>
+                            {!loading && <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />}
+                            {loading && <FontAwesomeIcon className={cx('icon-loading-answer')} icon={faSpinner} />}
+                            {!loading && 'Regenerate response'}
+                            {loading && 'Stop'}
+                        </button>
+                    </div>)
+                }
                 <div className={cx('container_input')}>
-                    <button onClick={handleSendQuestionAgain} className={cx('repeat-answer')}>
-                        {!loading && <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />}
-                        {loading && <FontAwesomeIcon className={cx('icon-loading-answer')} icon={faSpinner} />}
-                        {!loading && 'Regenerate response'}
-                        {loading && 'Stop'}
-                    </button>
                     <div className={cx('form')}>
                         <div className={cx('form-item')}>
                             <Input.TextArea

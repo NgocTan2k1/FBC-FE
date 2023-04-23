@@ -1,65 +1,38 @@
-import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
+import { useEffect } from 'react';
 
+import { Collapse, Slider } from 'antd';
 import styles from './Year.module.scss';
 
 const cx = classNames.bind(styles);
-console.log('Year - re-render - out');
+const { Panel } = Collapse;
+function Year({ hook }) {
+    const { year , setYear } = hook;
+    const marks = {
+        2010: '2010',
+        2021: '2021',
+    };
 
-function Year() {
-    const [valueMin, setValueMin] = useState('');
-    const [valueMax, setValueMax] = useState('');
-    const [error, setError] = useState(false);
-
-    useEffect(() => {
-        // if( )
-        // else{
-        // }
-    }, [valueMin, valueMax]);
-    console.log('Year - re-render - in');
+    const onChange = (value) => {
+        setYear({ min: value[0], max: value[1] });
+    };
     return (
         <div className={cx('wrapper')}>
-            <h3 className={cx('title')}>Year</h3>
-            <div className={cx('list-year')}>
-                <div className={cx('year')}>
-                    <label className={cx('label')} htmlFor="min-year">
-                        min:{' '}
-                    </label>
-                    <select id="min-year" className={cx('select')}>
-                        <option className={cx('item-year')}>2010</option>
-                        <option className={cx('item-year')}>2011</option>
-                        <option className={cx('item-year')}>2012</option>
-                        <option className={cx('item-year')}>2013</option>
-                        <option className={cx('item-year')}>2014</option>
-                        <option className={cx('item-year')}>2015</option>
-                        <option className={cx('item-year')}>2016</option>
-                        <option className={cx('item-year')}>2017</option>
-                        <option className={cx('item-year')}>2018</option>
-                        <option className={cx('item-year')}>2019</option>
-                        <option className={cx('item-year')}>2020</option>
-                        <option className={cx('item-year')}>2021</option>
-                    </select>
-                </div>
-                <div className={cx('year')}>
-                    <label className={cx('label')} htmlFor="max-year">
-                        max:{' '}
-                    </label>
-                    <select id="max-year" className={cx('select')}>
-                        <option className={cx('item-year')}>2011</option>
-                        <option className={cx('item-year')}>2012</option>
-                        <option className={cx('item-year')}>2013</option>
-                        <option className={cx('item-year')}>2014</option>
-                        <option className={cx('item-year')}>2015</option>
-                        <option className={cx('item-year')}>2016</option>
-                        <option className={cx('item-year')}>2017</option>
-                        <option className={cx('item-year')}>2018</option>
-                        <option className={cx('item-year')}>2019</option>
-                        <option className={cx('item-year')}>2020</option>
-                        <option className={cx('item-year')}>2021</option>
-                        <option className={cx('item-year')}>2022</option>
-                    </select>
-                </div>
-            </div>
+            <Collapse>
+                <Panel header="Year" key="3"
+                    className={cx('panel')}
+                >
+                    <Slider
+                        range
+                        marks={marks}
+                        defaultValue={[year.min, year.max]}
+                        min={2010}
+                        max={2021}
+                        step={1}
+                        onChange={onChange}
+                    />
+                </Panel>
+            </Collapse>
         </div>
     );
 }

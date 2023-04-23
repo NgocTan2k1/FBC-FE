@@ -10,27 +10,12 @@
     text-decoration: underline;
 }
 
-.list-year {
-    display: flex;
-    justify-content: flex-start;
-    margin-left: 16px;
-    margin-top: 8px;
+.list {
+    width: 100%;
 }
 
-.year {
-    display: block;
-    margin-right: 20px;
-
-    font-size: 1.8rem;
-}
-.select {
-    padding: 4px;
-    border-radius: 2px;
-
-    &:hover {
-        cursor: pointer;
-    }
+.panel {
+    background-color: aliceblue;
 }
 
-.item-year {
-}
+

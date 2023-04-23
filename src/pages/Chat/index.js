@@ -1,36 +1,29 @@
-import React, { useState } from 'react';
-import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
-} from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
-import ChatContent from './components/ChatContent';
+import { Collapse, Layout } from 'antd';
 import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
+
+import { AugmentedReality, CalendarIcon, Logo, ReadyStock } from '~/img';
 import styles from './Chat.module.scss';
-import logo from '~/img/logo.png';
-
+import ChatContent from './components/ChatContent';
+import Provider from './components/Template/Provider';
+import Stock from './components/Template/Stock';
+import Year from './components/Template/Year';
+import { useChat } from './hooks';
 const { Header, Sider, Content } = Layout;
-
+const Panel = Collapse.Panel;
 const cx = classNames.bind(styles);
 function Chat() {
     const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
-
-    const handleArrowClick = () => {
-        setCollapsed(!collapsed);
-    };
-
-    const handleLogout = () => {};
-
-    const arrowClassName = `trigger ${collapsed ? 'trigger--collapsed' : ''}`;
+    const chatHook = useChat({});
+    useEffect(() => {
+        chatHook.fetchProviders();
+        chatHook.fetchStocks();
+    }, []);
 
     return (
-        <Layout>
+        <Layout
+            className={cx('chat-container')}
+        >
             <Sider
                 className={cx('side-bar')}
                 width={280}
@@ -39,42 +32,44 @@ function Chat() {
                 onCollapse={(value) => setCollapsed(value)}
             >
                 <div className={cx('logo-container')}>
-                    <img alt="logo" className={cx('logo')} src={logo} />
+                    <img alt="logo" className={cx('logo')} src={Logo} />
                 </div>
-                <Menu
-                    theme="dark"
-                    defaultSelectedKeys={['1']}
-                    mode="inline"
-                    items={[
-                        {
-                            key: '1',
-                            icon: <UserOutlined />,
-                            label: 'nav 1',
-                        },
-                        {
-                            key: '2',
-                            icon: <VideoCameraOutlined />,
-                            label: 'nav 2',
-                        },
-                        {
-                            key: '3',
-                            icon: <UploadOutlined />,
-                            label: 'nav 3',
-                        },
-                    ]}
-                />
+                <div className={cx('sider-collapse')}>
+                    {
+                        collapsed ? <div className={cx('collapse-icon')}
+                            onClick={() => setCollapsed(false)}
+                        >
+                            <img src={AugmentedReality} alt="provider" />
+                        </div> : <Provider hook={chatHook} />
+                    }
+                    <br />
+                    {
+                        collapsed ? <div className={cx('collapse-icon')}
+                            onClick={() => setCollapsed(false)}
+                        >
+                            <img src={ReadyStock} alt="stock" />
+                        </div> : <Stock hook={chatHook} />
+                    }
+                    <br />
+                    {
+                        collapsed ? <div className={cx('collapse-icon')}
+                            onClick={() => setCollapsed(false)}
+                        >
+                            <img src={CalendarIcon} alt="year" />
+                        </div> : <Year hook={chatHook} />
+                    }
+                    <br />
+                </div>
                 <div className={cx('logout-button')}>Logout</div>
-            </Sider>
-            <div className={cx(arrowClassName)} onClick={handleArrowClick}>
-                <span className={cx('arrow')} />
-            </div>
-            <Layout className={cx('site-layout')}>
+            </Sider >
+            < Layout className={cx('site-layout')} >
                 <Content className={cx('site-layout-background')}>
                     <ChatContent />
                 </Content>
-            </Layout>
-        </Layout>
+            </ Layout>
+        </Layout >
     );
 }
 
 export default Chat;
+

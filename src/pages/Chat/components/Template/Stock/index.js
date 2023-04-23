@@ -1,41 +1,69 @@
 import classNames from 'classnames/bind';
-import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
+import { Checkbox, Collapse } from 'antd';
+import { useEffect, useState } from 'react';
 import styles from './Stock.module.scss';
 
 const cx = classNames.bind(styles);
 
-let dataSendStocks = [];
-localStorage.setItem('dataSendStocks', JSON.stringify(dataSendStocks));
+
+const { Panel } = Collapse;
 
 console.log('Stock - re-render - out');
-function Stock({ stocks }) {
-    const handleOnlick = (e, index) => {
-        e.target.classList.toggle(cx('check'));
-        if (dataSendStocks.includes(index + 1)) {
-            dataSendStocks = dataSendStocks.filter((item) => item !== index + 1);
-        } else {
-            dataSendStocks.push(index + 1);
-        }
-        dataSendStocks.sort((a, b) => a - b);
-        localStorage.setItem('dataSendStocks', JSON.stringify(dataSendStocks));
+function Stock({ hook }) {
+    const { stocks } = hook;
+    const [checkboxStock, setCheckboxStock] = useState([]);
+    useEffect(() => {
+        const data = stocks.map((item) => {
+            return {
+                label: item.name,
+                value: item.id,
+            };
+        });
+        setCheckboxStock(data);
+    }, [stocks]);
+
+    const onChangeHandler = (stocks) => {
+        console.log(stocks);
     };
-    console.log('Stock - re-render - in');
     return (
         <div className={cx('wrapper')}>
-            <h3 className={cx('title')}>Stocks</h3>
-            <div className={cx('list')}>
-                {stocks.map((item, index) => {
-                    return (
-                        <Tippy key={index} placement="left" content={item.alias}>
-                            <div onClick={(e) => handleOnlick(e, index)} className={cx('item')}>
-                                {item.name}
-                            </div>
-                        </Tippy>
-                    );
-                })}
-            </div>
+            <Collapse>
+                <Panel header="Stock" key="2"
+                    className={cx('panel')}
+                >
+                    <div className={cx("list")}>
+                        <Checkbox.Group
+                            style={{
+                                width: '100%',
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                alignContent: 'space-between',
+                                padding: '10px'
+                            }}
+                            onChange={onChangeHandler} >
+                            {checkboxStock.map((item) => {
+                                return (
+                                    <Checkbox
+                                        key={item.value}
+                                        value={item.value}
+                                        style={{
+                                            width: '30%',
+                                            margin: '0 0 10px 0',
+                                            flex: '0 0 30%'
+                                        }}
+                                    >
+                                        {item.label}
+                                    </Checkbox>
+                                );
+                            })}
+                        </Checkbox.Group>
+                    </div>
+                </Panel>
+            </Collapse>
         </div>
     );
 }
