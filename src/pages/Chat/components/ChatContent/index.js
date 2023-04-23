@@ -10,152 +10,32 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 import Answer from '~/pages/Chat/components/Answer';
 import FormChat from '~/pages/Chat/components/FormChat';
 import NewChat from '~/pages/Chat/components/NewChat';
 import Question from '~/pages/Chat/components/Question';
-import { GetPublicKey, SendQuestion } from '~/services/chat';
 import styles from './ChatContent.module.scss';
 
 const NodeRSA = require('node-rsa');
 const cx = classNames.bind(styles);
-let dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
+
 console.log('Chat - re-render - out');
 function ChatContent({ hook }) {
     // console.log('stocks: ', stocks);
     const [shouldRepeat, setShouldRepeat] = useState(false);
-    const [value, setValue] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [show, setShow] = useState(false);
+    const {
+        message,
+        setMessage,
+        dataQA,
+        handleKeyDown,
+        handleSendQuestion,
+        loading,
+        inputRef,
+        handleConfirmLogout
+    } = hook;
 
-    const inputRef = useRef();
-    const navigate = useNavigate();
-
-    const handleChange = (event) => {
-        setValue(event.target.value);
-    };
-
-    const handleKeyDown = (event) => {
-        if (event.shiftKey && event.keyCode === 13) {
-        } else if (event.keyCode === 13) {
-            handleSendQuestion();
-            event.preventDefault();
-        }
-    };
-
-    async function handleSendQuestion() {
-        setLoading(true);
-        setShow(true);
-        // if expired => get new key
-        const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key')).expire));
-        const currentDate = new Date();
-        if (expireDate.getTime() <= currentDate.getTime()) {
-            const fetchData = async () => {
-                const key = await GetPublicKey();
-                console.log('=== đang lấy key ===');
-                localStorage.setItem(
-                    'key',
-                    JSON.stringify({
-                        public: key.data.public_key,
-                        expire: key.data.expire,
-                        private: key.data.private_key,
-                    }),
-                );
-            };
-            await fetchData();
-        } else {
-            console.log('=== còn khoảng: ', (expireDate.getTime() - currentDate.getTime()) / 1000, 's mới gửi lại ===');
-        }
-
-        if (value.trim()) {
-            const publicKey = new NodeRSA();
-            const pub = JSON.parse(localStorage.getItem('key')).public;
-            publicKey.importKey(pub, 'pkcs8-public');
-            const encrypt = publicKey.encrypt(value, 'base64');
-
-            const providers = localStorage.getItem('dataSendProviders');
-            console.log('providers: ', providers);
-
-            const stocks = localStorage.getItem('dataSendStocks');
-            console.log('stocks: ', stocks);
-            const dataSend = {
-                message: encrypt,
-                type: null,
-                providers: providers,
-                stock_id: stocks,
-            };
-            console.log('dataSend: ', dataSend);
-            localStorage.setItem('oldQuestion', JSON.stringify(dataSend));
-            await SendQuestion(dataSend)
-                .then((respone) => {
-                    dataQuestionsAndAnswers.push({
-                        question: value,
-                        answer: respone.data.data,
-                    });
-                    // localStorage.removeItem('data');
-                    localStorage.setItem('datachat', JSON.stringify(dataQuestionsAndAnswers));
-                    console.log('send question: ', dataQuestionsAndAnswers);
-                    setValue('');
-                    inputRef.current.focus();
-                })
-                .catch((error) => {
-                    if (error) {
-                        console.log(error);
-                    }
-                });
-        } else {
-            alert('No data');
-            inputRef.current.focus();
-        }
-        setLoading(false);
-    }
-
-    const handleSendQuestionAgain = async () => {
-        setLoading(true);
-        const oldDataSend = JSON.parse(localStorage.getItem('oldQuestion'));
-        const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key')).expire));
-        const currentDate = new Date();
-
-        if (expireDate.getTime() <= currentDate.getTime()) {
-            const fetchData = async () => {
-                const key = await GetPublicKey();
-                console.log('=== đang lấy key ===');
-                localStorage.setItem(
-                    'key',
-                    JSON.stringify({
-                        public: key.data.public_key,
-                        expire: key.data.expire,
-                        private: key.data.private_key,
-                    }),
-                );
-            };
-
-            await fetchData();
-        } else {
-            console.log('=== còn khoảng: ', (expireDate.getTime() - currentDate.getTime()) / 1000, 's mới gửi lại ===');
-        }
-
-        SendQuestion(oldDataSend)
-            .then((respone) => {
-                dataQuestionsAndAnswers[dataQuestionsAndAnswers.length - 1].answer = respone.data.data;
-                // localStorage.removeItem('datachat');
-                localStorage.setItem('datachat', JSON.stringify(dataQuestionsAndAnswers));
-                console.log(dataQuestionsAndAnswers);
-
-                setValue('');
-                inputRef.current.focus();
-            })
-            .catch((error) => {
-                if (error) {
-                    console.log(error);
-                }
-            });
-
-        setLoading(false);
-    };
 
     const handleLogout = () => {
         'your-element-class';
@@ -164,32 +44,18 @@ function ChatContent({ hook }) {
         element.classList.add(`${cx('show')}`);
     };
 
-    const handleConfirmLogout = () => {
-        // localStorage.setItem('datachat', JSON.stringify([]));
-        localStorage.removeItem('userInfo');
-        localStorage.removeItem('key');
-        localStorage.removeItem('oldQuestion');
-        dataQuestionsAndAnswers = [];
-        localStorage.removeItem('datachat');
-        navigate('/');
-    };
     const handleCancelLogout = () => {
         const element = document.querySelector(`.${cx('wrapper-logout')}`);
         element.classList.remove(`${cx('show')}`);
         element.classList.add(`${cx('hide')}`);
     };
-
-    // console.log(dataQuestionsAndAnswers);
-    console.log('Chat - re-render - in');
     return (
         <>
             <div className={cx('wrapper')}>
                 {/* background  */}
-                <NewChat />
-
                 <div className={cx('container_content')}>
-                    {JSON?.parse(localStorage.getItem('datachat')) && (
-                        dataQuestionsAndAnswers.map((data, index) => {
+                    {JSON?.parse(localStorage.getItem('datachat')) ? (
+                        dataQA.map((data, index) => {
                             return (
                                 <FormChat key={index}>
                                     <Question data={data.question} />
@@ -197,11 +63,11 @@ function ChatContent({ hook }) {
                                 </FormChat>
                             );
                         })
-                    )}
+                    ) : <NewChat />}
                 </div>
                 {
                     shouldRepeat && (<div className={cx('repeat-content')}>
-                        <button onClick={handleSendQuestionAgain} className={cx('repeat-answer')}>
+                        <button className={cx('repeat-answer')}>
                             {!loading && <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />}
                             {loading && <FontAwesomeIcon className={cx('icon-loading-answer')} icon={faSpinner} />}
                             {!loading && 'Regenerate response'}
@@ -218,11 +84,10 @@ function ChatContent({ hook }) {
                                 type="text"
                                 placeholder="Enter the question!"
                                 ref={inputRef}
-                                value={value}
-                                onChange={handleChange}
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
                                 onKeyDown={handleKeyDown}
                             />
-
                             <button onClick={handleSendQuestion} className={cx('btn-send-question')}>
                                 <FontAwesomeIcon icon={faPaperPlane} />
                             </button>

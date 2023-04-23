@@ -1,8 +1,7 @@
+import { Checkbox, Collapse, Tooltip } from 'antd';
 import classNames from 'classnames/bind';
-import 'tippy.js/dist/tippy.css';
-
-import { Checkbox, Collapse } from 'antd';
 import { useEffect, useState } from 'react';
+import 'tippy.js/dist/tippy.css';
 import styles from './Stock.module.scss';
 
 const cx = classNames.bind(styles);
@@ -12,20 +11,22 @@ const { Panel } = Collapse;
 
 console.log('Stock - re-render - out');
 function Stock({ hook }) {
-    const { stocks } = hook;
+    const { stocks, stockChoice, setStockChoice } = hook;
     const [checkboxStock, setCheckboxStock] = useState([]);
     useEffect(() => {
+        console.log(stocks);
         const data = stocks.map((item) => {
             return {
                 label: item.name,
                 value: item.id,
+                alias: item.alias,
             };
         });
         setCheckboxStock(data);
     }, [stocks]);
 
-    const onChangeHandler = (stocks) => {
-        console.log(stocks);
+    const onChangeHandler = (value) => {
+        setStockChoice(value.map((item) => +item));
     };
     return (
         <div className={cx('wrapper')}>
@@ -44,20 +45,26 @@ function Stock({ hook }) {
                                 alignContent: 'space-between',
                                 padding: '10px'
                             }}
-                            onChange={onChangeHandler} >
+                            onChange={onChangeHandler}
+                            defaultValue={stockChoice}
+                        >
                             {checkboxStock.map((item) => {
                                 return (
-                                    <Checkbox
-                                        key={item.value}
-                                        value={item.value}
-                                        style={{
-                                            width: '30%',
-                                            margin: '0 0 10px 0',
-                                            flex: '0 0 30%'
-                                        }}
+                                    <Tooltip
+                                        title={item?.alias}
                                     >
-                                        {item.label}
-                                    </Checkbox>
+                                        <Checkbox
+                                            key={item.value}
+                                            value={item.value}
+                                            style={{
+                                                width: '30%',
+                                                margin: '0 0 10px 0',
+                                                flex: '0 0 30%'
+                                            }}
+                                        >
+                                            {item.label}
+                                        </Checkbox>
+                                    </Tooltip>
                                 );
                             })}
                         </Checkbox.Group>

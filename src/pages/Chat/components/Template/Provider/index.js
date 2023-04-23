@@ -8,7 +8,7 @@ const { Panel } = Collapse;
 const cx = classNames.bind(styles);
 
 function Provider({ hook }) {
-    const { providers } = hook;
+    const { providers, providerChoice, setProviderChoice } = hook;
     const [checkboxProvider, setCheckboxProvider] = useState([]);
     useEffect(() => {
         const data = providers.map((item) => {
@@ -20,8 +20,8 @@ function Provider({ hook }) {
         setCheckboxProvider(data);
     }, [providers]);
 
-    const onChangeHandler = (providers) => {
-        console.log(providers);
+    const onChangeHandler = (value) => {
+        setProviderChoice(value.map((item) => +item));
     };
     return (
         <div className={cx('wrapper')}>
@@ -31,7 +31,9 @@ function Provider({ hook }) {
                 >
                     <Checkbox.Group
                         options={checkboxProvider}
-                        onChange={onChangeHandler} />
+                        onChange={onChangeHandler}
+                        defaultValue={providerChoice}
+                    />
                 </Panel>
             </Collapse>
         </div>
