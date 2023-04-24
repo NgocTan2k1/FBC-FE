@@ -25,6 +25,7 @@ import Template from './components/Template';
 const NodeRSA = require('node-rsa');
 const cx = classNames.bind(styles);
 let dataQuestionsAndAnswers = JSON.parse(localStorage.getItem('datachat')) || [];
+
 console.log('Chat - re-render - out');
 function Chat() {
     let providers = JSON.parse(localStorage.getItem('providers')) || [];
@@ -93,9 +94,8 @@ function Chat() {
             const stocks = localStorage.getItem('dataSendStocks');
             console.log('stocks: ', stocks);
             const dataSend = {
-                message: encrypt,
-                type: null,
-                providers: providers,
+                question: encrypt,
+                provider_id: providers,
                 stock_id: stocks,
             };
             console.log('dataSend: ', dataSend);
@@ -106,8 +106,9 @@ function Chat() {
                 .then((respone) => {
                     dataQuestionsAndAnswers.push({
                         question: value,
-                        answer: respone.data.data,
+                        answer: JSON.stringify(respone.data.result),
                     });
+
                     // localStorage.removeItem('data');
                     localStorage.setItem('datachat', JSON.stringify(dataQuestionsAndAnswers));
                     console.log('send question: ', dataQuestionsAndAnswers);
@@ -115,9 +116,17 @@ function Chat() {
                     inputRef.current.focus();
                 })
                 .catch((error) => {
-                    if (error) {
-                        console.log(error);
-                    }
+                    console.log('error:', error);
+                    dataQuestionsAndAnswers.push({
+                        question: value,
+                        answer: JSON.stringify(error.response.data.result),
+                    });
+
+                    // localStorage.removeItem('data');
+                    localStorage.setItem('datachat', JSON.stringify(dataQuestionsAndAnswers));
+                    console.log('send question: ', dataQuestionsAndAnswers);
+                    setValue('');
+                    inputRef.current.focus();
                 });
         } else {
             alert('No data');
@@ -125,51 +134,52 @@ function Chat() {
         }
         setLoading(false);
     }
+    const handleSendQuestionAgain = async () => {};
 
-    const handleSendQuestionAgain = async () => {
-        setLoading(true);
-        const oldDataSend = JSON.parse(localStorage.getItem('oldQuestion'));
+    // const handleSendQuestionAgain = async () => {
+    //     setLoading(true);
+    //     const oldDataSend = JSON.parse(localStorage.getItem('oldQuestion'));
 
-        const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key')).expire));
-        const currentDate = new Date();
+    //     const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key')).expire));
+    //     const currentDate = new Date();
 
-        if (expireDate.getTime() <= currentDate.getTime()) {
-            const fetchData = async () => {
-                const key = await GetPublicKey();
-                console.log('=== đang lấy key ===');
-                localStorage.setItem(
-                    'key',
-                    JSON.stringify({
-                        public: key.data.public_key,
-                        expire: key.data.expire,
-                        private: key.data.private_key,
-                    }),
-                );
-            };
+    //     if (expireDate.getTime() <= currentDate.getTime()) {
+    //         const fetchData = async () => {
+    //             const key = await GetPublicKey();
+    //             console.log('=== đang lấy key ===');
+    //             localStorage.setItem(
+    //                 'key',
+    //                 JSON.stringify({
+    //                     public: key.data.public_key,
+    //                     expire: key.data.expire,
+    //                     private: key.data.private_key,
+    //                 }),
+    //             );
+    //         };
 
-            await fetchData();
-        } else {
-            console.log('=== còn khoảng: ', (expireDate.getTime() - currentDate.getTime()) / 1000, 's mới gửi lại ===');
-        }
+    //         await fetchData();
+    //     } else {
+    //         console.log('=== còn khoảng: ', (expireDate.getTime() - currentDate.getTime()) / 1000, 's mới gửi lại ===');
+    //     }
 
-        SendQuestion(oldDataSend)
-            .then((respone) => {
-                dataQuestionsAndAnswers[dataQuestionsAndAnswers.length - 1].answer = respone.data.data;
-                // localStorage.removeItem('datachat');
-                localStorage.setItem('datachat', JSON.stringify(dataQuestionsAndAnswers));
-                console.log(dataQuestionsAndAnswers);
+    //     SendQuestion(oldDataSend)
+    //         .then((respone) => {
+    //             dataQuestionsAndAnswers[dataQuestionsAndAnswers.length - 1].answer = respone.data.data;
+    //             // localStorage.removeItem('datachat');
+    //             localStorage.setItem('datachat', JSON.stringify(dataQuestionsAndAnswers));
+    //             console.log(dataQuestionsAndAnswers);
 
-                setValue('');
-                inputRef.current.focus();
-            })
-            .catch((error) => {
-                if (error) {
-                    console.log(error);
-                }
-            });
+    //             setValue('');
+    //             inputRef.current.focus();
+    //         })
+    //         .catch((error) => {
+    //             if (error) {
+    //                 console.log(error);
+    //             }
+    //         });
 
-        setLoading(false);
-    };
+    //     setLoading(false);
+    // };
 
     const handleLogout = () => {
         'your-element-class';
@@ -199,6 +209,7 @@ function Chat() {
 
     // console.log(dataQuestionsAndAnswers);
     console.log('Chat - re-render - in');
+
     return (
         <>
             <div className={cx('wrapper')}>

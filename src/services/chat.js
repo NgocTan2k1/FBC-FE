@@ -1,7 +1,7 @@
 import { axiosAuth } from '~/setup/axios';
 
 const SendQuestion = (data) => {
-    return axiosAuth.post('/api/v1/messages', data);
+    return axiosAuth.post('/api/v1/chat/', data);
 };
 
 const GetPublicKey = () => {
