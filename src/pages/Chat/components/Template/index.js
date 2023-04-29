@@ -1,3 +1,11 @@
-export * from './Provider';
-export * from './Stock';
-export * from './Year';
+import Provider from './Provider';
+import Stock from './Stock';
+import Year from './Year';
+
+
+export {
+    Provider,
+    Stock,
+    Year
+};
+

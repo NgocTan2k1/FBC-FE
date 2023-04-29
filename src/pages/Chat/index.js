@@ -8,19 +8,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AugmentedReality, CalendarIcon, Logo, ReadyStock } from '~/img';
 import styles from './Chat.module.scss';
 
-// import { ChatContent, ConfirmLogout, Guide, Template } from './components';
-// import { ChatContent, ConfirmLogout } from './components';
-import Guide from './components/Guide';
-
-// import { Provider, Stock, Year } from './components/Template';
-import ChatContent from './components/ChatContent';
-import ConfirmLogout from './components/ConfirmLogout';
-import Provider from './components/Template/Provider';
-import Stock from './components/Template/Stock';
-import Year from './components/Template/Year';
 import { useChat } from './hooks';
+import { ChatContent, ConfirmLogout, Guide, Template } from './components';
+const {
+    Provider,
+    Stock,
+    Year,
+} = Template;
 
-// const { Provider, Stock, Year } = Template;
 const { Sider, Content } = Layout;
 
 const cx = classNames.bind(styles);

@@ -1,8 +1,11 @@
-export * as Answer from './Answer';
-export * as ChatContent from './ChatContent';
-export * as ConfirmLogout from './ConfirmLogout';
-export * as FormChat from './FormChat';
-export * as Guide from './Guide';
-export * as NewChat from './NewChat';
-export * as Question from './Question';
-export * as Template from './Template';
+import Answer from './Answer';
+import ChatContent from './ChatContent';
+import ConfirmLogout from './ConfirmLogout';
+import FormChat from './FormChat';
+import Guide from './Guide';
+import NewChat from './NewChat';
+import Question from './Question';
+import * as Template from './Template';
+
+export { Answer, ChatContent, ConfirmLogout, FormChat, Guide, NewChat, Question, Template };
+
