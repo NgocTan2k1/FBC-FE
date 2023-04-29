@@ -17,7 +17,7 @@ console.log('Chat - re-render - out');
 function ChatContent({ hook }) {
     // console.log('stocks: ', stocks);
     const [shouldRepeat, setShouldRepeat] = useState(false);
-    const { message, setMessage, dataQA, handleKeyDown, handleSendQuestion, loading, inputRef, handleConfirmLogout } =
+    const { message, setMessage, dataQA, handleKeyDown, handleSendQuestion, loading, inputRef, setHideGuide } =
         hook;
     return (
         <>
@@ -66,33 +66,13 @@ function ChatContent({ hook }) {
                             </button>
                         </div>
                     </div>
-                    <button className={cx('btn-logout')}>
+                    <button
+                        onClick={() => setHideGuide(true)}
+                        className={cx('btn-logout')}>
                         <p className={cx('button-logout-title')}>Instruct</p>
                     </button>
                 </div>
             </div>
-
-            {/* <div className={cx('wrapper-logout', 'hide')}>
-                <div className={cx('container-logout')}>
-                    <div className={cx('title-logout')}>
-                        <FontAwesomeIcon className={cx('icon-logout-warning')} icon={faTriangleExclamation} />
-                        <h2>The content of this conversation will be deleted when you exit!</h2>
-                    </div>
-                    <div className={cx('select-logout')}>
-                        <div className={cx('question-logout')}>Do you want to exit?</div>
-                        <div className={cx('option-logout')}>
-                            <button className={cx('select-btn')} onClick={handleConfirmLogout}>
-                                Confirm
-                                <FontAwesomeIcon className={cx('icon-confirm', 'icon-select')} icon={faCheck} />
-                            </button>
-                            <button className={cx('select-btn')} onClick={handleCancelLogout}>
-                                Cancel
-                                <FontAwesomeIcon className={cx('icon-cancel', 'icon-select')} icon={faXmark} />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
         </>
     );
 }

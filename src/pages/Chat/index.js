@@ -66,7 +66,7 @@ function Chat() {
                         )}
                         <br />
                     </div>
-                    <div onClick={() => chatHook.setHide(false)} className={cx('logout-button')}>
+                    <div onClick={() => chatHook.setHideLogout(false)} className={cx('logout-button')}>
                         {collapsed ? (
                             <FontAwesomeIcon className={cx('icon-show')} icon={faSignOut} />
                         ) : (
@@ -83,7 +83,7 @@ function Chat() {
                     </Content>
                 </Layout>
             </Layout>
-            {chatHook.hide && <ConfirmLogout hook={chatHook} />}
+             <ConfirmLogout hook={chatHook} />
         </>
     );
 }

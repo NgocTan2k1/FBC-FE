@@ -9,7 +9,7 @@ const initYear = {
 };
 
 export const useChat = ({ ...param }) => {
-    const [hide, setHide] = useState(true);
+    const [hideLogout, setHideLogout] = useState(true);
     const [providers, setProviders] = useState([]);
     const [stocks, setStocks] = useState([]);
     const [dataQA, setDataQA] = useState(JSON.parse(localStorage.getItem('datachat')) || []);
@@ -110,8 +110,8 @@ export const useChat = ({ ...param }) => {
 
     const onLogoutHandler = () => {};
     return {
-        hide,
-        setHide,
+        hideLogout, 
+        setHideLogout,
         onLogoutHandler,
         hideGuide,
         setHideGuide,
