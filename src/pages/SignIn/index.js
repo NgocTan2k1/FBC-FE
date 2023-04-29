@@ -1,14 +1,14 @@
+import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Input } from 'antd';
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 
-import logo from '~/img/logo.png';
-import styles from './SignIn.module.scss';
 import classNames from 'classnames/bind';
+import logo from '~/img/logo.png';
 import { SignInApi } from '~/services/auth';
-import { GetProviders, GetPublicKey, GetStocks } from '~/services/chat';
+import { GetPublicKey } from '~/services/chat';
+import styles from './SignIn.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -52,14 +52,6 @@ function SignIn() {
                                 private: key.data.private_key,
                             }),
                         );
-
-                        const providers = await GetProviders();
-                        localStorage.setItem('providers', JSON.stringify(providers.data.results));
-                        console.log(providers);
-
-                        const stocks = await GetStocks();
-                        localStorage.setItem('stocks', JSON.stringify(stocks.data.results));
-                        console.log(stocks);
                     };
 
                     await getData();

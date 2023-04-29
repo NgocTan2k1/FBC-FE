@@ -79,25 +79,39 @@ export const useChat = ({ ...param }) => {
             }
 
             if (message) {
+                console.log('message: ', message);
                 const publicKey = new NodeRSA();
                 const pub = JSON.parse(localStorage.getItem('key')).public;
                 publicKey.importKey(pub, 'pkcs8-public');
                 const encrypt = publicKey.encrypt(message.trim(), 'base64');
                 const dataSend = {
-                    message: encrypt,
+                    question: encrypt,
                     provider_id: providerChoice,
                     stock_id: stockChoice,
                     year: `${year.min},${year.max}`,
                 };
-                await SendQuestion(dataSend).then((respone) => {
-                    let dataQuestionsAndAnswers = dataQA;
-                    dataQuestionsAndAnswers.push({
-                        question: message,
-                        answer: respone.data.data,
+                await SendQuestion(dataSend)
+                    .then((response) => {
+                        setDataQA([
+                            ...dataQA,
+                            {
+                                question: message,
+                                answer: response.data.result,
+                            },
+                        ]);
+                    })
+                    .catch((error) => {
+                        console.log('error:', error);
+                        console.log('bef:', dataQA);
+                        setDataQA([
+                            ...dataQA,
+                            {
+                                question: message,
+                                answer: error.response.data.result,
+                            },
+                        ]);
+                        console.log('aft:', dataQA);
                     });
-                    setDataQA(dataQuestionsAndAnswers);
-                    localStorage.setItem('datachat', JSON.stringify(dataQA));
-                });
             }
             setMessage('');
             inputRef.current.focus();

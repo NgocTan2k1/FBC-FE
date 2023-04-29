@@ -9,7 +9,7 @@ function Year({ hook }) {
     const { year, setYear } = hook;
     const marks = {
         2010: '2010',
-        2021: '2021',
+        2022: '2022',
     };
 
     const onChange = (value) => {
@@ -24,7 +24,7 @@ function Year({ hook }) {
                         marks={marks}
                         defaultValue={[year.min, year.max]}
                         min={2010}
-                        max={2021}
+                        max={2022}
                         step={1}
                         onChange={onChange}
                     />

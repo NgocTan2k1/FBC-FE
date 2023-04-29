@@ -23,15 +23,15 @@
 .container_content {
     display: block;
     text-align: center;
-    margin: auto;
     overflow-y: auto;
     overflow-x: inherit;
     width: 100%;
+    max-height: 650px;
     margin-bottom: 50px;
 
     &::-webkit-scrollbar {
         z-index: 4;
-        width: 0;
+        width: 4px;
         overflow: hidden;
     }
 
@@ -78,7 +78,7 @@
 .container_input {
     bottom: 0;
     top: auto;
-    margin-bottom: 5%;
+    margin-bottom: 4.5%;
     position: absolute;
     display: flex;
     justify-content: center;

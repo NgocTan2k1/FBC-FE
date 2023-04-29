@@ -17,7 +17,7 @@ function ChatContent({ hook }) {
         <>
             <div className={cx('wrapper')}>
                 <div className={cx('container_content')}>
-                    {JSON?.parse(localStorage.getItem('datachat')) ? (
+                    {dataQA.length !== 0 ? (
                         dataQA.map((data, index) => {
                             return (
                                 <FormChat key={index}>

@@ -9,25 +9,16 @@ import { AugmentedReality, CalendarIcon, Logo, ReadyStock } from '~/img';
 import styles from './Chat.module.scss';
 
 import { ChatContent, ConfirmLogout, Guide, Template } from './components';
-<<<<<<< HEAD
-import { useChat } from './hooks';
-const { Provider, Stock, Year } = Template;
-=======
-import GraphModal from './components/GraphModal';
-import { useChat } from './hooks';
-const {
-    Provider,
-    Stock,
-    Year,
-} = Template;
->>>>>>> f12328bfa0f648d3e9a2f0d53aa0ebfe85ffaac1
 
+import { useChat } from './hooks';
+
+const { Provider, Stock, Year } = Template;
 const { Sider, Content } = Layout;
 
 const cx = classNames.bind(styles);
 
 function Chat() {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
     const chatHook = useChat({});
     useEffect(() => {
         chatHook.fetchProviders();
@@ -49,7 +40,6 @@ function Chat() {
                         <img alt="logo" className={cx('logo')} src={Logo} />
                     </div>
                     <div className={cx('sider-collapse')}>
-                        <GraphModal />
                         {collapsed ? (
                             <div className={cx('collapse-icon')} onClick={() => setCollapsed(false)}>
                                 <img src={AugmentedReality} alt="provider" />
