@@ -103,9 +103,11 @@ export const useChat = ({ ...param }) => {
             inputRef.current.focus();
             setLoading(false);
         } catch (error) {
+            setLoading(false);
             console.log(error);
             setMessage('');
         }
+        setLoading(false);
     }
 
     const onLogoutHandler = () => {};

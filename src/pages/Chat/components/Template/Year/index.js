@@ -1,5 +1,4 @@
 import classNames from 'classnames/bind';
-import { useEffect } from 'react';
 
 import { Collapse, Slider } from 'antd';
 import styles from './Year.module.scss';
@@ -7,7 +6,7 @@ import styles from './Year.module.scss';
 const cx = classNames.bind(styles);
 const { Panel } = Collapse;
 function Year({ hook }) {
-    const { year , setYear } = hook;
+    const { year, setYear } = hook;
     const marks = {
         2010: '2010',
         2021: '2021',
@@ -19,9 +18,7 @@ function Year({ hook }) {
     return (
         <div className={cx('wrapper')}>
             <Collapse>
-                <Panel header="Year" key="3"
-                    className={cx('panel')}
-                >
+                <Panel header="Year" key="3" className={cx('panel')}>
                     <Slider
                         range
                         marks={marks}

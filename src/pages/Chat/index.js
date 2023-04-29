@@ -8,13 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AugmentedReality, CalendarIcon, Logo, ReadyStock } from '~/img';
 import styles from './Chat.module.scss';
 
-import { useChat } from './hooks';
 import { ChatContent, ConfirmLogout, Guide, Template } from './components';
-const {
-    Provider,
-    Stock,
-    Year,
-} = Template;
+import { useChat } from './hooks';
+const { Provider, Stock, Year } = Template;
 
 const { Sider, Content } = Layout;
 

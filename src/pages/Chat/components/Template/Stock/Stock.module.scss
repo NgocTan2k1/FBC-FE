@@ -1,34 +1,9 @@
 .wrapper {
-}
-
-.title {
-    display: block;
-    text-align: left;
-    padding-left: 16px;
-    margin-bottom: 4px;
-
-    text-decoration: underline;
-}
-
-.list {
-    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
 }
 
 .panel {
     background-color: aliceblue;
+    border-radius: 5px;
 }
-
-.ant-checkbox-group {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    padding: 0 16px;
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 100%;
-}
-
-.ant-checkbox-group-item {
-    width: 50%;
-}
-

@@ -1,9 +1,8 @@
-import { faArrowRotateRight, faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
 
+import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Answer, FormChat, NewChat, Question } from '..';
 import styles from './ChatContent.module.scss';
 
@@ -12,7 +11,7 @@ const cx = classNames.bind(styles);
 console.log('Chat - re-render - out');
 function ChatContent({ hook }) {
     // console.log('stocks: ', stocks);
-    const [shouldRepeat, setShouldRepeat] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const { message, setMessage, dataQA, handleKeyDown, handleSendQuestion, loading, inputRef, setHideGuide } = hook;
     return (
         <>
@@ -31,18 +30,6 @@ function ChatContent({ hook }) {
                         <NewChat />
                     )}
                 </div>
-                {shouldRepeat && (
-                    <div className={cx('repeat-content')}>
-                        <button className={cx('repeat-answer')}>
-                            {!loading && (
-                                <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />
-                            )}
-                            {loading && <FontAwesomeIcon className={cx('icon-loading-answer')} icon={faSpinner} />}
-                            {!loading && 'Regenerate response'}
-                            {loading && 'Stop'}
-                        </button>
-                    </div>
-                )}
                 <div className={cx('container_input')}>
                     <div className={cx('form')}>
                         <div className={cx('form-item')}>
@@ -56,9 +43,15 @@ function ChatContent({ hook }) {
                                 onChange={(e) => setMessage(e.target.value)}
                                 onKeyDown={handleKeyDown}
                             />
-                            <button onClick={handleSendQuestion} className={cx('btn-send-question')}>
-                                <FontAwesomeIcon icon={faPaperPlane} />
-                            </button>
+                            <div className={cx('send-question')}>
+                                {!loading ? (
+                                    <button onClick={handleSendQuestion} className={cx('btn-send-question')}>
+                                        <FontAwesomeIcon icon={faPaperPlane} />
+                                    </button>
+                                ) : (
+                                    <FontAwesomeIcon className={cx('icon-loading-answer')} icon={faSpinner} />
+                                )}
+                            </div>
                         </div>
                     </div>
                     <button onClick={() => setHideGuide(true)} className={cx('btn-logout')}>
