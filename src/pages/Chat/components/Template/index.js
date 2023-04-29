@@ -1,3 +1,3 @@
-export * from './Provider'
-export * from './Stock'
-export * from './Year'
+export * from './Provider';
+export * from './Stock';
+export * from './Year';

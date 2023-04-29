@@ -6,4 +6,3 @@ export * as Guide from './Guide';
 export * as NewChat from './NewChat';
 export * as Question from './Question';
 export * as Template from './Template';
-

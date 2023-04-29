@@ -52,8 +52,8 @@ export const useChat = ({ ...param }) => {
     const handleKeyDown = async (event) => {
         if (event.shiftKey && event.keyCode === 13) {
         } else if (event.keyCode === 13) {
-            await handleSendQuestion();
             event.preventDefault();
+            await handleSendQuestion();
         }
     };
 
@@ -85,7 +85,7 @@ export const useChat = ({ ...param }) => {
                 const encrypt = publicKey.encrypt(message.trim(), 'base64');
                 const dataSend = {
                     message: encrypt,
-                    providers: providerChoice,
+                    provider_id: providerChoice,
                     stock_id: stockChoice,
                     year: `${year.min},${year.max}`,
                 };
@@ -110,7 +110,7 @@ export const useChat = ({ ...param }) => {
 
     const onLogoutHandler = () => {};
     return {
-        hideLogout, 
+        hideLogout,
         setHideLogout,
         onLogoutHandler,
         hideGuide,

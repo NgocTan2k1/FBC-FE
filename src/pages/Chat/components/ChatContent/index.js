@@ -4,8 +4,11 @@ import { Input } from 'antd';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 
-
-import { Answer, FormChat, NewChat, Question } from '..';
+// import { Answer, FormChat, NewChat, Question } from '..';
+import Answer from '../Answer';
+import FormChat from '../FormChat';
+import NewChat from '../NewChat';
+import Question from '../Question';
 import styles from './ChatContent.module.scss';
 
 const NodeRSA = require('node-rsa');
@@ -15,8 +18,7 @@ console.log('Chat - re-render - out');
 function ChatContent({ hook }) {
     // console.log('stocks: ', stocks);
     const [shouldRepeat, setShouldRepeat] = useState(false);
-    const { message, setMessage, dataQA, handleKeyDown, handleSendQuestion, loading, inputRef, setHideGuide } =
-        hook;
+    const { message, setMessage, dataQA, handleKeyDown, handleSendQuestion, loading, inputRef, setHideGuide } = hook;
     return (
         <>
             <div className={cx('wrapper')}>
@@ -64,9 +66,7 @@ function ChatContent({ hook }) {
                             </button>
                         </div>
                     </div>
-                    <button
-                        onClick={() => setHideGuide(true)}
-                        className={cx('btn-logout')}>
+                    <button onClick={() => setHideGuide(true)} className={cx('btn-logout')}>
                         <p className={cx('button-logout-title')}>Instruct</p>
                     </button>
                 </div>
