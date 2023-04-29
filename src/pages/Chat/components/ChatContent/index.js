@@ -1,12 +1,4 @@
-import {
-    faArrowRotateRight,
-    faCheck,
-    faPaperPlane,
-    faSignOut,
-    faSpinner,
-    faTriangleExclamation,
-    faXmark,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowRotateRight, faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Input } from 'antd';
 import classNames from 'classnames/bind';
@@ -25,34 +17,11 @@ console.log('Chat - re-render - out');
 function ChatContent({ hook }) {
     // console.log('stocks: ', stocks);
     const [shouldRepeat, setShouldRepeat] = useState(false);
-    const {
-        message,
-        setMessage,
-        dataQA,
-        handleKeyDown,
-        handleSendQuestion,
-        loading,
-        inputRef,
-        handleConfirmLogout
-    } = hook;
-
-
-    const handleLogout = () => {
-        'your-element-class';
-        const element = document.querySelector(`.${cx('wrapper-logout')}`);
-        element.classList.remove(`${cx('hide')}`);
-        element.classList.add(`${cx('show')}`);
-    };
-
-    const handleCancelLogout = () => {
-        const element = document.querySelector(`.${cx('wrapper-logout')}`);
-        element.classList.remove(`${cx('show')}`);
-        element.classList.add(`${cx('hide')}`);
-    };
+    const { message, setMessage, dataQA, handleKeyDown, handleSendQuestion, loading, inputRef, handleConfirmLogout } =
+        hook;
     return (
         <>
             <div className={cx('wrapper')}>
-
                 <div className={cx('container_content')}>
                     {JSON?.parse(localStorage.getItem('datachat')) ? (
                         dataQA.map((data, index) => {
@@ -63,18 +32,22 @@ function ChatContent({ hook }) {
                                 </FormChat>
                             );
                         })
-                    ) : <NewChat />}
+                    ) : (
+                        <NewChat />
+                    )}
                 </div>
-                {
-                    shouldRepeat && (<div className={cx('repeat-content')}>
+                {shouldRepeat && (
+                    <div className={cx('repeat-content')}>
                         <button className={cx('repeat-answer')}>
-                            {!loading && <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />}
+                            {!loading && (
+                                <FontAwesomeIcon className={cx('icon-repeat-answer')} icon={faArrowRotateRight} />
+                            )}
                             {loading && <FontAwesomeIcon className={cx('icon-loading-answer')} icon={faSpinner} />}
                             {!loading && 'Regenerate response'}
                             {loading && 'Stop'}
                         </button>
-                    </div>)
-                }
+                    </div>
+                )}
                 <div className={cx('container_input')}>
                     <div className={cx('form')}>
                         <div className={cx('form-item')}>
@@ -93,14 +66,13 @@ function ChatContent({ hook }) {
                             </button>
                         </div>
                     </div>
-                    <button className={cx('btn-logout')} onClick={handleLogout}>
-                        <p className={cx('button-logout-title')}>Log Out</p>
-                        <FontAwesomeIcon className={cx('icon-logout')} icon={faSignOut} />
+                    <button className={cx('btn-logout')}>
+                        <p className={cx('button-logout-title')}>Instruct</p>
                     </button>
                 </div>
             </div>
 
-            <div className={cx('wrapper-logout', 'hide')}>
+            {/* <div className={cx('wrapper-logout', 'hide')}>
                 <div className={cx('container-logout')}>
                     <div className={cx('title-logout')}>
                         <FontAwesomeIcon className={cx('icon-logout-warning')} icon={faTriangleExclamation} />
@@ -120,7 +92,7 @@ function ChatContent({ hook }) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </>
     );
 }

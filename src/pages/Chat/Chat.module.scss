@@ -60,6 +60,17 @@
     }
 }
 
+.icon-logout {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 6%;
+    font-weight: 600;
+}
+
+.icon-show {
+}
+
 .collapse-icon {
     display: flex;
     justify-content: center;

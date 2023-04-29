@@ -1,14 +1,15 @@
-import NodeRSA from "node-rsa";
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { GetProviders, GetPublicKey, GetStocks, SendQuestion } from "~/services/chat";
+import NodeRSA from 'node-rsa';
+import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { GetProviders, GetPublicKey, GetStocks, SendQuestion } from '~/services/chat';
 
 const initYear = {
     min: 2010,
     max: 2021,
-}
+};
 
 export const useChat = ({ ...param }) => {
+    const [hide, setHide] = useState(true);
     const [providers, setProviders] = useState([]);
     const [stocks, setStocks] = useState([]);
     const [dataQA, setDataQA] = useState(JSON.parse(localStorage.getItem('datachat')) || []);
@@ -17,12 +18,11 @@ export const useChat = ({ ...param }) => {
     const [year, setYear] = useState(initYear);
     const [providerChoice, setProviderChoice] = useState([]);
     const [stockChoice, setStockChoice] = useState([]);
-    const [message, setMessage] = useState("")
+    const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
     const inputRef = useRef();
     const navigate = useNavigate();
-
 
     const handleConfirmLogout = () => {
         localStorage.removeItem('userInfo');
@@ -48,7 +48,6 @@ export const useChat = ({ ...param }) => {
             console.log(error);
         }
     };
-
 
     const handleKeyDown = async (event) => {
         if (event.shiftKey && event.keyCode === 13) {
@@ -90,16 +89,15 @@ export const useChat = ({ ...param }) => {
                     stock_id: stockChoice,
                     year: `${year.min},${year.max}`,
                 };
-                await SendQuestion(dataSend)
-                    .then((respone) => {
-                        let dataQuestionsAndAnswers = dataQA;
-                        dataQuestionsAndAnswers.push({
-                            question: message,
-                            answer: respone.data.data,
-                        });
-                        setDataQA(dataQuestionsAndAnswers);
-                        localStorage.setItem('datachat', JSON.stringify(dataQA));
-                    })
+                await SendQuestion(dataSend).then((respone) => {
+                    let dataQuestionsAndAnswers = dataQA;
+                    dataQuestionsAndAnswers.push({
+                        question: message,
+                        answer: respone.data.data,
+                    });
+                    setDataQA(dataQuestionsAndAnswers);
+                    localStorage.setItem('datachat', JSON.stringify(dataQA));
+                });
             }
             setMessage('');
             inputRef.current.focus();
@@ -110,10 +108,13 @@ export const useChat = ({ ...param }) => {
         }
     }
 
-    const onLogoutHandler = () => { };
+    const onLogoutHandler = () => {};
     return {
+        hide,
+        setHide,
         onLogoutHandler,
-        hideGuide, setHideGuide,
+        hideGuide,
+        setHideGuide,
         providers,
         stocks,
         fetchProviders,
@@ -132,5 +133,5 @@ export const useChat = ({ ...param }) => {
         setProviderChoice,
         stockChoice,
         setStockChoice,
-    }
-}
+    };
+};
