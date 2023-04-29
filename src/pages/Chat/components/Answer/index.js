@@ -18,6 +18,7 @@ function Answer({ data }) {
                     <div
                         className={cx('question')}
                     >{`respone-question: ${data.question} và respone-question_noise: ${data.question_noise}`}</div>
+                    <div className={cx('wrapper')}> View Chart </div>
                 </div>
             )}
         </>
