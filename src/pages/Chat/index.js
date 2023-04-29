@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { AugmentedReality, CalendarIcon, Logo, ReadyStock } from '~/img';
 import styles from './Chat.module.scss';
 import ChatContent from './components/ChatContent';
+import Guide from './components/Guide';
 import Provider from './components/Template/Provider';
 import Stock from './components/Template/Stock';
 import Year from './components/Template/Year';
@@ -21,53 +22,56 @@ function Chat() {
     }, []);
 
     return (
-        <Layout
-            className={cx('chat-container')}
-        >
-            <Sider
-                className={cx('side-bar')}
-                width={280}
-                collapsible
-                collapsed={collapsed}
-                onCollapse={(value) => setCollapsed(value)}
+        <>
+            <Guide hook={chatHook} />
+            <Layout
+                className={cx('chat-container')}
             >
-                <div className={cx('logo-container')}>
-                    <img alt="logo" className={cx('logo')} src={Logo} />
-                </div>
-                <div className={cx('sider-collapse')}>
-                    {
-                        collapsed ? <div className={cx('collapse-icon')}
-                            onClick={() => setCollapsed(false)}
-                        >
-                            <img src={AugmentedReality} alt="provider" />
-                        </div> : <Provider hook={chatHook} />
-                    }
-                    <br />
-                    {
-                        collapsed ? <div className={cx('collapse-icon')}
-                            onClick={() => setCollapsed(false)}
-                        >
-                            <img src={ReadyStock} alt="stock" />
-                        </div> : <Stock hook={chatHook} />
-                    }
-                    <br />
-                    {
-                        collapsed ? <div className={cx('collapse-icon')}
-                            onClick={() => setCollapsed(false)}
-                        >
-                            <img src={CalendarIcon} alt="year" />
-                        </div> : <Year hook={chatHook} />
-                    }
-                    <br />
-                </div>
-                <div className={cx('logout-button')}>Logout</div>
-            </Sider >
-            < Layout className={cx('site-layout')} >
-                <Content className={cx('site-layout-background')}>
-                    <ChatContent hook={chatHook}/>
-                </Content>
-            </ Layout>
-        </Layout >
+                <Sider
+                    className={cx('side-bar')}
+                    width={280}
+                    collapsible
+                    collapsed={collapsed}
+                    onCollapse={(value) => setCollapsed(value)}
+                >
+                    <div className={cx('logo-container')}>
+                        <img alt="logo" className={cx('logo')} src={Logo} />
+                    </div>
+                    <div className={cx('sider-collapse')}>
+                        {
+                            collapsed ? <div className={cx('collapse-icon')}
+                                onClick={() => setCollapsed(false)}
+                            >
+                                <img src={AugmentedReality} alt="provider" />
+                            </div> : <Provider hook={chatHook} />
+                        }
+                        <br />
+                        {
+                            collapsed ? <div className={cx('collapse-icon')}
+                                onClick={() => setCollapsed(false)}
+                            >
+                                <img src={ReadyStock} alt="stock" />
+                            </div> : <Stock hook={chatHook} />
+                        }
+                        <br />
+                        {
+                            collapsed ? <div className={cx('collapse-icon')}
+                                onClick={() => setCollapsed(false)}
+                            >
+                                <img src={CalendarIcon} alt="year" />
+                            </div> : <Year hook={chatHook} />
+                        }
+                        <br />
+                    </div>
+                    <div className={cx('logout-button')}>Logout</div>
+                </Sider >
+                < Layout className={cx('site-layout')} >
+                    <Content className={cx('site-layout-background')}>
+                        <ChatContent hook={chatHook} />
+                    </Content>
+                </ Layout>
+            </Layout >
+        </>
     );
 }
 

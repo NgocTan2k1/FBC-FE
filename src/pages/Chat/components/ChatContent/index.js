@@ -52,7 +52,7 @@ function ChatContent({ hook }) {
     return (
         <>
             <div className={cx('wrapper')}>
-                {/* background  */}
+
                 <div className={cx('container_content')}>
                     {JSON?.parse(localStorage.getItem('datachat')) ? (
                         dataQA.map((data, index) => {
@@ -113,7 +113,6 @@ function ChatContent({ hook }) {
                                 Confirm
                                 <FontAwesomeIcon className={cx('icon-confirm', 'icon-select')} icon={faCheck} />
                             </button>
-
                             <button className={cx('select-btn')} onClick={handleCancelLogout}>
                                 Cancel
                                 <FontAwesomeIcon className={cx('icon-cancel', 'icon-select')} icon={faXmark} />

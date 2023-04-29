@@ -12,6 +12,7 @@ export const useChat = ({ ...param }) => {
     const [providers, setProviders] = useState([]);
     const [stocks, setStocks] = useState([]);
     const [dataQA, setDataQA] = useState(JSON.parse(localStorage.getItem('datachat')) || []);
+    const [hideGuide, setHideGuide] = useState(true);
     // param for search
     const [year, setYear] = useState(initYear);
     const [providerChoice, setProviderChoice] = useState([]);
@@ -50,7 +51,6 @@ export const useChat = ({ ...param }) => {
 
 
     const handleKeyDown = async (event) => {
-        console.log('event: ');
         if (event.shiftKey && event.keyCode === 13) {
         } else if (event.keyCode === 13) {
             await handleSendQuestion();
@@ -78,7 +78,7 @@ export const useChat = ({ ...param }) => {
                 };
                 await fetchData();
             }
-            
+
             if (message) {
                 const publicKey = new NodeRSA();
                 const pub = JSON.parse(localStorage.getItem('key')).public;
@@ -113,6 +113,7 @@ export const useChat = ({ ...param }) => {
     const onLogoutHandler = () => { };
     return {
         onLogoutHandler,
+        hideGuide, setHideGuide,
         providers,
         stocks,
         fetchProviders,
