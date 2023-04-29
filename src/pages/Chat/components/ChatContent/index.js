@@ -4,10 +4,8 @@ import { Input } from 'antd';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 
-import Answer from '~/pages/Chat/components/Answer';
-import FormChat from '~/pages/Chat/components/FormChat';
-import NewChat from '~/pages/Chat/components/NewChat';
-import Question from '~/pages/Chat/components/Question';
+
+import { Answer, FormChat, NewChat, Question } from '..';
 import styles from './ChatContent.module.scss';
 
 const NodeRSA = require('node-rsa');

@@ -1,4 +1,4 @@
-import { Collapse, Layout } from 'antd';
+import { Layout } from 'antd';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 
@@ -8,15 +8,11 @@ import { useChat } from './hooks';
 
 import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 import styles from './Chat.module.scss';
-import ChatContent from './components/ChatContent';
-import ConfirmLogout from './components/ConfirmLogout';
-import Guide from './components/Guide';
-import Provider from './components/Template/Provider';
-import Stock from './components/Template/Stock';
-import Year from './components/Template/Year';
+import { ChatContent, ConfirmLogout, Guide, Template } from './components';
+const { Provider, Stock, Year } = Template;
+const { Sider, Content } = Layout;
 
-const { Header, Sider, Content } = Layout;
-const Panel = Collapse.Panel;
+
 const cx = classNames.bind(styles);
 function Chat() {
     const [collapsed, setCollapsed] = useState(false);
@@ -83,7 +79,7 @@ function Chat() {
                     </Content>
                 </Layout>
             </Layout>
-             <ConfirmLogout hook={chatHook} />
+            <ConfirmLogout hook={chatHook} />
         </>
     );
 }
