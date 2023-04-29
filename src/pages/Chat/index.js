@@ -8,8 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AugmentedReality, CalendarIcon, Logo, ReadyStock } from '~/img';
 import styles from './Chat.module.scss';
 
-import { useChat } from './hooks';
 import { ChatContent, ConfirmLogout, Guide, Template } from './components';
+import GraphModal from './components/GraphModal';
+import { useChat } from './hooks';
 const {
     Provider,
     Stock,
@@ -43,6 +44,7 @@ function Chat() {
                         <img alt="logo" className={cx('logo')} src={Logo} />
                     </div>
                     <div className={cx('sider-collapse')}>
+                        <GraphModal />
                         {collapsed ? (
                             <div className={cx('collapse-icon')} onClick={() => setCollapsed(false)}>
                                 <img src={AugmentedReality} alt="provider" />
