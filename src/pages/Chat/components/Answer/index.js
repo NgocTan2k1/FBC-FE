@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
 import classNames from 'classnames/bind';
 
-import styles from './Answer.module.scss';
 import logo from '~/img/logo.png';
+import styles from './Answer.module.scss';
 
 const cx = classNames.bind(styles);
 console.log('Answer - re-render - out');
