@@ -22,24 +22,39 @@ function SignUp() {
     const [errorUsername, setErrorUsername] = useState(false);
     const [errorPassword, setErrorPassword] = useState(false);
     const [errorConfirmPassword, setErrorConfirmPassword] = useState(false);
+    const [textEmail, setTextEmail] = useState('');
+    const [textUsername, setTextUsername] = useState('');
+    const [textPassword, setTextPassword] = useState('');
+    const [textConfirmPassword, setTextConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [content, setContent] = useState('');
 
     const codeCheckEmail = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+
     async function handleSubmit() {
         setLoading(true);
 
         //check email
-        if (!codeCheckEmail.test(valueUpdate.email) || !valueUpdate.email) {
+        if (!valueUpdate.email) {
             setErrorEmail((prev) => true);
+            setTextEmail('Không được để trống địa chỉ email!');
+            setContent('Đăng ký không thành công, vui lòng nhập lại');
         } else {
-            setErrorEmail((prev) => false);
+            if (!codeCheckEmail.test(valueUpdate.email)) {
+                setErrorEmail((prev) => true);
+                setTextEmail('Đây không phải địa chỉ email');
+                setContent('Đăng ký không thành công, vui lòng nhập lại');
+            } else {
+                setErrorEmail((prev) => false);
+            }
         }
 
         //check username
         if (!valueUpdate.username) {
             setErrorUsername((prev) => true);
+            setTextUsername('Tên đăng nhập không được để trống');
+            setContent('Đăng ký không thành công, vui lòng nhập lại');
         } else {
             setErrorUsername((prev) => false);
         }
@@ -47,15 +62,25 @@ function SignUp() {
         //check password
         if (!valueUpdate.password1) {
             setErrorPassword((prev) => true);
+            setTextPassword('Mật khẩu không được để trống');
+            setContent('Đăng ký không thành công, vui lòng nhập lại');
         } else {
             setErrorPassword((prev) => false);
         }
 
         //check confirmpassword
-        if (valueUpdate.password1 !== valueUpdate.password2 || !valueUpdate.password2) {
+        if (!valueUpdate.password2) {
             setErrorConfirmPassword((prev) => true);
+            setTextConfirmPassword('Ô nhập lại mật không được để trống');
+            setContent('Đăng ký không thành công, vui lòng nhập lại');
         } else {
-            setErrorConfirmPassword((prev) => false);
+            if (valueUpdate.password1 !== valueUpdate.password2) {
+                setErrorConfirmPassword((prev) => true);
+                setTextConfirmPassword('Hai mật khẩu không trùng nhau');
+                setContent('Đăng ký không thành công, vui lòng nhập lại');
+            } else {
+                setErrorConfirmPassword((prev) => false);
+            }
         }
 
         //call api sign up
@@ -67,12 +92,14 @@ function SignUp() {
                 email: valueUpdate.email,
             };
 
+            console.log(data);
+
             //call
             await SignUpApi(data)
-                .then(async (respone) => {
-                    setContent('Đăng ký thành công...');
+                .then(async (response) => {
+                    setContent('Đã đăng ký thành công...');
                     setOpen(true);
-                    console.log('respone:', respone);
+                    console.log('respone:', response);
                     setErrorEmail((prev) => false);
                     setErrorUsername((prev) => false);
                     setErrorPassword((prev) => false);
@@ -81,76 +108,57 @@ function SignUp() {
                     navigate('/');
                 })
                 .catch((error) => {
-                    if (error) {
-                        setContent('Loi roi');
-                        setOpen(true);
-                        // const messages = error.response.data.messages;
-                        // console.log('error: ', error);
-                        // alert('Chú ý: ', messages);
-
-                        //check email
-                        if (!codeCheckEmail.test(valueUpdate.email) || !valueUpdate.email) {
-                            setErrorEmail((prev) => true);
-                        } else {
-                            setErrorEmail((prev) => false);
-                        }
-
-                        //check username
-                        if (!valueUpdate.username) {
-                            setErrorUsername((prev) => true);
-                        } else {
-                            setErrorUsername((prev) => false);
-                        }
-
-                        //check password
-                        if (!valueUpdate.password1) {
-                            setErrorPassword((prev) => true);
-                        } else {
-                            setErrorPassword((prev) => false);
-                        }
-
-                        //check confirmpassword
-                        if (valueUpdate.password1 !== valueUpdate.password2 || !valueUpdate.password2) {
-                            setErrorConfirmPassword((prev) => true);
-                            if (!errorEmail && !errorUsername && !errorPassword && !errorConfirmPassword) {
-                                setLoading(false);
-                            }
-                        } else {
-                            setErrorConfirmPassword((prev) => false);
-                            setLoading(false);
-                        }
+                    setContent(error.response.data.messages);
+                    setOpen(true);
+                    //check email
+                    if (!valueUpdate.email) {
+                        setErrorEmail((prev) => true);
+                        setTextEmail('Không được để trống địa chỉ email!');
+                        setContent('Đăng ký không thành công, vui lòng nhập lại');
                     } else {
-                        //check email
-                        if (!codeCheckEmail.test(valueUpdate.email) || !valueUpdate.email) {
+                        if (!codeCheckEmail.test(valueUpdate.email)) {
                             setErrorEmail((prev) => true);
+                            setTextEmail('Đây không phải địa chỉ email');
+                            setContent('Đăng ký không thành công, vui lòng nhập lại');
                         } else {
                             setErrorEmail((prev) => false);
                         }
+                    }
 
-                        //check username
-                        if (!valueUpdate.username) {
-                            setErrorUsername((prev) => true);
-                        } else {
-                            setErrorUsername((prev) => false);
-                        }
+                    //check username
+                    if (!valueUpdate.username) {
+                        setErrorUsername((prev) => true);
+                        setTextUsername('Tên đăng nhập không được để trống');
+                        setContent('Đăng ký không thành công, vui lòng nhập lại');
+                    } else {
+                        setErrorUsername((prev) => false);
+                    }
 
-                        //check password
-                        if (!valueUpdate.password1) {
-                            setErrorPassword((prev) => true);
-                        } else {
-                            setErrorPassword((prev) => false);
-                        }
-                        //check confirmpassword
-                        if (valueUpdate.password1 !== valueUpdate.password2 || !valueUpdate.password2) {
+                    //check password
+                    if (!valueUpdate.password1) {
+                        setErrorPassword((prev) => true);
+                        setTextPassword('Mật khẩu không được để trống');
+                        setContent('Đăng ký không thành công, vui lòng nhập lại');
+                    } else {
+                        setErrorPassword((prev) => false);
+                    }
+
+                    //check confirmpassword
+                    if (!valueUpdate.password2) {
+                        setErrorConfirmPassword((prev) => true);
+                        setTextConfirmPassword('Ô nhập lại mật không được để trống');
+                        setContent('Đăng ký không thành công, vui lòng nhập lại');
+                    } else {
+                        if (valueUpdate.password1 !== valueUpdate.password2) {
                             setErrorConfirmPassword((prev) => true);
+                            setTextConfirmPassword('Hai mật khẩu không trùng nhau');
+                            setContent('Đăng ký không thành công, vui lòng nhập lại');
                         } else {
                             setErrorConfirmPassword((prev) => false);
-                            setLoading(false);
                         }
                     }
                 });
         }
-
         setLoading(false);
     }
 
@@ -158,7 +166,6 @@ function SignUp() {
         if (value) {
             setValueUpdate({ ...valueUpdate, ...value });
         }
-        console.log(valueUpdate);
     }
 
     console.log('SignUp - re-render - in');
@@ -169,15 +176,23 @@ function SignUp() {
                 <img src={logo} className={cx('logo')}></img>
             </div>
             <Modal
-                title="Modal"
+                title="Thông báo:"
                 open={open}
-                onOk={() => {
-                    setOpen(false);
+                onOk={async () => {
+                    await setOpen(false);
+                    setErrorEmail((prev) => false);
+                    setErrorUsername((prev) => false);
+                    setErrorPassword((prev) => false);
+                    setErrorConfirmPassword((prev) => false);
                 }}
-                onCancel={() => {
-                    setOpen(false);
+                onCancel={async () => {
+                    await setOpen(false);
+                    setErrorEmail((prev) => false);
+                    setErrorUsername((prev) => false);
+                    setErrorPassword((prev) => false);
+                    setErrorConfirmPassword((prev) => false);
                 }}
-                okText="Oke"
+                okText="Xác Nhận"
                 cancelText="Cancel"
             >
                 <p>{content}</p>
@@ -199,11 +214,7 @@ function SignUp() {
                                 placeholder="Nhập email"
                             />
                         </Form.Item>
-                        {errorEmail ? (
-                            <div className={cx('container_form-item--error')}> Địa chỉ email không đúng!</div>
-                        ) : (
-                            ''
-                        )}
+                        {errorEmail ? <div className={cx('container_form-item--error')}>{textEmail}</div> : ''}
                     </div>
 
                     <div className={cx('container_form-item')}>
@@ -219,11 +230,7 @@ function SignUp() {
                                 placeholder="Nhập tên đăng nhập"
                             />
                         </Form.Item>
-                        {errorUsername ? (
-                            <div className={cx('container_form-item--error')}> Tên Đăng nhập không đúng!!</div>
-                        ) : (
-                            ''
-                        )}
+                        {errorUsername ? <div className={cx('container_form-item--error')}>{textUsername}</div> : ''}
                     </div>
                     <div className={cx('container_form-item')}>
                         <label htmlFor="password" className={cx('container_form-item--label')}>
@@ -245,11 +252,7 @@ function SignUp() {
                                 <FontAwesomeIcon icon={faEyeSlash} className={cx('icon_hidepassword')} />
                             )}
                         </div>
-                        {errorPassword ? (
-                            <div className={cx('container_form-item--error')}> Mật khẩu không đúng!!</div>
-                        ) : (
-                            ''
-                        )}
+                        {errorPassword ? <div className={cx('container_form-item--error')}>{textPassword}</div> : ''}
                     </div>
                     <div className={cx('container_form-item')}>
                         <label htmlFor="confirmpassword" className={cx('container_form-item--label')}>
@@ -272,7 +275,7 @@ function SignUp() {
                             )}
                         </div>
                         {errorConfirmPassword ? (
-                            <div className={cx('container_form-item--error')}> mật khẩu không trùng nhau!!!</div>
+                            <div className={cx('container_form-item--error')}>{textConfirmPassword}</div>
                         ) : (
                             ''
                         )}

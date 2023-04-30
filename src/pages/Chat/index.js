@@ -70,7 +70,7 @@ function Chat() {
                             <FontAwesomeIcon className={cx('icon-show')} icon={faSignOut} />
                         ) : (
                             <>
-                                Logout
+                                Đăng xuất
                                 <FontAwesomeIcon className={cx('icon-logout')} icon={faSignOut} />
                             </>
                         )}

@@ -5,7 +5,7 @@ import { GetProviders, GetPublicKey, GetStocks, SendQuestion } from '~/services/
 
 const initYear = {
     min: 2010,
-    max: 2021,
+    max: 2022,
 };
 
 export const useChat = ({ ...param }) => {
@@ -27,7 +27,6 @@ export const useChat = ({ ...param }) => {
     const handleConfirmLogout = () => {
         localStorage.removeItem('userInfo');
         localStorage.removeItem('key');
-        localStorage.removeItem('datachat');
         navigate('/');
     };
 
@@ -112,6 +111,7 @@ export const useChat = ({ ...param }) => {
                         ]);
                         console.log('aft:', dataQA);
                     });
+            } else {
             }
             setMessage('');
             inputRef.current.focus();

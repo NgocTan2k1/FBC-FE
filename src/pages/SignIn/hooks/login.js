@@ -1,10 +1,12 @@
-import { Form } from "antd";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { SignInApi, getCaptChaApi } from "~/services/auth";
-import { GetPublicKey } from "~/services/chat";
+import { Form } from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SignInApi } from '~/services/auth';
+import { GetPublicKey } from '~/services/chat';
 
 export const useLogin = ({ ...param }) => {
+    const [open, setOpen] = useState(false);
+    const [content, setContent] = useState('');
     const [form] = Form.useForm();
     const [valueUpdate, setValueUpdate] = useState({});
     const [loading, setLoading] = useState(false);
@@ -20,15 +22,15 @@ export const useLogin = ({ ...param }) => {
                 password: valueUpdate.password,
                 username: valueUpdate.username,
                 gcaptcha: tokenCaptcha,
-
             };
             await SignInApi(data)
-                .then(async (respone) => {
+                .then(async (response) => {
+                    console.log('response:', response);
                     localStorage.setItem(
                         'userInfo',
                         JSON.stringify({
-                            access: respone.data.access,
-                            refresh: respone.data.refresh,
+                            access: response.data.access,
+                            refresh: response.data.refresh,
                         }),
                     );
                     setError(false);
@@ -49,8 +51,10 @@ export const useLogin = ({ ...param }) => {
                 })
                 .catch((error) => {
                     if (error) {
+                        console.log('error:', error);
                         setError(true);
-                        console.log(error);
+                        setContent('Tên đăng nhập hoặc mật khẩu không đúng!');
+                        setOpen(true);
                     }
                 });
         } else {
@@ -77,5 +81,9 @@ export const useLogin = ({ ...param }) => {
         setValueUpdate,
         tokenCaptcha,
         setTokenCaptcha,
-    }
+        open,
+        setOpen,
+        content,
+        setContent,
+    };
 };

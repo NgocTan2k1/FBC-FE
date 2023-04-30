@@ -37,7 +37,7 @@ function ChatContent({ hook }) {
                                 autoSize={{ minRows: 1, maxRows: 3, minHeight: 42 }}
                                 className={cx('form-item--data')}
                                 type="text"
-                                placeholder="Enter the question!"
+                                placeholder="Hãy nhập câu hỏi của bạn!"
                                 ref={inputRef}
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
@@ -55,7 +55,7 @@ function ChatContent({ hook }) {
                         </div>
                     </div>
                     <button onClick={() => setHideGuide(true)} className={cx('btn-logout')}>
-                        <p className={cx('button-logout-title')}>Instruct</p>
+                        <p className={cx('button-logout-title')}>Hướng dẫn</p>
                     </button>
                 </div>
             </div>

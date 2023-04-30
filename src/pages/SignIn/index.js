@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
 
+import Modal from 'antd/es/modal/Modal';
 import classNames from 'classnames/bind';
 import { useCallback } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -23,41 +24,66 @@ function SignIn() {
         error,
         loading,
         setTokenCaptcha,
+        setError,
+        content,
+        open,
+        setOpen,
     } = loginHook;
 
     const { executeRecaptcha } = useGoogleReCaptcha();
-    const handleReCaptchaVerify = useCallback((event) => {
-        if (!executeRecaptcha) {
-            console.log('Execute recaptcha not yet available');
-            return;
-        }
-        (async () => {
-            try {
-                const token = await executeRecaptcha('signin');
-                setTokenCaptcha(token);
-            } catch (error) {
-                console.log(error.response);
+    const handleReCaptchaVerify = useCallback(
+        (event) => {
+            if (!executeRecaptcha) {
+                console.log('Execute recaptcha not yet available');
+                return;
             }
-        })();
-    }, [executeRecaptcha]);
-
+            (async () => {
+                try {
+                    const token = await executeRecaptcha('signin');
+                    setTokenCaptcha(token);
+                } catch (error) {
+                    console.log(error.response);
+                }
+            })();
+        },
+        [executeRecaptcha],
+    );
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
-                <h3 className={cx('title')}>Sign in</h3>
+                <h3 className={cx('title')}>Đăng nhập</h3>
                 {/* eslint-disable-next-line jsx-a11y/alt-text */}
                 <img src={logo} className={cx('logo')}></img>
             </div>
             <div className={cx('container')}>
-                <Form form={form} onValuesChange={handleSetValueUpdate}
+                <Modal
+                    title="Thông báo:"
+                    open={open}
+                    onOk={async () => {
+                        await setOpen(false);
+                        setError((prev) => false);
+                    }}
+                    onCancel={async () => {
+                        await setOpen(false);
+                        setError((prev) => false);
+                    }}
+                    okText="Xác Nhận"
+                    cancelText="Cancel"
+                >
+                    <p>{content}</p>
+                </Modal>
+                <Form
+                    form={form}
+                    onValuesChange={handleSetValueUpdate}
                     onFinish={handleSubmit}
-                    className={cx('container_form')}>
+                    className={cx('container_form')}
+                >
                     <Form.Item name="username" className={cx('container_form_item')}>
                         <Input
                             type="text"
                             autoComplete="off"
-                            placeholder="Enter Email or username"
+                            placeholder="Nhập tên đăng nhập"
                             className={cx('container_form_item--input')}
                         />
                     </Form.Item>
@@ -65,7 +91,7 @@ function SignIn() {
                         <Input
                             type={showPassword ? 'text' : 'password'}
                             autoComplete="off"
-                            placeholder="Password"
+                            placeholder="Mật khẩu"
                             className={cx('container_form_item--input')}
                         />
                     </Form.Item>
@@ -76,13 +102,13 @@ function SignIn() {
                             <FontAwesomeIcon icon={faEyeSlash} className={cx('icon_hidepassword')} />
                         )}
                     </div>
-                    {error ? <div className={cx('error-signin')}> your username or password is incorrect </div> : ''}
+                    {error ? <div className={cx('error-signin')}>{content}</div> : ''}
                     <button onClick={handleReCaptchaVerify} className={cx('signin-btn')}>
                         {loading && <FontAwesomeIcon className={cx('icon-loading-signin')} icon={faSpinner} />}
-                        {!loading && `Login`}
+                        {!loading && `Đăng nhập`}
                     </button>
                     <Link to="/signup" className={cx('signup-link')}>
-                        you don't have account?
+                        Bạn chưa có tài khoản?
                     </Link>
                 </Form>
             </div>
