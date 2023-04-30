@@ -114,7 +114,7 @@ function SignIn() {
                     {error ? <div className={cx('error-signin')}> your username or password is incorrect </div> : ''}
 
                     <button onClick={handleSubmit} className={cx('signin-btn')}>
-                        {loading && <FontAwesomeIcon className={cx('icon-loading-answer')} icon={faSpinner} />}
+                        {loading && <FontAwesomeIcon className={cx('icon-loading-signin')} icon={faSpinner} />}
                         {!loading && `Login`}
                     </button>
 

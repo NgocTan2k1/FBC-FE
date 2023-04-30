@@ -44,6 +44,8 @@
 }
 
 .container_title {
+    font-size: 3.4rem;
+    line-height: 3.4rem;
 }
 
 .container_form {
@@ -127,6 +129,19 @@
         cursor: pointer;
         background: rgba(38, 198, 218, 1);
     }
+}
+
+@keyframes spinner {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.icon-loading-signup {
+    animation: spinner 1s linear infinite;
 }
 
 .signin-link {
