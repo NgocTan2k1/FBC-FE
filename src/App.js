@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { publicRouters, privateRouters } from '~/routers';
 import PublicRoute from './routers/PublicRoute';
 import PrivateRoute from './routers/PrivateRoute';
-import Fobidance404 from './components/pages/Fobidance404';
+import Fobidance404 from './pages/Fobidance404';
 
 function App() {
     return (

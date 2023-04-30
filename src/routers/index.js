@@ -1,6 +1,6 @@
-import SignUp from '~/components/pages/SignUp';
-import SignIn from '~/components/pages/SignIn';
-import Chat from '~/components/pages/Chat';
+import SignUp from '~/pages/SignUp';
+import SignIn from '~/pages/SignIn';
+import Chat from '~/pages/Chat';
 
 // public routers
 export const publicRouters = [

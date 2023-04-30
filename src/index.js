@@ -1,15 +1,23 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import App from './App';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import GlobalStyles from '~/components/GlobalStyles';
+import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
-    <GlobalStyles>
-        <App />
-    </GlobalStyles>,
+    <GoogleReCaptchaProvider
+        scriptProps={{
+            async: true,
+        }}
+        reCaptchaKey={process.env.REACT_APP_SITE_KEY}
+    >
+        <GlobalStyles>
+            <App />
+        </GlobalStyles>,
+
+    </GoogleReCaptchaProvider>
     // </React.StrictMode>,
 );
 
