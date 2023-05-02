@@ -40,6 +40,10 @@ export default function Guide({ hook }) {
                                 <li>100 ngàn sẽ nhập là 100,000 vnđ </li>
                                 <li>2000k sẽ nhập là 2,000,000 vnđ </li>
                             </ul>
+                            <h2 style={{ color: 'red' }}>5. *Lưu ý</h2>
+                            <p style={{ color: 'red' }}>
+                                Khi làm mới lại trang (nhấn phím F5) thì lịch sử đoạn hội thoại sẽ bị mất!!!
+                            </p>
                         </span>
                     </Content>
                 </Layout>

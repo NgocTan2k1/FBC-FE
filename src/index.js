@@ -15,9 +15,8 @@ root.render(
     >
         <GlobalStyles>
             <App />
-        </GlobalStyles>,
-
-    </GoogleReCaptchaProvider>
+        </GlobalStyles>
+    </GoogleReCaptchaProvider>,
     // </React.StrictMode>,
 );
 

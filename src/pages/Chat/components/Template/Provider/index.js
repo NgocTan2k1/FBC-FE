@@ -26,9 +26,7 @@ function Provider({ hook }) {
     return (
         <div className={cx('wrapper')}>
             <Collapse>
-                <Panel header="Provider" key="1"
-                    className={cx('panel')}
-                >
+                <Panel header="Nguồn Dữ Liệu" key="1" className={cx('panel')}>
                     <Checkbox.Group
                         options={checkboxProvider}
                         onChange={onChangeHandler}

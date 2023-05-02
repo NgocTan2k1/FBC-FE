@@ -6,7 +6,6 @@ import styles from './Stock.module.scss';
 
 const cx = classNames.bind(styles);
 
-
 const { Panel } = Collapse;
 
 console.log('Stock - re-render - out');
@@ -31,10 +30,8 @@ function Stock({ hook }) {
     return (
         <div className={cx('wrapper')}>
             <Collapse>
-                <Panel header="Stock" key="2"
-                    className={cx('panel')}
-                >
-                    <div className={cx("list")}>
+                <Panel header="Ngân Hàng" key="2" className={cx('panel')}>
+                    <div className={cx('list')}>
                         <Checkbox.Group
                             style={{
                                 width: '100%',
@@ -43,23 +40,21 @@ function Stock({ hook }) {
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
                                 alignContent: 'space-between',
-                                padding: '10px'
+                                padding: '10px',
                             }}
                             onChange={onChangeHandler}
                             defaultValue={stockChoice}
                         >
                             {checkboxStock.map((item) => {
                                 return (
-                                    <Tooltip
-                                        title={item?.alias}
-                                    >
+                                    <Tooltip title={item?.alias}>
                                         <Checkbox
                                             key={item.value}
                                             value={item.value}
                                             style={{
                                                 width: '30%',
                                                 margin: '0 0 10px 0',
-                                                flex: '0 0 30%'
+                                                flex: '0 0 30%',
                                             }}
                                         >
                                             {item.label}

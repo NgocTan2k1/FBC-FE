@@ -18,7 +18,7 @@ function Year({ hook }) {
     return (
         <div className={cx('wrapper')}>
             <Collapse>
-                <Panel header="Year" key="3" className={cx('panel')}>
+                <Panel header="Khoảng Năm" key="3" className={cx('panel')}>
                     <Slider
                         range
                         marks={marks}
