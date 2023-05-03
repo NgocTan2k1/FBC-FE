@@ -1,7 +1,10 @@
 import NodeRSA from 'node-rsa';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GetProviders, GetPublicKey, GetStocks, SendQuestion } from '~/services/chat';
+import { GetProviders, GetStocks, SendQuestion } from '~/services/chat';
+import { checkExpireToken } from '~/utils';
+
+import dataExample from '~/example/response.json';
 
 const initYear = {
     min: 2010,
@@ -23,7 +26,6 @@ export const useChat = ({ ...param }) => {
 
     const inputRef = useRef();
     const navigate = useNavigate();
-
     const handleConfirmLogout = () => {
         localStorage.removeItem('userInfo');
         localStorage.removeItem('key');
@@ -59,24 +61,7 @@ export const useChat = ({ ...param }) => {
     async function handleSendQuestion() {
         try {
             setLoading(true);
-            const expireDate = new Date(Date.parse(JSON.parse(localStorage.getItem('key'))?.expire));
-            const currentDate = new Date();
-            if (expireDate.getTime() <= currentDate.getTime()) {
-                const fetchData = async () => {
-                    const key = await GetPublicKey();
-                    console.log('=== đang lấy key ===');
-                    localStorage.setItem(
-                        'key',
-                        JSON.stringify({
-                            public: key.data.public_key,
-                            expire: key.data.expire,
-                            private: key.data.private_key,
-                        }),
-                    );
-                };
-                await fetchData();
-            }
-
+            await checkExpireToken()
             if (message) {
                 console.log('message: ', message);
                 const publicKey = new NodeRSA();
@@ -101,20 +86,20 @@ export const useChat = ({ ...param }) => {
                     })
                     .catch((error) => {
                         console.log('error:', error);
-                        console.log('bef:', dataQA);
+                        //TODO: uncomment here
                         setDataQA([
                             ...dataQA,
                             {
                                 question: message,
-                                answer: error.response.data.result,
+                                // answer: error.response.data.result,
+                                answer: dataExample,
                             },
                         ]);
-                        console.log('aft:', dataQA);
                     });
             } else {
             }
             setMessage('');
-            inputRef.current.focus();
+            inputRef?.current?.focus();
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -124,7 +109,7 @@ export const useChat = ({ ...param }) => {
         setLoading(false);
     }
 
-    const onLogoutHandler = () => {};
+    const onLogoutHandler = () => { };
     return {
         hideLogout,
         setHideLogout,

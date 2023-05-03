@@ -1,49 +1,98 @@
-import { faker } from '@faker-js/faker';
-import { Button, Modal } from 'antd';
-import _ from 'lodash';
-import { useState } from 'react';
+import { Modal, Tabs } from 'antd';
+import { useEffect, useState } from 'react';
 import VerticalChart from '~/components/VerticalChart';
+import { PROVIDER } from '~/constants/provider';
+import { TYPE_ANSWER } from '~/constants/typeAnswer';
 
-const GraphModal = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const GraphModal = ({
+    ...props
+}) => {
+    const {
+        showModal,
+        setShowModal,
+        graph,
+        type,
+        providerAvailable,
+    } = props;
 
-    const showModal = () => {
-        setIsModalOpen(true);
+    const [tags, setTags] = useState([])
+
+    useEffect(() => {
+        const temp = [
+            {
+                key: 1,
+                label: PROVIDER.FIREANT,
+                children: ((type === TYPE_ANSWER.VERTICAL) ? (
+                    <VerticalChart
+                        years={graph?.years}
+                        dataRaw={
+                            (Object.entries(graph[PROVIDER.FIREANT] ? graph[PROVIDER.FIREANT] : []).map(([key, values]) => {
+                                return {
+                                    name: key,
+                                    data: values.dataRaw
+                                }
+                            }))
+                        }
+                        title={graph?.title}
+                    />
+                ) : (<></>))
+            },
+            {
+                key: 2,
+                label: PROVIDER.VIETSTOCK,
+                children:
+                    ((type === TYPE_ANSWER.VERTICAL) ? (
+                        <VerticalChart
+                            years={graph?.years}
+                            dataRaw={
+                                (Object.entries(graph[PROVIDER.VIETSTOCK] ? graph[PROVIDER.VIETSTOCK] : []).map(([key, values]) => {
+                                    return {
+                                        name: key,
+                                        data: values.dataRaw
+                                    }
+                                }))
+                            }
+                            title={graph?.title}
+                        />
+                    ) : (<></>))
+            },
+            {
+                key: 3,
+                label: PROVIDER.CAFEF,
+                children:
+                    ((type === TYPE_ANSWER.VERTICAL) ? (
+                        <VerticalChart
+                            years={graph?.years}
+                            dataRaw={
+                                (Object.entries(graph[PROVIDER.CAFEF] ? graph[PROVIDER.CAFEF] : []).map(([key, values]) => {
+                                    return {
+                                        name: key,
+                                        data: values.dataRaw
+                                    }
+                                }))
+                            }
+                            title={graph?.title}
+                        />
+                    ) : (<></>))
+            }
+        ]
+        setTags(temp)
+    }, [graph, type])
+
+    const handleClose = () => {
+        setShowModal(false);
     };
-
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
-    const minYear = 2010;
-    const maxYear = 2021;
-
-    const numOfYears = _.random(2, 10);
-    const startYear = _.random(minYear, maxYear - numOfYears);
-    const years = _.times(numOfYears, (index) => startYear + index);
 
     return (
         <>
-            <Button type="primary" onClick={showModal}>
-                Open Modal
-            </Button>
-            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <VerticalChart
-                    years={years}
-                    dataRaw={[
-                        {
-                            name: faker.company.companyName(),
-                            data: years.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-                        },
-                        {
-                            name: faker.company.companyName(),
-                            data: years.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-                        },
-                    ]}
-                    title={faker.hacker.phrase()}
+            <Modal
+                title={graph?.title}
+                open={showModal}
+                onCancel={handleClose}
+                footer={null}
+            >
+                <Tabs
+                    items={tags.filter((item) => providerAvailable?.includes(item?.label))}
                 />
             </Modal>
         </>

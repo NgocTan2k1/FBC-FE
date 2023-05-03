@@ -8,9 +8,7 @@ import styles from './ChatContent.module.scss';
 
 const cx = classNames.bind(styles);
 
-console.log('Chat - re-render - out');
 function ChatContent({ hook }) {
-    // console.log('stocks: ', stocks);
     // const [loading, setLoading] = useState(false);
     const { message, setMessage, dataQA, handleKeyDown, handleSendQuestion, loading, inputRef, setHideGuide } = hook;
     return (

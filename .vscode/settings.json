@@ -7,5 +7,6 @@
     "prettier.jsxSingleQuote": true,
     "editor.codeActionsOnSave": {
         "source.organizeImports": true
-    }
+    },
+    "cSpell.words": ["cafef", "fireant", "vietstock"]
 }

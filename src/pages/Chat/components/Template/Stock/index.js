@@ -8,12 +8,10 @@ const cx = classNames.bind(styles);
 
 const { Panel } = Collapse;
 
-console.log('Stock - re-render - out');
 function Stock({ hook }) {
     const { stocks, stockChoice, setStockChoice } = hook;
     const [checkboxStock, setCheckboxStock] = useState([]);
     useEffect(() => {
-        console.log(stocks);
         const data = stocks.map((item) => {
             return {
                 label: item.name,
