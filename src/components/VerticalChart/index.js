@@ -1,36 +1,15 @@
-import { faker } from '@faker-js/faker';
-import {
-    BarElement,
-    CategoryScale,
-    Chart as ChartJS,
-    Legend,
-    LinearScale,
-    Title,
-    Tooltip,
-} from 'chart.js';
-import classNames from 'classnames/bind';
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-
 import random_rgba from '~/utils/color';
+
+import classNames from 'classnames/bind';
 import styles from './VerticalChart.module.scss';
 
-const cx = classNames.bind(styles);
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function VerticalChart(
-    {
-        years,
-        dataRaw,
-        title,
-    }
-) {
+const cx = classNames.bind(styles);
+
+export default function VerticalChart({ years, dataRaw, title }) {
     const options = {
         responsive: true,
         plugins: {
@@ -54,10 +33,8 @@ export default function VerticalChart(
         })),
     };
     return (
-        <div
-            className={cx('vertical-chart-container')}
-        >
+        <div className={cx('vertical-chart-container')}>
             <Bar options={options} data={data} />;
         </div>
-    )
+    );
 }

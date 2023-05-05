@@ -11,7 +11,7 @@ function Answer({ data }) {
     const answerHook = useAnswer(data.result);
     useEffect(() => {
         answerHook.processData();
-    }, [])
+    }, []);
     const { element, content, tables } = answerHook;
     return (
         <>
@@ -21,23 +21,14 @@ function Answer({ data }) {
                         <img className={cx('icon')} src={logo} />
                     </div>
                     <div className={cx('answer')}>
-                        <p>
-                            {content}
-                        </p>
-                        {
-                            element && (
-                                <ul>
-                                    {element.map((item, index) => (
-                                        <AnswerOption
-                                            key={index}
-                                            hook={answerHook}
-                                            table={tables[item]}
-                                            text={item}
-                                        />
-                                    ))}
-                                </ul>
-                            )
-                        }
+                        <p className={cx('content')}>{content}</p>
+                        {element && (
+                            <ul className={cx('list')}>
+                                {element.map((item, index) => (
+                                    <AnswerOption key={index} hook={answerHook} table={tables[item]} text={item} />
+                                ))}
+                            </ul>
+                        )}
                     </div>
                 </div>
             )}

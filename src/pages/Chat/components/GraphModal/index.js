@@ -1,83 +1,116 @@
 import { Modal, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
+import LineChart from '~/components/LineChart';
 import VerticalChart from '~/components/VerticalChart';
 import { PROVIDER } from '~/constants/provider';
 import { TYPE_ANSWER } from '~/constants/typeAnswer';
 
-const GraphModal = ({
-    ...props
-}) => {
-    const {
-        showModal,
-        setShowModal,
-        graph,
-        type,
-        providerAvailable,
-    } = props;
+const GraphModal = ({ ...props }) => {
+    const { showModal, setShowModal, graph, type, providerAvailable } = props;
 
-    const [tags, setTags] = useState([])
+    const [tags, setTags] = useState([]);
 
     useEffect(() => {
         const temp = [
             {
                 key: 1,
                 label: PROVIDER.FIREANT,
-                children: ((type === TYPE_ANSWER.VERTICAL) ? (
-                    <VerticalChart
-                        years={graph?.years}
-                        dataRaw={
-                            (Object.entries(graph[PROVIDER.FIREANT] ? graph[PROVIDER.FIREANT] : []).map(([key, values]) => {
-                                return {
-                                    name: key,
-                                    data: values.dataRaw
-                                }
-                            }))
-                        }
-                        title={graph?.title}
-                    />
-                ) : (<></>))
+                children:
+                    type === TYPE_ANSWER.VERTICAL ? (
+                        <VerticalChart
+                            years={graph?.years}
+                            dataRaw={Object.entries(graph[PROVIDER.FIREANT] ? graph[PROVIDER.FIREANT] : []).map(
+                                ([key, values]) => {
+                                    return {
+                                        name: key,
+                                        data: values.dataRaw,
+                                    };
+                                },
+                            )}
+                            title={graph?.title}
+                        />
+                    ) : (
+                        <LineChart
+                            years={graph?.years}
+                            dataRaw={Object.entries(graph[PROVIDER.FIREANT] ? graph[PROVIDER.FIREANT] : []).map(
+                                ([key, values]) => {
+                                    return {
+                                        name: key,
+                                        data: values.dataRaw,
+                                    };
+                                },
+                            )}
+                            title={graph?.title}
+                        />
+                    ),
             },
             {
                 key: 2,
                 label: PROVIDER.VIETSTOCK,
                 children:
-                    ((type === TYPE_ANSWER.VERTICAL) ? (
+                    type === TYPE_ANSWER.VERTICAL ? (
                         <VerticalChart
                             years={graph?.years}
-                            dataRaw={
-                                (Object.entries(graph[PROVIDER.VIETSTOCK] ? graph[PROVIDER.VIETSTOCK] : []).map(([key, values]) => {
+                            dataRaw={Object.entries(graph[PROVIDER.VIETSTOCK] ? graph[PROVIDER.VIETSTOCK] : []).map(
+                                ([key, values]) => {
                                     return {
                                         name: key,
-                                        data: values.dataRaw
-                                    }
-                                }))
-                            }
+                                        data: values.dataRaw,
+                                    };
+                                },
+                            )}
                             title={graph?.title}
                         />
-                    ) : (<></>))
+                    ) : (
+                        <LineChart
+                            years={graph?.years}
+                            dataRaw={Object.entries(graph[PROVIDER.VIETSTOCK] ? graph[PROVIDER.VIETSTOCK] : []).map(
+                                ([key, values]) => {
+                                    return {
+                                        name: key,
+                                        data: values.dataRaw,
+                                    };
+                                },
+                            )}
+                            title={graph?.title}
+                        />
+                    ),
             },
             {
                 key: 3,
                 label: PROVIDER.CAFEF,
                 children:
-                    ((type === TYPE_ANSWER.VERTICAL) ? (
+                    type === TYPE_ANSWER.VERTICAL ? (
                         <VerticalChart
                             years={graph?.years}
-                            dataRaw={
-                                (Object.entries(graph[PROVIDER.CAFEF] ? graph[PROVIDER.CAFEF] : []).map(([key, values]) => {
+                            dataRaw={Object.entries(graph[PROVIDER.CAFEF] ? graph[PROVIDER.CAFEF] : []).map(
+                                ([key, values]) => {
                                     return {
                                         name: key,
-                                        data: values.dataRaw
-                                    }
-                                }))
-                            }
+                                        data: values.dataRaw,
+                                    };
+                                },
+                            )}
                             title={graph?.title}
                         />
-                    ) : (<></>))
-            }
-        ]
-        setTags(temp)
-    }, [graph, type])
+                    ) : (
+                        <LineChart
+                            years={graph?.years}
+                            dataRaw={Object.entries(graph[PROVIDER.CAFEF] ? graph[PROVIDER.CAFEF] : []).map(
+                                ([key, values]) => {
+                                    return {
+                                        name: key,
+                                        data: values.dataRaw,
+                                    };
+                                },
+                            )}
+                            title={graph?.title}
+                        />
+                    ),
+            },
+        ];
+        setTags(temp);
+    }, [graph, type]);
 
     const handleClose = () => {
         setShowModal(false);
@@ -85,15 +118,8 @@ const GraphModal = ({
 
     return (
         <>
-            <Modal
-                title={graph?.title}
-                open={showModal}
-                onCancel={handleClose}
-                footer={null}
-            >
-                <Tabs
-                    items={tags.filter((item) => providerAvailable?.includes(item?.label))}
-                />
+            <Modal title={graph?.title} open={showModal} onCancel={handleClose} footer={null}>
+                <Tabs items={tags.filter((item) => providerAvailable?.includes(item?.label))} />
             </Modal>
         </>
     );

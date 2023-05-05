@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { GetProviders, GetStocks, SendQuestion } from '~/services/chat';
 import { checkExpireToken } from '~/utils';
 
-import dataExample from '~/example/response.json';
+// import dataExample from '~/example/response.json';
+import lineChart from '~/example/lineChart.json';
 
 const initYear = {
     min: 2010,
@@ -61,7 +62,7 @@ export const useChat = ({ ...param }) => {
     async function handleSendQuestion() {
         try {
             setLoading(true);
-            await checkExpireToken()
+            await checkExpireToken();
             if (message) {
                 console.log('message: ', message);
                 const publicKey = new NodeRSA();
@@ -74,8 +75,10 @@ export const useChat = ({ ...param }) => {
                     stock_id: stockChoice,
                     year: `${year.min},${year.max}`,
                 };
+                console.log('dataSend:', dataSend);
                 await SendQuestion(dataSend)
                     .then((response) => {
+                        console.log('response:', response);
                         setDataQA([
                             ...dataQA,
                             {
@@ -92,7 +95,8 @@ export const useChat = ({ ...param }) => {
                             {
                                 question: message,
                                 // answer: error.response.data.result,
-                                answer: dataExample,
+                                // answer: dataExample,
+                                answer: lineChart,
                             },
                         ]);
                     });
@@ -109,7 +113,7 @@ export const useChat = ({ ...param }) => {
         setLoading(false);
     }
 
-    const onLogoutHandler = () => { };
+    const onLogoutHandler = () => {};
     return {
         hideLogout,
         setHideLogout,

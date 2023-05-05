@@ -44,7 +44,18 @@
     background-color: #f1f1f1;
 }
 
+.list {
+    padding-left: 4px;
+    margin: 4px 0;
+}
+
+.content {
+    margin: 2px 0;
+}
+
 .answer-option {
     cursor: pointer;
     font-weight: bold;
+    padding: 4px 2px;
+    list-style: none;
 }
