@@ -138,3 +138,24 @@
     text-decoration: none;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
 }
+
+.modal-warning {
+}
+
+.container-warning {
+    position: 'relative';
+    color: rgb(238, 64, 76);
+}
+.content-warning {
+    margin: 0;
+    padding-left: 8%;
+    font-size: 1.6rem;
+}
+
+.img-warning {
+    position: absolute;
+    width: 3.4rem;
+    top: 50%;
+    // transform: translateY(-50%);
+    left: 5%;
+}

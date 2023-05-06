@@ -5,7 +5,6 @@ import { GetProviders, GetStocks, SendQuestion } from '~/services/chat';
 import { checkExpireToken } from '~/utils';
 
 // import dataExample from '~/example/response.json';
-import lineChart from '~/example/lineChart.json';
 
 const initYear = {
     min: 2010,
@@ -64,20 +63,23 @@ export const useChat = ({ ...param }) => {
             setLoading(true);
             await checkExpireToken();
             if (message) {
-                console.log('message: ', message);
-                const publicKey = new NodeRSA();
-                const pub = JSON.parse(localStorage.getItem('key')).public;
-                publicKey.importKey(pub, 'pkcs8-public');
-                const encrypt = publicKey.encrypt(message.trim(), 'base64');
-                const dataSend = {
-                    question: encrypt,
+                const dataSend = JSON.stringify({
+                    question: message,
                     provider_id: providerChoice,
                     stock_id: stockChoice,
                     // year: `${year.min},${year.max}`,
                     year: [year.min, year.max],
-                };
+                });
+                const publicKey = new NodeRSA();
+                const pub = JSON.parse(localStorage.getItem('key')).public;
+                publicKey.importKey(pub, 'pkcs8-public');
+                const dataEncrypt = publicKey.encrypt(dataSend.trim(), 'base64');
+
+                // log ra để xem
                 console.log('dataSend:', dataSend);
-                await SendQuestion(dataSend)
+                console.log('dataEncrypt:', dataEncrypt);
+
+                await SendQuestion(dataEncrypt)
                     .then((response) => {
                         console.log('response:', response);
                         setDataQA([
@@ -90,6 +92,8 @@ export const useChat = ({ ...param }) => {
                     })
                     .catch((error) => {
                         console.log('error:', error);
+                        console.log('result:', error.response.data.result);
+
                         //TODO: uncomment here
                         setDataQA([
                             ...dataQA,
@@ -114,7 +118,7 @@ export const useChat = ({ ...param }) => {
         setLoading(false);
     }
 
-    const onLogoutHandler = () => { };
+    const onLogoutHandler = () => {};
     return {
         hideLogout,
         setHideLogout,

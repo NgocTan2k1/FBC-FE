@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Input } from 'antd';
@@ -77,7 +78,8 @@ function SignIn() {
                 </div>
                 <div className={cx('container')}>
                     <Modal
-                        title="Thông báo:"
+                        className={cx('modal-warning')}
+                        title="Lưu ý: Không thể đăng nhập!"
                         open={open}
                         onOk={async () => {
                             await setOpen(false);
@@ -87,10 +89,15 @@ function SignIn() {
                             await setOpen(false);
                             setError((prev) => false);
                         }}
-                        okText="Xác Nhận"
-                        cancelText="Cancel"
+                        footer={null}
                     >
-                        <p>{content}</p>
+                        <div className={cx('container-warning')}>
+                            <p className={cx('content-warning')}>{content}</p>
+                            <img
+                                className={cx('img-warning')}
+                                src="https://cdn-icons-png.flaticon.com/512/4201/4201973.png"
+                            />
+                        </div>
                     </Modal>
                     <Form
                         form={form}

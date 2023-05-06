@@ -13,7 +13,7 @@ export default function Guide({ hook }) {
                 <Layout className={cx('guide-container')}>
                     <Header className={cx('guide-header')}>
                         <h1>Hướng dẫn cho người dùng</h1>
-                        <button class={cx('close-button')} onClick={() => setHideGuide(false)}>
+                        <button className={cx('close-button')} onClick={() => setHideGuide(false)}>
                             <CloseOutlined />
                         </button>
                     </Header>
