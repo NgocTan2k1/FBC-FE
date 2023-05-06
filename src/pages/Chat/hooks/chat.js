@@ -73,7 +73,8 @@ export const useChat = ({ ...param }) => {
                     question: encrypt,
                     provider_id: providerChoice,
                     stock_id: stockChoice,
-                    year: `${year.min},${year.max}`,
+                    // year: `${year.min},${year.max}`,
+                    year: [year.min, year.max],
                 };
                 console.log('dataSend:', dataSend);
                 await SendQuestion(dataSend)
@@ -94,9 +95,9 @@ export const useChat = ({ ...param }) => {
                             ...dataQA,
                             {
                                 question: message,
-                                // answer: error.response.data.result,
+                                answer: error.response.data.result,
                                 // answer: dataExample,
-                                answer: lineChart,
+                                // answer: lineChart,
                             },
                         ]);
                     });
@@ -113,7 +114,7 @@ export const useChat = ({ ...param }) => {
         setLoading(false);
     }
 
-    const onLogoutHandler = () => {};
+    const onLogoutHandler = () => { };
     return {
         hideLogout,
         setHideLogout,

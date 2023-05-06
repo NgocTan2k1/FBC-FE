@@ -8,7 +8,7 @@ import { AnswerOption } from './AnswerOption';
 
 const cx = classNames.bind(styles);
 function Answer({ data }) {
-    const answerHook = useAnswer(data.result);
+    const answerHook = useAnswer(data);
     useEffect(() => {
         answerHook.processData();
     }, []);
