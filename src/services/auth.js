@@ -12,5 +12,8 @@ const SignUpApi = (data) => {
     return axiosClient.post('/api/v1/authentication/register/', data);
 };
 
-export { SignInApi, SignUpApi, getCaptChaApi };
+const GetPublicKeyUser = () => {
+    return axiosClient.get('/api/v1/configs/login');
+};
 
+export { SignInApi, SignUpApi, getCaptChaApi, GetPublicKeyUser };

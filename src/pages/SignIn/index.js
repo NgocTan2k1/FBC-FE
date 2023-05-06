@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom';
 
 import Modal from 'antd/es/modal/Modal';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import logo from '~/img/logo.png';
+import { GetPublicKeyUser } from '~/services/auth.js';
 import styles from './SignIn.module.scss';
 import { useLogin } from './hooks';
 
@@ -30,9 +31,11 @@ function SignIn() {
         content,
         open,
         setOpen,
+        userAnymousKey,
+        setUserAnymousKey,
     } = loginHook;
-    const [executeCaptcha, setExecuteCaptcha] = useState(false);
     const { executeRecaptcha } = useGoogleReCaptcha();
+
     // const handleReCaptchaVerify = useCallback(
     //     (event) => {
     //         if (!executeRecaptcha) {
@@ -52,9 +55,7 @@ function SignIn() {
     // );
 
     useEffect(() => {
-        console.log('executeRecaptcha', executeRecaptcha);
         if (!executeRecaptcha) {
-            setExecuteCaptcha(!executeCaptcha);
             console.log('Execute recaptcha not yet available');
             return;
         }
@@ -66,10 +67,25 @@ function SignIn() {
                 console.log(error.response);
             }
         })();
-    }, [executeCaptcha]);
+    }, [executeRecaptcha]);
+
+    useEffect(() => {
+        const getAnymousKey = async () => {
+            try {
+                const anymousKey = await GetPublicKeyUser();
+                await setUserAnymousKey(anymousKey.data);
+            } catch (error) {
+                console.log('test error anymousKey');
+                console.log(error.response);
+            }
+        };
+
+        getAnymousKey();
+    }, []);
 
     return (
-        tokenCaptcha && (
+        tokenCaptcha &&
+        userAnymousKey && (
             <div className={cx('wrapper')}>
                 <div className={cx('header')}>
                     <h3 className={cx('title')}>Đăng nhập</h3>

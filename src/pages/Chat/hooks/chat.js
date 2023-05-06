@@ -62,24 +62,26 @@ export const useChat = ({ ...param }) => {
         try {
             setLoading(true);
             await checkExpireToken();
+
             if (message) {
-                const dataSend = JSON.stringify({
+                const dataSend = await JSON.stringify({
                     question: message,
                     provider_id: providerChoice,
                     stock_id: stockChoice,
                     // year: `${year.min},${year.max}`,
                     year: [year.min, year.max],
                 });
+
                 const publicKey = new NodeRSA();
                 const pub = JSON.parse(localStorage.getItem('key')).public;
                 publicKey.importKey(pub, 'pkcs8-public');
-                const dataEncrypt = publicKey.encrypt(dataSend.trim(), 'base64');
+                const dataSendEncrypt = { raw: publicKey.encrypt(dataSend, 'base64') };
 
-                // log ra để xem
-                console.log('dataSend:', dataSend);
-                console.log('dataEncrypt:', dataEncrypt);
+                console.log('string dataSend: ', dataSend.length);
+                console.log('object dataSend: ', JSON.parse(dataSend));
+                console.log('dataSendEncrypt: ', dataSendEncrypt);
 
-                await SendQuestion(dataEncrypt)
+                await SendQuestion(dataSendEncrypt)
                     .then((response) => {
                         console.log('response:', response);
                         setDataQA([
@@ -92,8 +94,7 @@ export const useChat = ({ ...param }) => {
                     })
                     .catch((error) => {
                         console.log('error:', error);
-                        console.log('result:', error.response.data.result);
-
+                        console.log('error:', error.response.data.result);
                         //TODO: uncomment here
                         setDataQA([
                             ...dataQA,

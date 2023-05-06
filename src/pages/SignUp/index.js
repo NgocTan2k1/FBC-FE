@@ -2,17 +2,22 @@
 import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Form, Input, Modal } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import classNames from 'classnames/bind';
+import NodeRSA from 'node-rsa';
 import logo from '~/img/logo-Sign-Up.png';
-import { SignUpApi } from '~/services/auth';
+import { GetPublicKeyUser, SignUpApi } from '~/services/auth';
+import { useLogin } from '../SignIn/hooks';
 import styles from './SignUp.module.scss';
 
 const cx = classNames.bind(styles);
 
 function SignUp() {
+    const loginHook = useLogin({});
+    const { userAnymousKey, setUserAnymousKey } = loginHook;
+
     const navigate = useNavigate();
     const [valueUpdate, setValueUpdate] = useState({});
     const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +33,20 @@ function SignUp() {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [content, setContent] = useState('');
+
+    useEffect(() => {
+        const getAnymousKey = async () => {
+            try {
+                const anymousKey = await GetPublicKeyUser();
+                await setUserAnymousKey(anymousKey.data);
+            } catch (error) {
+                console.log('test error anymousKey');
+                console.log(error.response);
+            }
+        };
+
+        getAnymousKey();
+    }, []);
 
     const codeCheckEmail = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
@@ -84,21 +103,24 @@ function SignUp() {
 
         //call api sign up
         if (!errorEmail && !errorUsername && !errorPassword && !errorConfirmPassword) {
+            const publicKey = new NodeRSA();
+            const pub = userAnymousKey.public_key;
+            publicKey.importKey(pub, 'pkcs8-public');
+            const password1Encrypt = publicKey.encrypt(valueUpdate.password1, 'base64');
+            const password2Encrypt = publicKey.encrypt(valueUpdate.password2, 'base64');
+            const usenameEncrypt = publicKey.encrypt(valueUpdate.username, 'base64');
+            const emailEncrypt = publicKey.encrypt(valueUpdate.email, 'base64');
             const data = {
-                password1: valueUpdate.password1,
-                password2: valueUpdate.password2,
-                username: valueUpdate.username,
-                email: valueUpdate.email,
+                password1: password1Encrypt,
+                password2: password2Encrypt,
+                username: usenameEncrypt,
+                email: emailEncrypt,
             };
-
-            console.log(data);
-
             //call
             await SignUpApi(data)
                 .then(async (response) => {
                     setContent('Đã đăng ký thành công...');
                     setOpen(true);
-                    console.log('respone:', response);
                     setErrorEmail((prev) => false);
                     setErrorUsername((prev) => false);
                     setErrorPassword((prev) => false);
@@ -107,18 +129,19 @@ function SignUp() {
                     navigate('/');
                 })
                 .catch((error) => {
-                    setContent(error.response.data.messages);
+                    setContent(error.response.data.message);
                     setOpen(true);
                     //check email
                     if (!valueUpdate.email) {
                         setErrorEmail((prev) => true);
                         setTextEmail('Không được để trống địa chỉ email!');
                         setContent('Đăng ký không thành công, vui lòng nhập lại');
+                        setContent(error.response.data.message);
                     } else {
                         if (!codeCheckEmail.test(valueUpdate.email)) {
                             setErrorEmail((prev) => true);
-                            setTextEmail('Đây không phải địa chỉ email');
-                            setContent('Đăng ký không thành công, vui lòng nhập lại');
+                            setTextEmail(error.response.data.message);
+                            setContent(error.response.data.message);
                         } else {
                             setErrorEmail((prev) => false);
                         }
@@ -128,7 +151,7 @@ function SignUp() {
                     if (!valueUpdate.username) {
                         setErrorUsername((prev) => true);
                         setTextUsername('Tên đăng nhập không được để trống');
-                        setContent('Đăng ký không thành công, vui lòng nhập lại');
+                        setContent('Tên đăng nhập không được để trống');
                     } else {
                         setErrorUsername((prev) => false);
                     }
@@ -137,7 +160,7 @@ function SignUp() {
                     if (!valueUpdate.password1) {
                         setErrorPassword((prev) => true);
                         setTextPassword('Mật khẩu không được để trống');
-                        setContent('Đăng ký không thành công, vui lòng nhập lại');
+                        setContent('Mật khẩu không được để trống');
                     } else {
                         setErrorPassword((prev) => false);
                     }
@@ -145,13 +168,13 @@ function SignUp() {
                     //check confirmpassword
                     if (!valueUpdate.password2) {
                         setErrorConfirmPassword((prev) => true);
-                        setTextConfirmPassword('Ô nhập lại mật không được để trống');
-                        setContent('Đăng ký không thành công, vui lòng nhập lại');
+                        setTextConfirmPassword(error.response.data.message);
+                        setContent(error.response.data.message);
                     } else {
                         if (valueUpdate.password1 !== valueUpdate.password2) {
                             setErrorConfirmPassword((prev) => true);
-                            setTextConfirmPassword('Hai mật khẩu không trùng nhau');
-                            setContent('Đăng ký không thành công, vui lòng nhập lại');
+                            setTextConfirmPassword(error.response.data.message);
+                            setContent(error.response.data.message);
                         } else {
                             setErrorConfirmPassword((prev) => false);
                         }

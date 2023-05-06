@@ -1,7 +1,8 @@
 import { Form } from 'antd';
+import NodeRSA from 'node-rsa';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SignInApi } from '~/services/auth';
+import { GetPublicKeyUser, SignInApi } from '~/services/auth';
 import { GetPublicKey } from '~/services/chat';
 
 export const useLogin = ({ ...param }) => {
@@ -14,15 +15,52 @@ export const useLogin = ({ ...param }) => {
     const [error, setError] = useState(false);
     const [tokenCaptcha, setTokenCaptcha] = useState('');
     const navigate = useNavigate();
+    const [userAnymousKey, setUserAnymousKey] = useState('');
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // useEffect(() => {
+    //     console.log('test');
+    //     const getAnymousKey = async () => {
+    //         const anymousKey = await GetPublicKeyUser();
+    //         console.log('KeyUser response:', anymousKey);
+    //     };
+
+    //     getAnymousKey();
+
+    //     // console.log('KeyUser response:', anymousKey);
+    //
+    // }, []);
+
+    const checkExpireAnymousKey = async () => {
+        console.log(userAnymousKey.expire);
+        const expireDate = new Date(Date.parse(userAnymousKey.expire));
+        const currentDate = new Date();
+        if (expireDate.getTime() > currentDate.getTime()) {
+            const fetchData = async () => {
+                const anymousKey = await GetPublicKeyUser();
+                await setUserAnymousKey(anymousKey.data);
+            };
+            await fetchData();
+        }
+    };
 
     async function handleSubmit() {
         setLoading(true);
-        if (valueUpdate.password && valueUpdate.username) {
+        await checkExpireAnymousKey();
+
+        if (valueUpdate.password && valueUpdate.username && userAnymousKey.public_key) {
+            const publicKey = new NodeRSA();
+            const pub = userAnymousKey.public_key;
+            publicKey.importKey(pub, 'pkcs8-public');
+            const passwordEncrypt = publicKey.encrypt(valueUpdate.password, 'base64');
+            const usenameEncrypt = publicKey.encrypt(valueUpdate.username, 'base64');
+
             const data = {
-                password: valueUpdate.password,
-                username: valueUpdate.username,
+                password: passwordEncrypt,
+                username: usenameEncrypt,
                 gcaptcha: tokenCaptcha,
             };
+
             await SignInApi(data)
                 .then(async (response) => {
                     console.log('response:', response);
@@ -41,7 +79,6 @@ export const useLogin = ({ ...param }) => {
                             JSON.stringify({
                                 public: key.data.public_key,
                                 expire: key.data.expire,
-                                private: key.data.private_key,
                             }),
                         );
                     };
@@ -85,5 +122,7 @@ export const useLogin = ({ ...param }) => {
         setOpen,
         content,
         setContent,
+        setUserAnymousKey,
+        userAnymousKey,
     };
 };
