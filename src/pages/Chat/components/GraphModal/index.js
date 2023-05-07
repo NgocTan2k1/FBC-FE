@@ -2,6 +2,7 @@ import { Modal, Tabs } from 'antd';
 import { useEffect, useState } from 'react';
 import LineChart from '~/components/LineChart';
 import VerticalChart from '~/components/VerticalChart';
+import { ALIAS } from '~/constants/alias';
 import { PROVIDER } from '~/constants/provider';
 import { TYPE_ANSWER } from '~/constants/typeAnswer';
 
@@ -27,7 +28,7 @@ const GraphModal = ({ ...props }) => {
                                     };
                                 },
                             )}
-                            title={graph?.title}
+                            title={ALIAS[graph?.title]}
                         />
                     ) : (
                         <LineChart
@@ -40,7 +41,7 @@ const GraphModal = ({ ...props }) => {
                                     };
                                 },
                             )}
-                            title={graph?.title}
+                            title={ALIAS[graph?.title]}
                         />
                     ),
             },
@@ -59,7 +60,7 @@ const GraphModal = ({ ...props }) => {
                                     };
                                 },
                             )}
-                            title={graph?.title}
+                            title={ALIAS[graph?.title]}
                         />
                     ) : (
                         <LineChart
@@ -72,7 +73,7 @@ const GraphModal = ({ ...props }) => {
                                     };
                                 },
                             )}
-                            title={graph?.title}
+                            title={ALIAS[graph?.title]}
                         />
                     ),
             },
@@ -91,7 +92,7 @@ const GraphModal = ({ ...props }) => {
                                     };
                                 },
                             )}
-                            title={graph?.title}
+                            title={ALIAS[graph?.title]}
                         />
                     ) : (
                         <LineChart
@@ -104,7 +105,7 @@ const GraphModal = ({ ...props }) => {
                                     };
                                 },
                             )}
-                            title={graph?.title}
+                            title={ALIAS[graph?.title]}
                         />
                     ),
             },
@@ -118,8 +119,14 @@ const GraphModal = ({ ...props }) => {
 
     return (
         <>
-            <Modal title={graph?.title} open={showModal} onCancel={handleClose} footer={null}>
-                <Tabs items={tags.filter((item) => providerAvailable?.includes(item?.label))} />
+            <Modal
+                width="65%"
+                title={`Bảng ${ALIAS[graph?.title]}`}
+                open={showModal}
+                onCancel={handleClose}
+                footer={null}
+            >
+                <Tabs size="middle" items={tags.filter((item) => providerAvailable?.includes(item?.label))} />
             </Modal>
         </>
     );

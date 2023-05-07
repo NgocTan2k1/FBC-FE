@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
+import { ALIAS } from '~/constants/alias';
 import GraphModal from '../GraphModal';
 import styles from './Answer.module.scss';
 
@@ -21,7 +22,7 @@ export const AnswerOption = ({ key, text, table, hook }) => {
                 }}
                 className={cx('answer-option')}
             >
-                {text}
+                {ALIAS[text]}
             </li>
             <GraphModal
                 graph={table}
@@ -30,7 +31,6 @@ export const AnswerOption = ({ key, text, table, hook }) => {
                 showModal={showModal}
                 type={type}
                 setShowModal={setShowModal}
-                styles={{ width: '80%' }}
             />
         </>
     );
