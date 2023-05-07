@@ -4,28 +4,25 @@ import GraphModal from '../GraphModal';
 import styles from './Answer.module.scss';
 
 const cx = classNames.bind(styles);
-export const AnswerOption = ({
-    key,
-    text,
-    table,
-    hook,
-}) => {
+export const AnswerOption = ({ key, text, table, hook }) => {
     const { type } = hook;
-    const [providerAvailable, setProviderAvailable] = useState([])
-    const [showModal, setShowModal] = useState(false)
+    const [providerAvailable, setProviderAvailable] = useState([]);
+    const [showModal, setShowModal] = useState(false);
     useState(() => {
         setProviderAvailable(Object.keys(table).filter((item) => !['title', 'years'].includes(item)));
-    }, [table])
+    }, [table]);
 
     return (
         <>
             <li
                 id={key}
                 onClick={(e) => {
-                    setShowModal(true)
+                    setShowModal(true);
                 }}
                 className={cx('answer-option')}
-            >{text}</li>
+            >
+                {text}
+            </li>
             <GraphModal
                 graph={table}
                 providerAvailable={providerAvailable}
@@ -33,7 +30,8 @@ export const AnswerOption = ({
                 showModal={showModal}
                 type={type}
                 setShowModal={setShowModal}
+                styles={{ width: '80%' }}
             />
         </>
-    )
-}
+    );
+};

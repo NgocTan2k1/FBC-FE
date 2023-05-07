@@ -43,7 +43,7 @@ export default function LineChart({ years, dataRaw, title }) {
     };
     return (
         <div className={cx('line-chart-container')}>
-            <Line options={options} data={data} />;
+            <Line style={{ width: '100%' }} options={options} data={data} />
         </div>
     );
 }

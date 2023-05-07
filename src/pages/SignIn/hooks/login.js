@@ -37,6 +37,7 @@ export const useLogin = ({ ...param }) => {
         const currentDate = new Date();
         if (expireDate.getTime() > currentDate.getTime()) {
             const fetchData = async () => {
+                console.log('===== lấy anymousKey =====');
                 const anymousKey = await GetPublicKeyUser();
                 await setUserAnymousKey(anymousKey.data);
             };

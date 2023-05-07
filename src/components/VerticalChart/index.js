@@ -34,7 +34,7 @@ export default function VerticalChart({ years, dataRaw, title }) {
     };
     return (
         <div className={cx('vertical-chart-container')}>
-            <Bar options={options} data={data} />;
+            <Bar options={options} data={data} />
         </div>
     );
 }

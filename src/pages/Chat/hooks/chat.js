@@ -77,7 +77,7 @@ export const useChat = ({ ...param }) => {
                 publicKey.importKey(pub, 'pkcs8-public');
                 const dataSendEncrypt = { raw: publicKey.encrypt(dataSend, 'base64') };
 
-                console.log('string dataSend: ', dataSend.length);
+                console.log('string dataSend: ', dataSend);
                 console.log('object dataSend: ', JSON.parse(dataSend));
                 console.log('dataSendEncrypt: ', dataSendEncrypt);
 
